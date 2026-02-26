@@ -5,7 +5,7 @@ import { Button } from "~/common/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "~/common/components/ui/card";
 
 interface ApplauseCardProps {
-    applauseId: string;
+    id: string;
     title: string;
     description: string;
     commentsCount: number;
@@ -14,7 +14,7 @@ interface ApplauseCardProps {
 }
 
 export function ApplauseCard({
-    applauseId,
+    id,
     title,
     description,
     commentsCount,
@@ -22,8 +22,8 @@ export function ApplauseCard({
     applauseCount,
 }: ApplauseCardProps) {
     return (
-        <Link to={applauseId}>
-            <Card className="w-full flex items-center justify-between bg-transparent hover:bg-card/50">
+        <Link to={`/applauses/${id}`}>
+            <Card className="w-full flex flex-row items-center justify-between bg-transparent hover:bg-primary/10">
                 <CardHeader>
                     <CardTitle className="text-2xl font-semibold leading-none tracking-tight">
                         {title}
@@ -32,11 +32,11 @@ export function ApplauseCard({
                         {description}
                     </CardDescription>
                     <div className="flex items-center gap-4 mt-2">
-                        <div className="flex items-center gap-px text-xs text-muted-forground">
+                        <div className="flex items-center gap-px text-xs text-muted-foreground">
                             <MessageCircleIcon className="w-4 h-4" />
                             <span>{commentsCount}</span>
                         </div>
-                        <div className="flex items-center gap-px text-xs text-muted-forground">
+                        <div className="flex items-center gap-px text-xs text-muted-foreground">
                             <EyeIcon className="w-4 h-4" />
                             <span>{viewsCount}</span>
                         </div>

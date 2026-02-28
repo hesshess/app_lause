@@ -25,7 +25,7 @@ export function IdeaCard({
     return (
         <Card className="bg-transparent hover:bg-card/50 transition-colors">
             <CardHeader>
-                <Link to={id}>
+                <Link to={`/ideas/${id}`}>
                     <CardTitle className="text-xl">
                         <span className={cn(
                             claimed ? "bg-muted-foreground selection:bg-muted-foreground text-muted-foreground" : ""

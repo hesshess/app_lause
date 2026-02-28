@@ -2,6 +2,7 @@ import { Link, type MetaFunction } from "react-router";
 
 import { ApplauseCard } from "~/features/appluases/components/applause-card";
 import { PostCard } from "~/features/community/components/post-card";
+import { DonaCard } from "~/features/donations/components/dona-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { Button } from "../components/ui/button";
 
@@ -70,6 +71,27 @@ export default function HomePage() {
                         claimed={index % 2 === 0}
                         />
                         ))}
+            </div>
+                <div className="grid grid-cols-4 gap-4">
+                    <div>
+                    <h2 className="text-5xl font-bold leading-tight  tracking-tight">Latest Donations</h2>
+                    <p className="text-xl font-light text-foreground">Find the place where your love to be</p>
+                    <Button variant="link" asChild className="text-lg p-0">
+                        <Link to="/donations">Explore all donations &rarr;</Link>
+                    </Button>
+                    </div>
+                    {Array.from({length:11}).map((_,index)=>(                    <DonaCard
+                        id="donaId"
+                        organizationLogoSrc="https://github.com/unicef.png"
+                        organizationName="Unicef"
+                        postedAt="11 hours ago"
+                        title="Support Children in Crisis"
+                        tags={["Regular Donation", "Singular Donation"]}
+                        amountLabel="$10 / month"
+                        locationLabel="Gaza Strip, Palestine"
+                        donateButtonLabel="Donate now"
+                    />))}
+                    
             </div>
         </div>
     );

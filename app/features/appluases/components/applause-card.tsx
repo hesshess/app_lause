@@ -23,7 +23,7 @@ export function ApplauseCard({
 }: ApplauseCardProps) {
     return (
         <Link to={`/applauses/${id}`}>
-            <Card className="w-full flex flex-row items-center justify-between bg-transparent hover:bg-primary/10">
+            <Card className="w-full flex flex-row items-center justify-between bg-transparent hover:bg-card/50">
                 <CardHeader>
                     <CardTitle className="text-2xl font-semibold leading-none tracking-tight">
                         {title}

@@ -42,6 +42,7 @@ export function PostCard({
                 <CardFooter className="flex justify-end ">
                     <Button variant="link" asChild>
                             Reply &rarr;
+
                     </Button>
                 </CardFooter>
             </Card>

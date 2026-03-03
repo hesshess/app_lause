@@ -1,6 +1,6 @@
 import { Link, type MetaFunction } from "react-router";
 
-import { ApplauseCard } from "~/features/appluases/components/applause-card";
+import { ApplauseCard } from "~/features/components/applause-card";
 import { PostCard } from "~/features/community/components/post-card";
 import { DonaCard } from "~/features/donations/components/dona-card";
 import { GroupCard } from "~/features/groups/components/group-card";
@@ -26,7 +26,8 @@ export default function HomePage() {
                     </Button>
                 </div>
                     {Array.from({length:11}).map((_,index) =>(<ApplauseCard
-                        id={`applauseId-${index}`}
+            key={`applause-${index}`}
+            id={`applause-${index}`}
                         title="asdf"
                         description="asdf"
                         commentsCount={12}
@@ -45,7 +46,8 @@ export default function HomePage() {
                 </div>
                     {Array.from({length:10}).map((_,index)=>(
                     <PostCard
-                        id="/community/postId"
+            key={`communityId-${index}`}
+            id={`communityId-${index}`}
                         title="What is the best pogging spot?"
                         author="Hess"
                         avatarSrc="https://github.com/apple.png"
@@ -64,7 +66,8 @@ export default function HomePage() {
                 </div>
                     {Array.from({length:10}).map((_,index)=>(                
                         <IdeaCard
-                        id={`ideaId-${index}`}
+            key={`ideaId-${index}`}
+            id={`ideaId-${index}`}
                         title="Start a monthly “Cook & Care” initiative where neighbors prepare extra home-cooked meals together at a local community center and deliver them to elderly residents living alone. Volunteers can sign up for cooking, packaging, or delivery roles. Along with each meal, include a handwritten note of encouragement."
                         viewsCount={123}
                         postedAt="12 hours ago"
@@ -82,7 +85,8 @@ export default function HomePage() {
                     </Button>
                     </div>
                     {Array.from({length:11}).map((_,index)=>(                    <DonaCard
-                        id="donaId"
+            key={`donaId-${index}`}
+            id={`donaId-${index}`}
                         organizationLogoSrc="https://github.com/unicef.png"
                         organizationName="Unicef"
                         postedAt="11 hours ago"
@@ -104,10 +108,11 @@ export default function HomePage() {
                     </div>
                         {Array.from({length:7}).map((_,index)=>(
                         <GroupCard
-                        id="groupId"
+            key={`groupId-${index}`}
+            id={`groupId-${index}`}
                         leaderUsername="bess"
                         leaderAvatarSrc="https://github.com/hesshess.png"
-                        catogories={["Seoul","Education","Mentoring"]}
+                        categories={["Seoul","Education","Mentoring"]}
                         outro="your talent to the children."
                         buttonLabel="Join group"
                     />   

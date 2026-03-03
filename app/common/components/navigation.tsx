@@ -15,7 +15,7 @@ const menus = [
       {
         name: "Leaderboard",
         description: "Top applauded good deeds this week",
-        to: "/applauses/leaderboard",
+        to: "/applauses/leaderboards",
       },
       {
         name: "Categories",

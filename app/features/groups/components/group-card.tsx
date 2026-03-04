@@ -9,7 +9,7 @@ interface GroupCardProps {
     id: string;
     leaderUsername: string;
     leaderAvatarSrc: string;
-    catogories: string[];
+    categories: string[];
     outro: string;
     buttonLabel: string;
 }
@@ -18,7 +18,7 @@ export function GroupCard({
     id,
     leaderUsername,
     leaderAvatarSrc,
-    catogories,
+    categories,
     outro,
     buttonLabel,
 }: GroupCardProps) {
@@ -35,9 +35,9 @@ export function GroupCard({
                             </Avatar>
                         </Badge>
                         <span>is looking for</span>
-                    {catogories.map((catogory, index) => (
+                    {categories.map((category, index) => (
                     <Badge key={index} className="text-base">
-                        {catogory}
+                        {category}
                     </Badge>
                     ))}
                         <span>to volunteer</span>

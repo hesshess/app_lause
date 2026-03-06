@@ -1,7 +1,11 @@
 import { DateTime } from "luxon";
 import type { Route } from "./+types/daily-leaderboard-page";
-import { data, isRouteErrorResponse } from "react-router";
+import { data, isRouteErrorResponse, Link } from "react-router";
 import z from "zod";
+import { Hero } from "~/common/components/hero";
+import { ApplauseCard } from "~/features/components/applause-card";
+import { Button } from "~/common/components/ui/button";
+import ApplausePagination from "~/common/components/applause-pagination";
 
 const paramsSchema = z.object({
     year: z.coerce.number(),
@@ -44,14 +48,49 @@ export const loader = ({params}: Route.LoaderArgs) => {
         )
     }
     return{
-        date,
+        ...parsedData,
     }
 }
 
 export default function DailyLeaderboardPage({loaderData}: Route.ComponentProps) {
+    const urlDate = DateTime.fromObject({
+        year: loaderData.year,
+        month: loaderData.month,
+        day: loaderData.day,
+    }); 
+    const previousDay = urlDate.minus({days:1});
+    const nextDay = urlDate.plus({days:1});
+    const isToday = urlDate.equals(DateTime.now().startOf("day"));
     return (
-        <div className="px-20 py-10">
-            <h1 className="text-3xl font-bold capitalize">daily leaderboard page</h1>
+        <div className="space-y-10">
+            <Hero title = {`The best applauses of ${urlDate.toLocaleString(DateTime.DATE_SHORT)}`}/>
+            <div className="flex items-center justify-center gap-2">
+                <Button variant="secondary" asChild>
+                    <Link to={`/applauses/leaderboards/daily/${previousDay.year}/${previousDay.month}/${previousDay.day}`}>&larr; {previousDay.toLocaleString(DateTime.DATE_SHORT)}</Link>
+                </Button>
+            {!isToday ? (
+                <Button variant="secondary" asChild>
+                    <Link to={`/applauses/leaderboards/daily/${nextDay.year}/${nextDay.month}/${nextDay.day}`}>{nextDay.toLocaleString(DateTime.DATE_SHORT)} &rarr;</Link>
+                </Button>
+                ) : null
+
+            }
+
+            </div>
+            <div className="space-y-5 w-full max-w-3xl mx-auto">
+            {Array.from({length:11}).map((_,index) =>(
+                <ApplauseCard
+                key={`applause-${index}`}
+                id={`applause-${index}`}
+                title="asdf"
+                description="asdf"
+                commentsCount={12}
+                viewsCount={12}
+                applauseCount={120}
+            />
+            ))}   
+            </div>
+            <ApplausePagination totalPages={10}/>
         </div>
     );
 }

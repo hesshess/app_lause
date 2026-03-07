@@ -13,6 +13,17 @@ const paramsSchema = z.object({
     day: z.coerce.number(),
 })
 
+export const meta: Route.MetaFunction = ({params, data}) => {
+    const date = DateTime.fromObject({
+        year: Number(params.year),
+        month: Number(params.month),
+        day: Number(params.day),
+    }).setZone("Asia/Seoul").setLocale("ko");
+    return[
+        {title: `The best applauses of ${date.toLocaleString(DateTime.DATE_MED)} | app_lause`}
+    ]
+}
+
 export const loader = ({params}: Route.LoaderArgs) => {
     const { success, data: parsedData } = paramsSchema.safeParse(params);
     if(!success){
@@ -63,7 +74,7 @@ export default function DailyLeaderboardPage({loaderData}: Route.ComponentProps)
     const isToday = urlDate.equals(DateTime.now().startOf("day"));
     return (
         <div className="space-y-10">
-            <Hero title = {`The best applauses of ${urlDate.toLocaleString(DateTime.DATE_SHORT)}`}/>
+            <Hero title = {`The best applauses of ${urlDate.toLocaleString(DateTime.DATE_MED)}`}/>
             <div className="flex items-center justify-center gap-2">
                 <Button variant="secondary" asChild>
                     <Link to={`/applauses/leaderboards/daily/${previousDay.year}/${previousDay.month}/${previousDay.day}`}>&larr; {previousDay.toLocaleString(DateTime.DATE_SHORT)}</Link>

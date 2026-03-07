@@ -7,10 +7,11 @@ export default [
         ...prefix("leaderboards", [
             index("features/applauses/pages/leaderboard-page.tsx"
             ),
-            route("/yearly/:year", "features/applauses/pages/yearly-leaderboard-page.tsx"),
-            route("montly/:year/:month", "features/applauses/pages/monthly-leaderboard-page.tsx"),
+            route("yearly/:year", "features/applauses/pages/yearly-leaderboard-page.tsx"),
+            route("monthly/:year/:month", "features/applauses/pages/monthly-leaderboard-page.tsx"),
             route("daily/:year/:month/:day", "features/applauses/pages/daily-leaderboard-page.tsx"),
-            route("weekly/:year/:month/:week", "features/applauses/pages/weekly-leaderboard-page.tsx"),
+            route("weekly/:year/:week", "features/applauses/pages/weekly-leaderboard-page.tsx"),
+            route("/:period", "features/applauses/pages/leaderboards-redirection-page.tsx")
 
         ]),
         ...prefix("categories",[

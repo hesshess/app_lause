@@ -1,12 +1,6 @@
+import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/categories-page";
-
-export function loader(_args: Route.LoaderArgs) {
-    return {};
-}
-
-export function action(_args: Route.ActionArgs) {
-    return {};
-}
+import { CategoryCard } from "~/features/applauses/components/category-card";
 
 export const meta: Route.MetaFunction = () => {
     return [
@@ -15,10 +9,20 @@ export const meta: Route.MetaFunction = () => {
     ];
 };
 
-export default function Page(_props: Route.ComponentProps) {
+export default function CategoriesPage(_props: Route.ComponentProps) {
     return (
-        <div className="px-20 py-10">
-            <h1 className="text-3xl font-bold capitalize">categories page</h1>
+        <div className="space-y-10">
+            <Hero title="Categories" description="Browse applauses by category"/>
+            <div className="grid grid-cols-4 gap-10">
+                {Array.from({length:10}).map((_, index)=>(
+                    <CategoryCard
+                    key={`categoryId-${index}`}
+                    id={`categoryId-${index}`}
+                    name="Category Name"
+                    description="Category Description"
+                />
+                ))}
+            </div>
         </div>
     );
 }

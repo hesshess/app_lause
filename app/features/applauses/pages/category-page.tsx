@@ -1,24 +1,40 @@
+import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/category-page";
+import { Form } from "react-router";
+import { Input } from "~/common/components/ui/input";
+import { Button } from "~/common/components/ui/button";
+import { ApplauseCard } from "~/features/components/applause-card";
+import ApplausePagination from "~/common/components/applause-pagination";
 
-export function loader(_args: Route.LoaderArgs) {
-    return {};
-}
 
-export function action(_args: Route.ActionArgs) {
-    return {};
-}
-
-export const meta: Route.MetaFunction = () => {
+export const meta = ({params}: Route.MetaArgs) => {
     return [
-        { title: "category page | app_lause" },
-        { name: "description", content: "category page" },
+        // { title: `${params.category} | app_lause` },
+        // { name: "description", content: `Browse ${params.category} applauses` },
+        { title: `Plogging | app_lause` },
+        { name: "description", content: `Browse Plogging Applauses` },
     ];
 };
 
-export default function Page(_props: Route.ComponentProps) {
+export default function CategoryPage() {
     return (
-        <div className="px-20 py-10">
-            <h1 className="text-3xl font-bold capitalize">category page</h1>
+        <div className="space-y-10">
+            <Hero
+             title="Plogging" description="Activity of picking up litter while jogging"/>
+            <div className="space-y-5 w-full max-w-3xl mx-auto">
+            {Array.from({length:11}).map((_,index) =>(
+                <ApplauseCard
+                key={`applauseId-${index}`}
+                id={`applauseId-${index}`}
+                title="Plogging"
+                description="Plogging in Seoul"
+                commentsCount={12}
+                viewsCount={12}
+                applauseCount={120}
+            />
+            ))}   
+            </div>
+            <ApplausePagination totalPages={10}/>
         </div>
     );
 }

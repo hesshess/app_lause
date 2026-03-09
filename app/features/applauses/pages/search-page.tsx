@@ -36,9 +36,9 @@ export function action(_args: Route.ActionArgs) {
 }
 
 
-export default function Page(_props: Route.ComponentProps) {
+export default function SearchPage(_props: Route.ComponentProps) {
     return (
-        <div className="space-y-10 py-10">
+        <div className="space-y-10">
             <Hero title="Search" description="Search for applause by title or description"/>
             <Form className="flex justify-center max-w-2xl items-center gap-2 mx-auto">
                 <Input name="query" placeholder="Search for applauses" className="text-lg"/>

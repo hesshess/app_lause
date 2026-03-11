@@ -28,12 +28,9 @@ export function loader({request}: Route.LoaderArgs) {
     if(!success){
         throw new Error("Invalid params");
     }
-    console.log(parsedData)
 }
 
-export function action(_args: Route.ActionArgs) {
-    return {};
-}
+
 
 
 export default function SearchPage(_props: Route.ComponentProps) {

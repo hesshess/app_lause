@@ -13,7 +13,7 @@ const menus = [
     to: "/applauses",
     items: [
       {
-        name: "Leaderboard",
+        name: "Leaderboards",
         description: "Top applauded good deeds this week",
         to: "/applauses/leaderboards",
       },
@@ -33,7 +33,7 @@ const menus = [
         to: "/applauses/submit",
       },
       {
-        name: "Boost / Promote",
+        name: "Promote Your Good Deed",
         description: "Highlight a good deed to reach more people",
         to: "/applauses/promote",
       },

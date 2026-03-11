@@ -4,9 +4,6 @@ export function loader(_args: Route.LoaderArgs) {
     return {};
 }
 
-export function action(_args: Route.ActionArgs) {
-    return {};
-}
 
 export const meta: Route.MetaFunction = () => {
     return [

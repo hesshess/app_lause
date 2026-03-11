@@ -86,8 +86,8 @@ export default function SubmitPage(_props: Route.ComponentProps) {
             ]}
           />
         </div>
-        <div className="flex flex-col space-y-2">
-          <div className="size-40 rounded-4xl shadow-2xl overflow-hidden">
+        <div className="flex flex-col space-y-3">
+          <div className="size-40 rounded-4xl shadow-2xl overflow-hidden mb-10">
             {icon ? (
               <img src={icon} className="object-cover w-full h-full" />
             ) : null}

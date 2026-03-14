@@ -49,7 +49,6 @@ export default [
         ),
         ...prefix("praises", [
           index("features/applauses/pages/applause-praises-page.tsx"),
-          route("new", "features/applauses/pages/new-applause-praise-page.tsx"),
         ]),
       ]),
     ]),

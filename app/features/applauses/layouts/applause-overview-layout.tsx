@@ -1,4 +1,4 @@
-import { ChevronUpIcon, StarIcon } from "lucide-react";
+import { ChevronUpIcon, HeartIcon } from "lucide-react";
 import { NavLink, Outlet } from "react-router";
 import { Button, buttonVariants } from "~/common/components/ui/button";
 import { cn } from "~/lib/utils";
@@ -15,7 +15,7 @@ export default function ApplauseOverviewLayout() {
             <div className="mt-5 flex items-center gap-2 ">
               <div className="flex text-violet-400">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon className="size-4" fill="currentColor" />
+                  <HeartIcon className="size-4" fill="currentColor" />
                 ))}
               </div>
               <span className="text-muted-foreground">100 reviews</span>

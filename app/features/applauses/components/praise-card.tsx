@@ -3,7 +3,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "~/common/components/ui/avatar";
-import { StarIcon } from "lucide-react";
+import { HeartIcon } from "lucide-react";
 
 interface PraiseCardProps {
   avatarSrc: string;
@@ -36,7 +36,7 @@ export function PraiseCard({
       </div>
       <div className="flex text-violet-400">
         {Array.from({ length: rating }).map((_, index) => (
-          <StarIcon key={index} className="size-4" fill="currentColor" />
+          <HeartIcon key={index} className="size-4" fill="currentColor" />
         ))}
       </div>
       <p className="text-muted-foreground">{content}</p>

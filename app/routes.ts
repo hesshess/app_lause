@@ -57,4 +57,9 @@ export default [
     index("features/ideas/pages/ideas-page.tsx"),
     route(":ideaId", "features/ideas/pages/idea-page.tsx"),
   ]),
+  ...prefix("donations", [
+    index("features/donations/pages/donations-page.tsx"),
+    route("donaId", "features/donations/pages/donation-page.tsx"),
+    route("submit", "features/donations/pages/submit-donations-page.tsx"),
+  ])
 ] satisfies RouteConfig;

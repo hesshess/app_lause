@@ -66,7 +66,7 @@ const menus = [
       {
         name: "Start a Campaign",
         description: "Create a donation goal around a good deed",
-        to: "/donations/create",
+        to: "/donations/submit",
       },
     ],
   },

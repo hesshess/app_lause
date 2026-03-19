@@ -1,8 +1,8 @@
 import { Hero } from "~/common/components/hero";
-import type { Route } from "./+types/donations-page";
-import { DonaCard } from "../components/dona-card";
+import type { Route } from "./+types/challenges-page";
+import { DonaCard } from "../components/challenge-card";
 import { Button } from "~/common/components/ui/button";
-import { DONATION_RANGES_TYPES, DONATION_REGIONS_TYPES, DONATION_TYPES } from "../constants";
+import { CHALLENGE_DURATION_RANGES, CHALLENGE_PARTICIPATION_TYPES, CHALLENGE_TYPES } from "../constants";
 import { Link, useSearchParams } from "react-router";
 
 export function loader(_args: Route.LoaderArgs) {
@@ -15,12 +15,12 @@ export function action(_args: Route.ActionArgs) {
 
 export const meta: Route.MetaFunction = () => {
   return [
-    { title: "Donations | app_lause" },
-    { name: "description", content: "Browse donation opportunities" },
+    { title: "Challenges | app_lause" },
+    { name: "description", content: "Browse challenge opportunities" },
   ];
 };
 
-export default function DonationsPage(_props: Route.ComponentProps) {
+export default function ChallengesPage(_props: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const onFilterClick = (key: string, value: string) => {
     searchParams.set(key, value);
@@ -29,7 +29,7 @@ export default function DonationsPage(_props: Route.ComponentProps) {
   return (
     <div className="space-y-20">
       <Hero
-        title="Donations"
+        title="Challenges"
         description="Support organizations and causes making a difference."
       />
       <div className="grid grid-cols-6 gap-20 items-start">
@@ -42,7 +42,7 @@ export default function DonationsPage(_props: Route.ComponentProps) {
               organizationName="Unicef"
               postedAt="11 hours ago"
               title="Support Children in Crisis"
-              tags={["Regular Donation", "Singular Donation"]}
+              tags={["Regular Challenge", "Singular Challenge"]}
               amountLabel="$10 / month"
               locationLabel="Gaza Strip, Palestine"
               donateButtonLabel="Donate now"
@@ -53,7 +53,7 @@ export default function DonationsPage(_props: Route.ComponentProps) {
           <div className="flex flex-col items-start gap-2.5">
             <h4 className="text-sm text-muted-foreground font-bold">Type</h4>
            <div className="flex flex-wrap gap-2">
-             {DONATION_TYPES.map((type)=>(
+             {CHALLENGE_TYPES.map((type)=>(
               <Button variant ="outline" onClick={()=>onFilterClick("type", type.value)} className={type.value === searchParams.get("type") ? "bg-accent" : ""}>{type.label}</Button>
             ))}
            </div>
@@ -61,7 +61,7 @@ export default function DonationsPage(_props: Route.ComponentProps) {
           <div className="flex flex-col items-start gap-2.5">
             <h4 className="text-sm text-muted-foreground font-bold">Location</h4>
            <div className="flex flex-wrap gap-2">
-             {DONATION_REGIONS_TYPES.map((region)=>(
+             {CHALLENGE_PARTICIPATION_TYPES.map((region)=>(
               <Button variant ="outline" onClick={()=>onFilterClick("region", region.value)} className={region.value === searchParams.get("region") ? "bg-accent" : ""}>{region.label}</Button>
             ))}
            </div>
@@ -69,7 +69,7 @@ export default function DonationsPage(_props: Route.ComponentProps) {
           <div className="flex flex-col items-start gap-2.5">
             <h4 className="text-sm text-muted-foreground font-bold">Type</h4>
            <div className="flex flex-wrap gap-2">
-             {DONATION_RANGES_TYPES.map((range)=>(
+             {CHALLENGE_DURATION_RANGES.map((range)=>(
               <Button variant ="outline" onClick={()=>onFilterClick("range", range)} className={range === searchParams.get("range") ? "bg-accent" : ""}>{range}</Button>
             ))}
            </div>

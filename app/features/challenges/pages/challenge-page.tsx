@@ -1,16 +1,16 @@
 import { Badge } from "~/common/components/ui/badge";
-import type { Route } from "./+types/donation-page";
+import type { Route } from "./+types/challenge-page";
 import { DotIcon } from "lucide-react";
 import { Button } from "~/common/components/ui/button";
 
 export const meta: Route.MetaFunction = () => {
   return [
-    { title: `Donation Details | app_lause` },
-    { name: "description", content: "View details for a donation campaign" },
+    { title: `Challenge Details | app_lause` },
+    { name: "description", content: "View details for a challenge campaign" },
   ];
 };
 
-export default function DonationPage() {
+export default function ChallengePage() {
   return (
     <div>
       <div className="bg-linear-to-tr from-primary/80 to-primary/10 h-60 w-full rounded-lg"></div>

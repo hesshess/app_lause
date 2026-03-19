@@ -122,18 +122,18 @@ const menus = [
     to: "/ideas",
   },
   {
-    name: "Groups",
-    to: "/groups",
+    name: "Teams",
+    to: "/teams",
     items: [
       {
-        name: "All Groups",
-        description: "Find groups to do good together",
-        to: "/groups",
+        name: "All Teams",
+        description: "Find teams to do good together",
+        to: "/teams",
       },
       {
-        name: "Create a Group",
-        description: "Make a group for your friends or team",
-        to: "/groups/create",
+        name: "Create a Team",
+        description: "Make a team for your friends",
+        to: "/teams/create",
       },
     ],
   },

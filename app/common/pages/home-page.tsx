@@ -3,7 +3,7 @@ import { Link, type MetaFunction } from "react-router";
 import { ApplauseCard } from "~/features/components/applause-card";
 import { PostCard } from "~/features/community/components/post-card";
 import { DonaCard } from "~/features/donations/components/dona-card";
-import { GroupCard } from "~/features/groups/components/group-card";
+import { TeamCard } from "~/features/teams/components/team-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { Button } from "../components/ui/button";
 
@@ -125,24 +125,24 @@ export default function HomePage() {
       <div className="grid grid-cols-4 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight  tracking-tight">
-            Find a group
+            Find a team
           </h2>
           <p className="text-xl font-light text-foreground">
-            Join groups to do good together
+            Join teams to do good together
           </p>
           <Button variant="link" asChild className="text-lg p-0">
-            <Link to="/groups">Explore all groups &rarr;</Link>
+            <Link to="/teams">Explore all teams &rarr;</Link>
           </Button>
         </div>
         {Array.from({ length: 7 }).map((_, index) => (
-          <GroupCard
-            key={`groupId-${index}`}
-            id={`groupId-${index}`}
+          <TeamCard
+            key={`teamId-${index}`}
+            id={`teamId-${index}`}
             leaderUsername="bess"
             leaderAvatarSrc="https://github.com/hesshess.png"
             categories={["Seoul", "Education", "Mentoring"]}
             outro="your talent to the children."
-            buttonLabel="Join group"
+            buttonLabel="Join team"
           />
         ))}
       </div>

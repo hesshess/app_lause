@@ -49,8 +49,17 @@ export default [
         ),
         ...prefix("praises", [
           index("features/applauses/pages/applause-praises-page.tsx"),
-        ]),
+         ]),
       ]),
     ]),
   ]),
+  ...prefix("ideas", [
+    index("features/ideas/pages/ideas-page.tsx"),
+    route(":ideaId", "features/ideas/pages/idea-page.tsx"),
+  ]),
+  ...prefix("challenges", [
+    index("features/challenges/pages/challenges-page.tsx"),
+    route(":donaId", "features/challenges/pages/challenge-page.tsx"),
+    route("submit", "features/challenges/pages/submit-challenges-page.tsx"),
+  ])
 ] satisfies RouteConfig;

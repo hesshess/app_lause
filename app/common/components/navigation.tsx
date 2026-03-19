@@ -14,59 +14,59 @@ const menus = [
     items: [
       {
         name: "Leaderboards",
-        description: "Top applauded good deeds this week",
+        description: "See the most applauded actions in the community",
         to: "/applauses/leaderboards",
       },
       {
         name: "Categories",
-        description: "Explore good deeds by category",
+        description: "Explore actions by category",
         to: "/applauses/categories",
       },
       {
         name: "Search",
-        description: "Search applauses and good deeds",
+        description: "Search actions, routines, and good deeds",
         to: "/applauses/search",
       },
       {
-        name: "Post a Good Deed",
-        description: "Share a good deed to inspire others",
+        name: "Share an Action",
+        description: "Share something you did for good",
         to: "/applauses/submit",
       },
       {
         name: "Promote Your Good Deed",
-        description: "Highlight a good deed to reach more people",
+        description: "Promote an action to inspire more people",
         to: "/applauses/promote",
       },
     ],
   },
   {
-    name: "Donations",
-    to: "/donations",
+    name: "Challenges",
+    to: "/challenges",
     items: [
       {
         name: "Give Now",
         description: "Donate to support someone’s good deed",
-        to: "/donations/give",
+        to: "/challenges/give",
       },
       {
         name: "Campaigns",
         description: "Browse active giving campaigns",
-        to: "/donations/campaigns",
+        to: "/challenges/campaigns",
       },
       {
         name: "Top Givers",
         description: "See the most generous supporters",
-        to: "/donations/leaderboard",
+        to: "/challenges/leaderboard",
       },
       {
         name: "My Giving",
-        description: "Track your donations and receipts",
-        to: "/donations/me",
+        description: "Track your challenges and receipts",
+        to: "/challenges/me",
       },
       {
         name: "Start a Campaign",
         description: "Create a donation goal around a good deed",
-        to: "/donations/create",
+        to: "/challenges/submit",
       },
     ],
   },
@@ -122,18 +122,18 @@ const menus = [
     to: "/ideas",
   },
   {
-    name: "Groups",
-    to: "/groups",
+    name: "Teams",
+    to: "/teams",
     items: [
       {
-        name: "All Groups",
-        description: "Find groups to do good together",
-        to: "/groups",
+        name: "All Teams",
+        description: "Find teams to do good together",
+        to: "/teams",
       },
       {
-        name: "Create a Group",
-        description: "Make a group for your friends or team",
-        to: "/groups/create",
+        name: "Create a Team",
+        description: "Make a team for your friends",
+        to: "/teams/create",
       },
     ],
   },
@@ -168,7 +168,7 @@ hasMessages: boolean;
                             className={cn([
                               "select-none rounded-md transition-colors focus:bg-accent  hover:bg-accent",
                               (item.to === "/applauses/promote" ||
-                                item.to === "/donations/create") &&
+                                item.to === "/challenges/create") &&
                                 "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20",
                             ])}
                           >

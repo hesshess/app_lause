@@ -28,7 +28,7 @@ export function DonaCard({
     donateButtonLabel,
 }: DonaCardProps) {
     return (
-        <Link to={`/donations/${id}`}>
+        <Link to={`/challenges/${id}`}>
             <Card className="bg-transparent transition-colors hover:bg-card/50">
                 <CardHeader>
                     <div className="flex items-center gap-4 mb-4">

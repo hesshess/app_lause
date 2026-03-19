@@ -5,7 +5,7 @@ import { Badge } from "~/common/components/ui/badge";
 import { Button } from "~/common/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "~/common/components/ui/card";
 
-interface GroupCardProps {
+interface TeamCardProps {
     id: string;
     leaderUsername: string;
     leaderAvatarSrc: string;
@@ -14,16 +14,16 @@ interface GroupCardProps {
     buttonLabel: string;
 }
 
-export function GroupCard({
+export function TeamCard({
     id,
     leaderUsername,
     leaderAvatarSrc,
     categories,
     outro,
     buttonLabel,
-}: GroupCardProps) {
+}: TeamCardProps) {
     return (
-        <Link to={`/groups/${id}`}>
+        <Link to={`/teams/${id}`}>
             <Card className="bg-transparent hover:bg-card/50 transition-colors">
                 <CardHeader className="flex flex-row items-center">
                     <CardTitle className="text-base leading-loose">

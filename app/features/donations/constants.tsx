@@ -38,9 +38,9 @@ export const DONATION_GOAL_RANGES_TYPES = [
 ] as const;
 
 export const DONATION_RANGES_TYPES = [
-  "Under $50",
-  "$50 - $200",
-  "$200 - $500",
-  "$500 - $1,000",
-  "$1,000+",
+  "Under $5",
+  "$5 - $10",
+  "$10 - $50",
+  "$50 - $1,00",
+  "$1,00+",
 ] as const;

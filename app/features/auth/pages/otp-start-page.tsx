@@ -1,8 +1,7 @@
 import { Form } from "react-router";
 import { Button } from "~/common/components/ui/button";
-import { Input } from "~/common/components/ui/input";
-import { Label } from "~/common/components/ui/label";
 import type { Route } from "./+types/otp-start-page";
+import InputPair from "~/common/components/input-pair";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -11,38 +10,31 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export function loader(_args: Route.LoaderArgs) {
-  return {};
-}
-
-export async function action({ request }: Route.ActionArgs) {
-  const formData = await request.formData();
-
-  return {
-    phoneNumber: formData.get("phoneNumber")?.toString() ?? "",
-  };
-}
-
 export default function OtpStartPage(_props: Route.ComponentProps) {
-  return (
-    <div className="space-y-6">
-      <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight">
-          Send verification code
-        </h1>
-        <p className="text-muted-foreground">
-          Enter your phone number to receive a one-time passcode.
-        </p>
-      </div>
-      <Form method="post" className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="phoneNumber">Phone number</Label>
-          <Input id="phoneNumber" name="phoneNumber" type="tel" required />
+    return (
+    <div className="flex flex-col relative items-center justify-center h-full">
+      <div className="flex items-center flex-col justify-center w-full max-w-md gap-10">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold">Log in with OTP</h1>
+          <p className="text-sm text-muted-foreground">
+            We will send you a 4-digit code to log in to your account.
+          </p>
         </div>
-        <Button type="submit" className="w-full">
-          Send code
-        </Button>
-      </Form>
+        <Form className="w-full space-y-4">
+          <InputPair
+            label="Email"
+            description="Enter your email address"
+            name="email"
+            id="email"
+            required
+            type="email"
+            placeholder="i.e wemake@example.com"
+          />
+          <Button className="w-full" type="submit">
+            Send OTP
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 }

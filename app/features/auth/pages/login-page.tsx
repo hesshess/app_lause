@@ -1,9 +1,8 @@
 import { Form, Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
-import { Input } from "~/common/components/ui/input";
-import { Label } from "~/common/components/ui/label";
 import type { Route } from "./+types/login-page";
 import InputPair from "~/common/components/input-pair";
+import AuthButtons from "../components/auth-buttons";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -13,7 +12,7 @@ export const meta: Route.MetaFunction = () => {
 };
 
 export default function LoginPage(_props: Route.ComponentProps) {
-   return (
+  return (
     <div className="flex flex-col relative items-center justify-center h-full">
       <Button variant={"ghost"} asChild className="absolute right-8 top-8 ">
         <Link to="/auth/join">Join</Link>
@@ -28,7 +27,7 @@ export default function LoginPage(_props: Route.ComponentProps) {
             id="email"
             required
             type="email"
-            placeholder="i.e wemake@example.com"
+            placeholder="i.e applause@example.com"
           />
           <InputPair
             id="password"
@@ -37,12 +36,13 @@ export default function LoginPage(_props: Route.ComponentProps) {
             name="password"
             required
             type="password"
-            placeholder="i.e wemake@example.com"
+            placeholder="i.e applause@example.com"
           />
           <Button className="w-full" type="submit">
             Log in
           </Button>
         </Form>
+        <AuthButtons />
       </div>
     </div>
   );

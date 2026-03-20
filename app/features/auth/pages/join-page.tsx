@@ -1,9 +1,8 @@
 import { Form, Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
-import { Input } from "~/common/components/ui/input";
-import { Label } from "~/common/components/ui/label";
 import type { Route } from "./+types/join-page";
 import InputPair from "~/common/components/input-pair";
+import AuthButtons from "../components/auth-buttons";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -14,7 +13,7 @@ export const meta: Route.MetaFunction = () => {
 
 export default function JoinPage() {
   return (
-   <div className="flex flex-col relative items-center justify-center h-full">
+    <div className="flex flex-col relative items-center justify-center h-full">
       <Button variant={"ghost"} asChild className="absolute right-8 top-8 ">
         <Link to="/auth/login">Login</Link>
       </Button>
@@ -61,6 +60,7 @@ export default function JoinPage() {
             Create account
           </Button>
         </Form>
+        <AuthButtons />
       </div>
     </div>
   );

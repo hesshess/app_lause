@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -27,7 +28,7 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   Settings.defaultLocale = "ko";
-  Settings.defaultZone = "Asia/Seoul"
+  Settings.defaultZone = "Asia/Seoul";
   return (
     <html lang="en">
       <head>
@@ -37,7 +38,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <main className="px-20">{children}</main>
+        <main>{children}</main>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -46,12 +47,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return (  
-    <div className="py-28" >
-      <Navigation isLoggedIn={true} hasNotifications={true} hasMessages={true}/>
+  const { pathname } = useLocation();
+  return (
+    <div className={pathname.includes('/auth/') ? "" : "py-28 px-20"}>
+      {pathname.includes("/auth") ? null : (
+        <Navigation
+          isLoggedIn={true}
+          hasNotifications={true}
+          hasMessages={true}
+        />
+      )}
       <Outlet />
     </div>
-    );
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

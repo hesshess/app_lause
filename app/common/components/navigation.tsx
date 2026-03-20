@@ -97,27 +97,6 @@ const menus = [
     ],
   },
   {
-    name: "Challenges",
-    to: "/challenges",
-    items: [
-      {
-        name: "All Challenges",
-        description: "Join kindness challenges",
-        to: "/challenges",
-      },
-      {
-        name: "Weekly Challenge",
-        description: "This week’s mission for doing good",
-        to: "/challenges/weekly",
-      },
-      {
-        name: "Create a Challenge",
-        description: "Start a challenge for your community",
-        to: "/challenges/create",
-      },
-    ],
-  },
-  {
     name: "IdeasGPT",
     to: "/ideas",
   },

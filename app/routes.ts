@@ -61,5 +61,19 @@ export default [
     index("features/challenges/pages/challenges-page.tsx"),
     route(":donaId", "features/challenges/pages/challenge-page.tsx"),
     route("submit", "features/challenges/pages/submit-challenges-page.tsx"),
+  ]),
+  ...prefix("auth",[
+    layout("features/auth/layouts/auth-layout.tsx", [
+      route("login", "features/auth/pages/login-page.tsx"),
+      route("join", "features/auth/pages/join-page.tsx"),
+      ...prefix("otp",[
+        route("start", "features/auth/pages/otp-start-page.tsx"),
+        route("complete", "features/auth/pages/otp-complete-page.tsx"),
+      ]),
+      ...prefix("social/:provider",[
+        route("start", "features/auth/pages/social-start-page.tsx"),
+        route("complete", "features/auth/pages/social-complete-page.tsx")
+      ])
+    ])
   ])
 ] satisfies RouteConfig;

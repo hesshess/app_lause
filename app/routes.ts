@@ -75,5 +75,10 @@ export default [
         route("complete", "features/auth/pages/social-complete-page.tsx")
       ])
     ])
-  ])
+  ]),
+  ...prefix("community",[
+    index("features/community/pages/community_page.tsx"),
+    route(":postId", "features/community/pages/post-page.tsx"),
+    route("submit", "features/community/pages/submit-post-page.tsx")
+  ]),
 ] satisfies RouteConfig;

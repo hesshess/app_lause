@@ -3,19 +3,7 @@ import { Hero } from "~/common/components/hero";
 import InputPair from "~/common/components/input-pair";
 import { Button } from "~/common/components/ui/button";
 import type { Route } from "./+types/submit-post-page";
-
-export function loader(_args: Route.LoaderArgs) {
-  return {};
-}
-
-export async function action({ request }: Route.ActionArgs) {
-  const formData = await request.formData();
-
-  return {
-    title: formData.get("title")?.toString() ?? "",
-    content: formData.get("content")?.toString() ?? "",
-  };
-}
+import SelectPair from "~/common/components/select-pair";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -24,36 +12,44 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export default function SubmitPostPage(_props: Route.ComponentProps) {
-  return (
-    <div className="space-y-10">
+export default function SubmitPostPage() {
+   return (
+    <div className="space-y-20">
       <Hero
-        title="Start a Discussion"
-        description="Share a question, story, or update with the community."
+        title="Create Discussion"
+        description="Ask questions, share ideas, and connect with other developers"
       />
-      <Form className="mx-auto flex max-w-3xl flex-col gap-6">
+      <Form className="flex flex-col gap-10 max-w-3xl mx-auto">
         <InputPair
-          id="title"
           label="Title"
-          description="Give your post a short, clear title"
           name="title"
+          id="title"
+          description="(40 characters or less)"
           required
-          type="text"
-          placeholder="i.e How do you organize neighborhood cleanups?"
+          placeholder="i.e What is the best productivity tool?"
+        />
+        <SelectPair
+          required
+          name="category"
+          label="Category"
+          description="Select the category that best fits your discussion"
+          placeholder="i.e Productivity"
+          options={[
+            { label: "Productivity", value: "productivity" },
+            { label: "Programming", value: "programming" },
+            { label: "Design", value: "design" },
+          ]}
         />
         <InputPair
-          id="content"
           label="Content"
-          description="Write the details you want the community to see"
           name="content"
+          id="content"
+          description="(1000 characters or less)"
           required
-          type="text"
+          placeholder="i.e I'm looking for a tool that can help me manage my time and tasks. What are the best tools out there?"
           textArea
-          placeholder="Share enough context so others can respond helpfully."
         />
-        <Button type="submit" className="w-full max-w-sm self-center">
-          Publish post
-        </Button>
+        <Button className="mx-auto">Create Discussion</Button>
       </Form>
     </div>
   );

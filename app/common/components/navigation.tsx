@@ -11,30 +11,30 @@ const menus = [
   {
     name: "Applauses",
     to: "/applauses",
-    items: [
+   items: [
       {
         name: "Leaderboards",
-        description: "See the most applauded actions in the community",
+        description: "See the most recognized habits and growth actions",
         to: "/applauses/leaderboards",
       },
       {
         name: "Categories",
-        description: "Explore actions by category",
+        description: "Explore actions by growth category",
         to: "/applauses/categories",
       },
       {
         name: "Search",
-        description: "Search actions, routines, and good deeds",
+        description: "Search habits, routines, and self-growth actions",
         to: "/applauses/search",
       },
       {
         name: "Share an Action",
-        description: "Share something you did for good",
+        description: "Share a habit or action that helped you grow",
         to: "/applauses/submit",
       },
       {
-        name: "Promote Your Good Deed",
-        description: "Promote an action to inspire more people",
+        name: "Promote Your Progress",
+        description: "Highlight your action to inspire others",
         to: "/applauses/promote",
       },
     ],
@@ -44,28 +44,13 @@ const menus = [
     to: "/challenges",
     items: [
       {
-        name: "Give Now",
-        description: "Donate to support someone’s good deed",
-        to: "/challenges/give",
+       name: "Explore",
+        description: "Join challenges designed for consistency and growth",
+        to: "/challenges",
       },
       {
-        name: "Campaigns",
-        description: "Browse active giving campaigns",
-        to: "/challenges/campaigns",
-      },
-      {
-        name: "Top Givers",
-        description: "See the most generous supporters",
-        to: "/challenges/leaderboard",
-      },
-      {
-        name: "My Giving",
-        description: "Track your challenges and receipts",
-        to: "/challenges/me",
-      },
-      {
-        name: "Start a Campaign",
-        description: "Create a donation goal around a good deed",
+        name: "Create a Challenge",
+        description: "Start a challenge around a growth goal",
         to: "/challenges/submit",
       },
     ],
@@ -92,7 +77,7 @@ const menus = [
       {
         name: "Create",
         description: "Share your good deed",
-        to: "/community/create",
+        to: "/community/submit",
       },
     ],
   },
@@ -112,7 +97,7 @@ const menus = [
       {
         name: "Create a Team",
         description: "Make a team for your friends",
-        to: "/teams/create",
+        to: "/teams/submit",
       },
     ],
   },

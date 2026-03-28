@@ -7,49 +7,55 @@ import SelectPair from "~/common/components/select-pair";
 
 export const meta: Route.MetaFunction = () => {
   return [
-    { title: "Submit Post | app_lause" },
-    { name: "description", content: "Create a new community post" },
+    { title: "Create Post | app_lause" },
+    { name: "description", content: "Share a story, action, or reflection with the community" },
   ];
 };
 
 export default function SubmitPostPage() {
-   return (
+  return (
     <div className="space-y-20">
       <Hero
-        title="Create Discussion"
-        description="Ask questions, share ideas, and connect with other developers"
+        title="Share Your Story"
+        description="Share an action, reflection, or small change that mattered to you"
       />
-      <Form className="flex flex-col gap-10 max-w-3xl mx-auto">
+
+      <Form className="mx-auto flex max-w-3xl flex-col gap-10">
         <InputPair
           label="Title"
           name="title"
           id="title"
           description="(40 characters or less)"
           required
-          placeholder="i.e What is the best productivity tool?"
+          placeholder="i.e I started walking every morning for 7 days"
         />
+
         <SelectPair
           required
           name="category"
           label="Category"
-          description="Select the category that best fits your discussion"
-          placeholder="i.e Productivity"
+          description="Select the category that best fits your post"
+          placeholder="i.e Self Growth"
           options={[
-            { label: "Productivity", value: "productivity" },
-            { label: "Programming", value: "programming" },
-            { label: "Design", value: "design" },
+            { label: "Self Growth", value: "self-growth" },
+            { label: "Wellness", value: "wellness" },
+            { label: "Mindset", value: "mindset" },
+            { label: "Routine", value: "routine" },
+            { label: "Reflection", value: "reflection" },
           ]}
         />
+
         <InputPair
           label="Content"
           name="content"
           id="content"
           description="(1000 characters or less)"
           required
-          placeholder="i.e I'm looking for a tool that can help me manage my time and tasks. What are the best tools out there?"
+          placeholder="i.e For the past week, I tried taking a short walk every morning before checking my phone. It felt like a small action, but it changed the way I started my day."
           textArea
         />
-        <Button className="mx-auto">Create Discussion</Button>
+
+        <Button className="mx-auto">Share Post</Button>
       </Form>
     </div>
   );

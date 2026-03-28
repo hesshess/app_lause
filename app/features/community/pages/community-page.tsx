@@ -14,7 +14,7 @@ import { PostCard } from "../components/post-card";
 import type { Route } from "./+types/community-page";
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: "Community | wemake" }];
+  return [{ title: "Community | app_lause" }];
 };
 
 export default function CommunityPage() {
@@ -25,7 +25,7 @@ export default function CommunityPage() {
     <div className="space-y-20">
       <Hero
         title="Community"
-        description="Ask questions, share ideas, and connect with other developers"
+        description="Discover stories, reflections, and small actions that inspire growth"
       />
       <div className="grid grid-cols-6 items-start gap-40">
         <div className="col-span-4 space-y-10">
@@ -96,10 +96,10 @@ export default function CommunityPage() {
               <PostCard
                 key={`postId-${index}`}
                 id={`postId-${index}`}
-                title="What is the best productivity tool?"
+                title="I started walking every morning for 7 days"
+category="Self Growth"
                 author="Nico"
                 avatarSrc="https://github.com/apple.png"
-                category="Productivity"
                 postedAt="12 hours ago"
                 expanded
               />
@@ -112,11 +112,11 @@ export default function CommunityPage() {
           </span>
           <div className="flex flex-col gap-2 items-start">
             {[
-              "AI Tools",
-              "Design Tools",
-              "Dev Tools",
-              "Note Taking Apps",
-              "Productivity Tools",
+  "Self Growth",
+  "Wellness",
+  "Mindset",
+  "Routine",
+  "Reflection",
             ].map((category) => (
               <Button asChild variant={"link"} key={category} className="pl-0">
                 <Link to={`/community?topic=${category}`}>{category}</Link>

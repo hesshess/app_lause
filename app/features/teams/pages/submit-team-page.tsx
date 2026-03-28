@@ -3,25 +3,29 @@ import { Hero } from "~/common/components/hero";
 import InputPair from "~/common/components/input-pair";
 import { Button } from "~/common/components/ui/button";
 import type { Route } from "./+types/submit-team-page";
+import SelectPair from "~/common/components/select-pair";
 
 
 export const meta: Route.MetaFunction = () => {
   return [
     { title: "Create Team | app_lause" },
-    { name: "description", content: "Start a new volunteer team" },
+    { name: "description", content: "Create a new team for self-growth" },
   ];
 };
 
 export default function SubmitTeamPage() {
   return (
     <div className="space-y-20">
-      <Hero title="Create Team" description="Create a team to find a team mate." />
+      <Hero
+        title="Create Team"
+        description="Start a team and gather people around a shared growth goal."
+      />
       <Form className="max-w-screen-2xl flex flex-col items-center gap-10 mx-auto">
         <div className="grid grid-cols-3 w-full gap-10">
           <InputPair
-            label="What is the name of your product?"
+            label="What is your team name?"
             description="(20 characters max)"
-            placeholder="i.e Doggy Social"
+            placeholder="i.e Morning Reset Circle"
             name="name"
             maxLength={20}
             type="text"
@@ -29,20 +33,20 @@ export default function SubmitTeamPage() {
             required
           />
           <SelectPair
-            label="What is the stage of your product?"
-            description="Select the stage of your product"
+            label="What kind of team is this?"
+            description="Select the stage your team is in"
             name="stage"
             required
-            placeholder="Select the stage of your product"
+            placeholder="Select your team stage"
             options={[
-              { label: "Idea", value: "idea" },
-              { label: "Prototype", value: "prototype" },
-              { label: "MVP", value: "mvp" },
-              { label: "Product", value: "product" },
+              { label: "Just starting", value: "starting" },
+              { label: "Looking for first members", value: "first-members" },
+              { label: "Already active", value: "active" },
+              { label: "Growing the circle", value: "expanding" },
             ]}
           />
           <InputPair
-            label="What is the size of your team?"
+            label="How many people are already on your team?"
             description="(1-100)"
             name="size"
             max={100}
@@ -52,18 +56,18 @@ export default function SubmitTeamPage() {
             required
           />
           <InputPair
-            label="How much equity are you willing to give?"
-            description="(each)"
-            name="equity"
+            label="How many new members are you looking for?"
+            description="(1-100)"
+            name="openSpots"
             max={100}
             min={1}
             type="number"
-            id="equity"
+            id="openSpots"
             required
           />
           <InputPair
-            label="What roles are you looking for?"
-            placeholder="React Developer, Backend Developer, Product Manager"
+            label="What kinds of help are you looking for?"
+            placeholder="Accountability partners, writers, builders, listeners"
             description="(comma separated)"
             name="roles"
             type="text"
@@ -71,9 +75,9 @@ export default function SubmitTeamPage() {
             required
           />
           <InputPair
-            label="What is the description of your product?"
+            label="What is your team working on?"
             description="(200 characters max)"
-            placeholder="i.e We are building a new social media platform for dogs to connect with each other"
+            placeholder="i.e We help each other build better routines through daily check-ins, weekly reflection, and shared goals."
             name="description"
             maxLength={200}
             type="text"
@@ -83,7 +87,7 @@ export default function SubmitTeamPage() {
           />
         </div>
         <Button type="submit" className="w-full max-w-sm" size="lg">
-          Create team
+          Create Team
         </Button>
       </Form>
     </div>

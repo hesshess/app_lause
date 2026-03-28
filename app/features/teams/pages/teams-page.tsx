@@ -13,7 +13,7 @@ export function action(_args: Route.ActionArgs) {
 export const meta: Route.MetaFunction = () => {
   return [
     { title: "Teams | app_lause" },
-    { name: "description", content: "Find teams to volunteer with" },
+    { name: "description", content: "Find teams to grow with together" },
   ];
 };
 
@@ -22,7 +22,7 @@ export default function TeamsPage(_props: Route.ComponentProps) {
     <div className="space-y-20">
       <Hero
         title="Teams"
-        description="Find people who want to do good work together."
+        description="Join a team built around habits, learning, and self-growth."
       />
       <div className="grid grid-cols-3 gap-4">
         {Array.from({ length: 9 }).map((_, index) => (
@@ -31,9 +31,9 @@ export default function TeamsPage(_props: Route.ComponentProps) {
             id={`team-${index}`}
             leaderUsername="hess"
             leaderAvatarSrc="https://github.com/hesshess.png"
-            categories={["Seoul", "Education", "Mentoring"]}
-            outro="your talent to the children."
-            buttonLabel="Join team"
+            categories={["Seoul", "Habits", "Accountability"]}
+            outro="more consistency and focus into their daily life."
+            buttonLabel="See team"
           />
         ))}
       </div>

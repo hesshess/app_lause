@@ -38,7 +38,7 @@ export default [
       route(":category", "features/applauses/pages/category-page.tsx"),
     ]),
     route("search", "features/applauses/pages/search-page.tsx"),
-    route("submit", "features/applauses/pages/submit-page.tsx"),
+    route("submit", "features/applauses/pages/submit-applause-page.tsx"),
     route("promote", "features/applauses/pages/promote-page.tsx"),
     ...prefix(":applauseId", [
       index("features/applauses/pages/applause-redirect-page.tsx"),
@@ -49,7 +49,7 @@ export default [
         ),
         ...prefix("praises", [
           index("features/applauses/pages/applause-praises-page.tsx"),
-         ]),
+        ]),
       ]),
     ]),
   ]),
@@ -62,28 +62,46 @@ export default [
     route(":donaId", "features/challenges/pages/challenge-page.tsx"),
     route("submit", "features/challenges/pages/submit-challenges-page.tsx"),
   ]),
-  ...prefix("auth",[
+  ...prefix("auth", [
     layout("features/auth/layouts/auth-layout.tsx", [
       route("login", "features/auth/pages/login-page.tsx"),
       route("join", "features/auth/pages/join-page.tsx"),
-      ...prefix("otp",[
+      ...prefix("otp", [
         route("start", "features/auth/pages/otp-start-page.tsx"),
         route("complete", "features/auth/pages/otp-complete-page.tsx"),
       ]),
-      ...prefix("social/:provider",[
+      ...prefix("social/:provider", [
         route("start", "features/auth/pages/social-start-page.tsx"),
-        route("complete", "features/auth/pages/social-complete-page.tsx")
-      ])
-    ])
+        route("complete", "features/auth/pages/social-complete-page.tsx"),
+      ]),
+    ]),
   ]),
-  ...prefix("community",[
+  ...prefix("community", [
     index("features/community/pages/community-page.tsx"),
     route(":postId", "features/community/pages/post-page.tsx"),
-    route("submit", "features/community/pages/submit-post-page.tsx")
+    route("submit", "features/community/pages/submit-post-page.tsx"),
   ]),
   ...prefix("teams", [
     index("features/teams/pages/teams-page.tsx"),
     route(":teamId", "features/teams/pages/team-page.tsx"),
-    route("submit", "features/teams/pages/submit-team-page.tsx")
-  ])
+    route("submit", "features/teams/pages/submit-team-page.tsx"),
+  ]),
+  ...prefix("my", [
+    ...prefix("dashboard", [
+      index("features/users/pages/dashboard-page.tsx"),
+      route("ideas", "features/users/pages/dashboard-ideas-page.tsx"),
+      route(
+        "products/:productId",
+        "features/users/pages/dashboard-product-page.tsx",
+      ),
+    ]),
+    route("profile", "features/users/pages/my-profile-page.tsx"),
+    route("settings", "features/users/pages/settings-page.tsx"),
+    route("notifications", "features/users/pages/notifications-page.tsx"),
+    ...prefix("messages", [
+      index("features/users/pages/messages-page.tsx"),
+      route(":messageId", "features/users/pages/message-page.tsx"),
+    ]),
+  ]),
+  route("users/:username", "features/users/pages/profile-page.tsx")
 ] satisfies RouteConfig;

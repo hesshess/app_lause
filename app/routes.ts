@@ -103,5 +103,11 @@ export default [
       route(":messageId", "features/users/pages/message-page.tsx"),
     ]),
   ]),
-  route("users/:username", "features/users/pages/profile-page.tsx")
+  layout("features/users/layouts/profile-layout.tsx", [
+    ...prefix("users/:username", [
+      index("features/users/pages/profile-page.tsx"),
+      route("applauses", "features/users/pages/profile-applauses-page.tsx"),
+      route("posts", "features/users/pages/profile-posts-page.tsx"),
+    ]),
+  ]),
 ] satisfies RouteConfig;

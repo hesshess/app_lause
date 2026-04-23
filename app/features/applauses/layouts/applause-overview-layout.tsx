@@ -34,6 +34,7 @@ export default function ApplauseOverviewLayout() {
       </div>
       <div className="flex gap-2">
         <NavLink
+          end
           className={({ isActive }) =>
             cn(
               buttonVariants({ variant: "outline" }),
@@ -46,7 +47,10 @@ export default function ApplauseOverviewLayout() {
         </NavLink>
         <NavLink
           className={({ isActive }) =>
-            cn(buttonVariants({variant:"outline"}), isActive && "bg-accent text-foreground")
+            cn(
+              buttonVariants({ variant: "outline" }),
+              isActive && "bg-accent text-foreground",
+            )
           }
           to={`/applauses/1/praises`}
         >

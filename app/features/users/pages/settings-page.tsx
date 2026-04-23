@@ -71,6 +71,15 @@ export default function SettingsPage() {
               ]}
             />
             <InputPair
+              label="Headline"
+              description="A short summary of your current growth focus"
+              required
+              id="headline"
+              name="headline"
+              placeholder="i.e Building calmer mornings and a consistent writing habit."
+              textArea
+            />
+            <InputPair
               label="Bio"
               description="Share your current growth goal or routine"
               required

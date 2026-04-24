@@ -1,11 +1,20 @@
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider } from "~/common/components/ui/sidebar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+} from "~/common/components/ui/sidebar";
 import { Link, Outlet, useLocation } from "react-router";
 import { HomeIcon, RocketIcon, SparklesIcon } from "lucide-react";
 
 export default function DashboardLayout() {
   const location = useLocation();
   return (
-    <SidebarProvider className="flex  min-h-full">
+    <SidebarProvider className="flex min-h-full">
       <Sidebar className="pt-16" variant="floating">
         <SidebarContent>
           <SidebarGroup>
@@ -49,7 +58,7 @@ export default function DashboardLayout() {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <div className=" h-full">
+      <div className="w-full h-full">
         <Outlet />
       </div>
     </SidebarProvider>

@@ -10,5 +10,5 @@ export const meta: Route.MetaFunction = () => {
 
 export function loader() {
   // find user using the cookies
-  return redirect("/users/nico");
+  return redirect("/users/hess");
 }

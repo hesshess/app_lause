@@ -72,7 +72,7 @@ export default function PostPage() {
                   I started walking every morning for 7 days
                 </h2>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>@nico</span>
+                  <span>@hess</span>
                   <DotIcon className="size-5" />
                   <span>12 hours ago</span>
                   <DotIcon className="size-5" />
@@ -107,7 +107,7 @@ export default function PostPage() {
                 <div className="flex flex-col gap-5">
                   <Reply
                     username="Hess"
-                    avatarUrl="https://github.com/serranoarevalo.png"
+                    avatarUrl="https://github.com/hesshess.png"
                     content="I really love this perspective. We often think good actions only count when they help someone else, but taking care of yourself matters too. This inspired me to start a small morning routine of my own."
                     timestamp="12 hours ago"
                     topLevel
@@ -122,7 +122,7 @@ export default function PostPage() {
           <div className="flex gap-5">
             <Avatar className="size-14">
               <AvatarFallback>N</AvatarFallback>
-              <AvatarImage src="https://github.com/serranoarevalo.png" />
+              <AvatarImage src="https://github.com/hesshess.png" />
             </Avatar>
             <div className="flex flex-col">
               <h4 className="text-lg font-medium">Hess</h4>

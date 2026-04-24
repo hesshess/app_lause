@@ -49,7 +49,7 @@ export function Reply({
         <Form className="flex items-start gap-5 w-3/4">
           <Avatar className="size-14">
             <AvatarFallback>N</AvatarFallback>
-            <AvatarImage src="https://github.com/serranoarevalo.png" />
+            <AvatarImage src="https://github.com/hesshess.png" />
           </Avatar>
           <div className="flex flex-col gap-5 items-end w-full">
             <Textarea
@@ -65,7 +65,7 @@ export function Reply({
         <div className="pl-20 w-full">
           <Reply
             username="Nicolas"
-            avatarUrl="https://github.com/serranoarevalo.png"
+            avatarUrl="https://github.com/hesshess.png"
             content="This really resonated with me. I used to think self-care was selfish, but posts like this remind me that taking care of yourself is also meaningful."
             timestamp="12 hours ago"
             topLevel={false}

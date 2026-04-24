@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import type { Route } from "./+types/dashboard-ideas-page";
+import { IdeaCard } from "~/features/ideas/components/idea-card";
 
 export function loader(_args: Route.LoaderArgs) {
   return {};
@@ -17,30 +18,22 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export default function DashboardIdeasPage(_props: Route.ComponentProps) {
+export default function DashboardIdeasPage() {
   return (
-    <div className="space-y-10">
-      <div className="space-y-3">
-        <h1 className="text-4xl font-semibold tracking-tight">Saved Ideas</h1>
-        <p className="text-muted-foreground">
-          Keep track of ideas you want to turn into habits, routines, or
-          challenges.
-        </p>
-      </div>
-      <div className="grid gap-4">
-        {Array.from({ length: 4 }).map((_, index) => (
-          <div key={`idea-${index}`} className="rounded-xl border p-6">
-            <h2 className="text-xl font-semibold">Build a reflection routine</h2>
-            <p className="text-muted-foreground">
-              Save 10 minutes each evening to review what worked, what changed,
-              and what to try tomorrow.
-            </p>
-          </div>
+    <div className="space-y-5 h-full">
+      <h1 className="text-2xl font-semibold mb-6">Claimed Ideas</h1>
+      <div className="grid grid-cols-4 gap-6">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <IdeaCard
+            key={`ideaId-${index}`}
+            id={`ideaId-${index}`}
+            title="A startup that creates an AI-powered generated personal trainer, delivering customized fitness recommendations and tracking of progress using a mobile app to track workouts and progress as well as a website to manage the business."
+            viewsCount={123}
+            postedAt="12 hours ago"
+            likesCount={12}
+          />
         ))}
       </div>
-      <Button asChild variant="outline">
-        <Link to="/ideas">Explore more ideas</Link>
-      </Button>
     </div>
   );
 }

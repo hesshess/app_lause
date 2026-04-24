@@ -61,7 +61,7 @@ const menus = [
     items: [
       {
         name: "All Posts",
-        description: "See all good deeds and applause",
+        description: "See reflections, wins, and growth stories",
         to: "/community",
       },
       {
@@ -71,12 +71,12 @@ const menus = [
       },
       {
         name: "New",
-        description: "Latest good deeds shared",
+        description: "Latest posts on habits and self-growth",
         to: "/community?sort=new",
       },
       {
         name: "Create",
-        description: "Share your good deed",
+        description: "Share your progress or reflection",
         to: "/community/submit",
       },
     ],
@@ -91,12 +91,12 @@ const menus = [
     items: [
       {
         name: "All Teams",
-        description: "Find teams to do good together",
+        description: "Find teams focused on growth and accountability",
         to: "/teams",
       },
       {
         name: "Create a Team",
-        description: "Make a team for your friends",
+        description: "Start a team around a shared growth goal",
         to: "/teams/submit",
       },
     ],
@@ -136,7 +136,7 @@ hasMessages: boolean;
                                 "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20",
                             ])}
                           >
-                            <NavigationMenuLink>
+                            <NavigationMenuLink asChild>
                               <Link
                                 className="p-3 space-y-1 block leading-none no-underline outline-none"
                                 to={item.to}

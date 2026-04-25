@@ -6,7 +6,7 @@ import { Button } from "~/common/components/ui/button";
 export const meta: Route.MetaFunction = ({ params }) => {
   return [
     { title: `IdeasGPT | app_lause` },
-    { name: "description", content: "Find ideas for your next good deed" },
+    { name: "description", content: "Find ideas for your next growth goal" },
   ];
 };
 
@@ -16,11 +16,10 @@ export default function IdeaPage({ params: { ideaId } }: Route.ComponentProps) {
       <Hero title={`Idea : ${ideaId}`} />
       <div className="max-w-2xl mx-auto flex flex-col items-center gap-10">
         <p className="italic text-center">
-          Start a monthly “Cook & Care” initiative where neighbors prepare extra
-          home-cooked meals together at a local community center and deliver
-          them to elderly residents living alone. Volunteers can sign up for
-          cooking, packaging, or delivery roles. Along with each meal, include a
-          handwritten note of encouragement.
+          Start a 14-day focus sprint where you choose one habit that matters,
+          track it daily, write a short reflection at night, and review your
+          progress at the end of each week to see what actually helps you stay
+          consistent.
         </p>
         <div className="flex items-center text-sm">
           <div className="flex items-center gap-1">
@@ -35,7 +34,7 @@ export default function IdeaPage({ params: { ideaId } }: Route.ComponentProps) {
             <span>45</span>
           </Button>
         </div>
-        <Button size="lg">Claim idea now &rarr;</Button>
+        <Button size="lg">Try this idea &rarr;</Button>
       </div>
     </div>
   );

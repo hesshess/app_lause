@@ -40,7 +40,7 @@ export function TeamCard({
                         {category}
                     </Badge>
                     ))}
-                        <span>to volunteer</span>
+                        <span>to grow with</span>
                         <span>{outro}</span>
                     </CardTitle>
                 </CardHeader>

@@ -8,8 +8,8 @@ export const CHALLENGE_TYPES = [
     value: "wellness",
   },
   {
-    label: "Productivity",
-    value: "productivity",
+    label: "Focus",
+    value: "focus",
   },
 ] as const;
 
@@ -19,12 +19,12 @@ export const CHALLENGE_PARTICIPATION_TYPES = [
     value: "solo",
   },
   {
-    label: "With Friends",
-    value: "with-friends",
+    label: "Pair",
+    value: "pair",
   },
   {
-    label: "Community",
-    value: "community",
+    label: "Group",
+    value: "group",
   },
 ] as const;
 

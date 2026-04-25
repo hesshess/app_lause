@@ -27,7 +27,7 @@ export default function HomePage() {
             Today's Applauses
           </h2>
           <p className="text-xl font-light text-foreground">
-            Top applauded good deeds of today.
+            The most recognized growth actions from today.
           </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/applauses/leaderboards">
@@ -53,7 +53,7 @@ export default function HomePage() {
             Latest Discussions
           </h2>
           <p className="text-xl font-light text-foreground">
-            Latest discussions from our community.{" "}
+            Reflections, lessons, and progress from the community.{" "}
           </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/community">Explore all allpauses &rarr;</Link>
@@ -63,10 +63,10 @@ export default function HomePage() {
           <PostCard
             key={`communityId-${index}`}
             id={`communityId-${index}`}
-            title="What is the best pogging spot?"
+            title="What changed after I tracked one habit for 7 days"
             author="Hess"
             avatarSrc="https://github.com/apple.png"
-            category="Plogging"
+            category="Reflection"
             postedAt="12 hours ago"
           />
         ))}
@@ -77,7 +77,7 @@ export default function HomePage() {
             IdeasGPT
           </h2>
           <p className="text-xl font-light text-foreground">
-            Find ideas for your next applause
+            Find ideas for your next breakthrough
           </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/ideas">Explore all ideas &rarr;</Link>
@@ -87,7 +87,7 @@ export default function HomePage() {
           <IdeaCard
             key={`ideaId-${index}`}
             id={`ideaId-${index}`}
-            title="Start a monthly “Cook & Care” initiative where neighbors prepare extra home-cooked meals together at a local community center and deliver them to elderly residents living alone. Volunteers can sign up for cooking, packaging, or delivery roles. Along with each meal, include a handwritten note of encouragement."
+            title="Create a 14-day evening reset routine with journaling, light stretching, and a simple next-day plan to help you end the day with more clarity and start the next one with less friction."
             viewsCount={123}
             postedAt="12 hours ago"
             likesCount={12}
@@ -101,7 +101,7 @@ export default function HomePage() {
             Latest Challenges
           </h2>
           <p className="text-xl font-light text-foreground">
-            Find the place where your love to be
+            Join focused challenges built around consistency and growth
           </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/challenges">Explore all challenges &rarr;</Link>
@@ -112,13 +112,13 @@ export default function HomePage() {
             key={`donaId-${index}`}
             id={`donaId-${index}`}
             organizationLogoSrc="https://github.com/unicef.png"
-            organizationName="Unicef"
+            organizationName="app_lause"
             postedAt="11 hours ago"
-            title="Support Children in Crisis"
-            tags={["Regular Challenge", "Singular Challenge"]}
-            amountLabel="$10 / month"
-            locationLabel="Gaza Strip, Palestine"
-            donateButtonLabel="Donate now"
+            title="7-Day Morning Walk Reset"
+            tags={["Wellness", "Solo"]}
+            amountLabel="7 days"
+            locationLabel="Anywhere"
+            donateButtonLabel="Join now"
           />
         ))}
       </div>
@@ -128,7 +128,7 @@ export default function HomePage() {
             Find a team
           </h2>
           <p className="text-xl font-light text-foreground">
-            Join teams to do good together
+            Join teams that grow through accountability
           </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/teams">Explore all teams &rarr;</Link>
@@ -140,8 +140,8 @@ export default function HomePage() {
             id={`teamId-${index}`}
             leaderUsername="bess"
             leaderAvatarSrc="https://github.com/hesshess.png"
-            categories={["Seoul", "Education", "Mentoring"]}
-            outro="your talent to the children."
+            categories={["Seoul", "Habits", "Reflection"]}
+            outro="more consistency and focus into their daily life."
             buttonLabel="Join team"
           />
         ))}

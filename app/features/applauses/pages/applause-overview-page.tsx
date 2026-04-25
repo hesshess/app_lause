@@ -19,7 +19,7 @@ export default function ApplauseOverviewPage({
   return (
       <div className="space-y-5">
         <div className="space-y-1">
-          <h3 className="text-lg font-bold">What good deed did you do?</h3>
+          <h3 className="text-lg font-bold">What action or habit are you sharing?</h3>
           <p className="text-muted-foreground">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit.
             Perferendis nulla minima autem, alias sequi tempore deserunt vel
@@ -29,7 +29,7 @@ export default function ApplauseOverviewPage({
         </div>
         <div className="space-y-1">
           <h3 className="text-lg font-bold">
-            How did it make the world a little better?
+            How did it help you grow?
           </h3>
           <p className="text-muted-foreground">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit.

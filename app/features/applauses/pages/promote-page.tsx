@@ -31,7 +31,7 @@ export default function PrmotePage() {
     <div>
       <Hero
         title="Promote Your Applause"
-        description="Promote your good deed and turn it into a community campaign."
+        description="Highlight your progress so more people can discover and try it."
       />
       <Form className="max-w-lg mx-auto flex flex-col gap-10 items-center">
         <SelectPair
@@ -41,36 +41,36 @@ export default function PrmotePage() {
           placeholder="Select an applause"
           options={[
             {
-              label: "Weekend Park Cleanup with Local Families",
-              value: "weekend-park-cleanup",
+              label: "7-Day Morning Reflection Streak",
+              value: "morning-reflection-streak",
             },
             {
-              label: "Meal Delivery for Seniors Living Alone",
-              value: "meal-delivery-for-seniors",
+              label: "Evening Digital Detox Routine",
+              value: "evening-digital-detox",
             },
             {
-              label: "Free Digital Skills Class for Seniors",
-              value: "digital-skills-class-for-seniors",
+              label: "30-Minute Deep Work Sprint",
+              value: "deep-work-sprint",
             },
             {
-              label: "School Supply Donation for Children",
-              value: "school-supply-donation",
+              label: "Weekly Self-Review Habit",
+              value: "weekly-self-review",
             },
             {
-              label: "Community Library Book Drive",
-              value: "community-library-book-drive",
+              label: "Daily Reading Reset",
+              value: "daily-reading-reset",
             },
             {
-              label: "Neighborhood Kindness Challenge",
-              value: "neighborhood-kindness-challenge",
+              label: "Mindful Walking Break",
+              value: "mindful-walking-break",
             },
             {
-              label: "Volunteer Dog Walking for Animal Shelters",
-              value: "volunteer-dog-walking",
+              label: "Focus Block Planning Routine",
+              value: "focus-block-planning",
             },
             {
-              label: "Winter Care Package for the Homeless",
-              value: "winter-care-package",
+              label: "Sunday Reset Checklist",
+              value: "sunday-reset-checklist",
             },
           ]}
         />

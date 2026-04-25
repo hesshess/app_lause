@@ -6,7 +6,7 @@ import { Button } from "~/common/components/ui/button";
 export const meta: Route.MetaFunction = () => {
   return [
     { title: `Challenge Details | app_lause` },
-    { name: "description", content: "View details for a challenge campaign" },
+    { name: "description", content: "View details for a self-growth challenge" },
   ];
 };
 

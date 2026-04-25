@@ -22,12 +22,12 @@ export default function LeaderBoardPage() {
         <div className="space-y-20">
             <Hero
                 title="Leaderboards"
-                description="The most applauded on app-lause"
+                description="The most recognized growth actions on app_lause"
             />
             <div className="grid grid-cols-3 gap-4">
                 <div>
                     <h2 className="text-3xl font-bold leading-tight  tracking-tight">Daily Leaderboard</h2>
-                    <p className="text-xl font-light text-foreground">The most applauded good deeds by day.</p>
+                    <p className="text-xl font-light text-foreground">The most recognized growth actions by day.</p>
                 </div>
                 {Array.from({length:7}).map((_,index) =>(<ApplauseCard
             key={`applause-${index}`}
@@ -46,7 +46,7 @@ export default function LeaderBoardPage() {
                         <div className="grid grid-cols-3 gap-4">
                 <div>
                     <h2 className="text-3xl font-bold leading-tight  tracking-tight">Weekly Leaderboard</h2>
-                    <p className="text-xl font-light text-foreground">The most applauded good deeds by week.</p>
+                    <p className="text-xl font-light text-foreground">The most recognized growth actions by week.</p>
                 </div>
                 {Array.from({length:7}).map((_,index) =>(<ApplauseCard
             key={`applause-${index}`}
@@ -65,7 +65,7 @@ export default function LeaderBoardPage() {
                         <div className="grid grid-cols-3 gap-4">
                 <div>
                     <h2 className="text-3xl font-bold leading-tight  tracking-tight">Monthly Leaderboard</h2>
-                    <p className="text-xl font-light text-foreground">The most applauded good deeds by month.</p>
+                    <p className="text-xl font-light text-foreground">The most recognized growth actions by month.</p>
                 </div>
                 {Array.from({length:7}).map((_,index) =>(<ApplauseCard
             key={`applause-${index}`}
@@ -84,7 +84,7 @@ export default function LeaderBoardPage() {
                         <div className="grid grid-cols-3 gap-4">
                 <div>
                     <h2 className="text-3xl font-bold leading-tight  tracking-tight">Yearly Leaderboard</h2>
-                    <p className="text-xl font-light text-foreground">The most applauded good deeds by year.</p>
+                    <p className="text-xl font-light text-foreground">The most recognized growth actions by year.</p>
                 </div>
                 {Array.from({length:7}).map((_,index) =>(<ApplauseCard
             key={`applause-${index}`}

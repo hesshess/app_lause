@@ -24,15 +24,15 @@ export default function ProfileLayout() {
 
   return (
     <div className="space-y-10">
-      <div className="flex items-center gap-4">
-        <Avatar className="size-40">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
+        <Avatar className="size-24 sm:size-32 lg:size-40">
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>
             {displayName.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
         <div className="space-y-5">
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <h1 className="text-2xl font-semibold">@{displayName}</h1>
             <Button variant="outline" asChild>
               <Link to="/my/settings">Edit profile</Link>
@@ -62,7 +62,7 @@ export default function ProfileLayout() {
               </DialogContent>
             </Dialog>
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm text-muted-foreground">
               @{displayName}
             </span>
@@ -72,7 +72,7 @@ export default function ProfileLayout() {
           </div>
         </div>
       </div>
-      <div className="flex gap-5">
+      <div className="flex flex-wrap gap-3">
         {[
           { label: "About", to: profileUrl },
           { label: "Actions", to: `${profileUrl}/applauses` },

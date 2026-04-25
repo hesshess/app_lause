@@ -26,10 +26,10 @@ export default function SubmitPage(_props: Route.ComponentProps) {
   return (
     <div>
       <Hero
-        title="Submit Your Product"
-        description="Share your good deed with the world"
+        title="Share Your Action"
+        description="Share a habit, action, or routine that helped you grow"
       />
-      <Form className="grid grid-cols-2 gap-10 max-w-2xl mx-auto">
+      <Form className="mx-auto grid max-w-2xl grid-cols-1 gap-10 lg:grid-cols-2">
         <div className="space-y-5">
           <InputPair
             label="Name"
@@ -37,7 +37,7 @@ export default function SubmitPage(_props: Route.ComponentProps) {
             id="name"
             name="name"
             type="text"
-            placeholder="Name of your good deed"
+            placeholder="Name of your action or routine"
           />
           <InputPair
             label="Tagline"
@@ -46,11 +46,11 @@ export default function SubmitPage(_props: Route.ComponentProps) {
             name="tagline"
             required
             type="text"
-            placeholder="A concise description of your good deed"
+            placeholder="A concise summary of the action you took"
           />
           <InputPair
             label="URL"
-            description="The URL of your applause"
+            description="An optional link related to your action"
             id="url"
             name="url"
             required
@@ -74,20 +74,20 @@ export default function SubmitPage(_props: Route.ComponentProps) {
             required
             placeholder="Select a category"
             options={[
-              { label: "Volunteering", value: "volunteering" },
-              { label: "Helping Neighbors", value: "helping-neighbors" },
-              { label: "Environmental Action", value: "environment" },
-              { label: "Charity Donation", value: "donation" },
-              { label: "Community Service", value: "community-service" },
-              { label: "Kindness Challenge", value: "kindness" },
-              { label: "Education Support", value: "education" },
-              { label: "Animal Rescue", value: "animal-rescue" },
-              { label: "Food Sharing", value: "food-sharing" },
+              { label: "Mindset", value: "mindset" },
+              { label: "Wellness", value: "wellness" },
+              { label: "Focus", value: "focus" },
+              { label: "Routine", value: "routine" },
+              { label: "Reflection", value: "reflection" },
+              { label: "Learning", value: "learning" },
+              { label: "Creativity", value: "creativity" },
+              { label: "Relationships", value: "relationships" },
+              { label: "Energy", value: "energy" },
             ]}
           />
         </div>
         <div className="flex flex-col space-y-3">
-          <div className="size-40 rounded-4xl shadow-2xl overflow-hidden mb-10">
+          <div className="mb-10 size-32 overflow-hidden rounded-4xl shadow-2xl sm:size-40">
             {icon ? (
               <img src={icon} className="object-cover w-full h-full" />
             ) : null}
@@ -95,7 +95,7 @@ export default function SubmitPage(_props: Route.ComponentProps) {
           <Label className="flex flex-col gap-1">
             Icon
             <small className="text-muted-foreground">
-              This is the icon of your applause.
+              This is the image shown for your action.
             </small>
           </Label>
           <Input
@@ -109,7 +109,7 @@ export default function SubmitPage(_props: Route.ComponentProps) {
             <span>Allowed formats: PNG, JPEG</span>
             <span>Max file size: 1MB</span>
           </div>
-          <Button type="submit" className="w-xs" size="lg">
+          <Button type="submit" className="w-full sm:w-auto" size="lg">
             Submit
           </Button>
         </div>

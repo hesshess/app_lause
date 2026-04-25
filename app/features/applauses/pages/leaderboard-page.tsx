@@ -18,88 +18,116 @@ export const meta: Route.MetaFunction = () => {
 };
 
 export default function LeaderBoardPage() {
-    return (
-        <div className="space-y-20">
-            <Hero
-                title="Leaderboards"
-                description="The most applauded on app-lause"
-            />
-            <div className="grid grid-cols-3 gap-4">
-                <div>
-                    <h2 className="text-3xl font-bold leading-tight  tracking-tight">Daily Leaderboard</h2>
-                    <p className="text-xl font-light text-foreground">The most applauded good deeds by day.</p>
-                </div>
-                {Array.from({length:7}).map((_,index) =>(<ApplauseCard
-            key={`applause-${index}`}
-            id={`applause-${index}`}
-                        title="asdf"
-                        description="asdf"
-                        commentsCount={12}
-                        viewsCount={12}
-                        applauseCount={120}
-                    />
-                    ))}  
-                <Button variant="link" asChild className="text-lg self-center p-0">
-                    <Link to="/applauses/leaderboards/daily">Explore all applauses &rarr;</Link>
-                    </Button>      
-            </div>
-                        <div className="grid grid-cols-3 gap-4">
-                <div>
-                    <h2 className="text-3xl font-bold leading-tight  tracking-tight">Weekly Leaderboard</h2>
-                    <p className="text-xl font-light text-foreground">The most applauded good deeds by week.</p>
-                </div>
-                {Array.from({length:7}).map((_,index) =>(<ApplauseCard
-            key={`applause-${index}`}
-            id={`applause-${index}`}
-                        title="asdf"
-                        description="asdf"
-                        commentsCount={12}
-                        viewsCount={12}
-                        applauseCount={120}
-                    />
-                    ))}  
-                <Button variant="link" asChild className="text-lg self-center p-0">
-                    <Link to="/applauses/leaderboards/weekly">Explore all applauses &rarr;</Link>
-                    </Button>      
-            </div>
-                        <div className="grid grid-cols-3 gap-4">
-                <div>
-                    <h2 className="text-3xl font-bold leading-tight  tracking-tight">Monthly Leaderboard</h2>
-                    <p className="text-xl font-light text-foreground">The most applauded good deeds by month.</p>
-                </div>
-                {Array.from({length:7}).map((_,index) =>(<ApplauseCard
-            key={`applause-${index}`}
-            id={`applause-${index}`}
-                        title="asdf"
-                        description="asdf"
-                        commentsCount={12}
-                        viewsCount={12}
-                        applauseCount={120}
-                    />
-                    ))}  
-                <Button variant="link" asChild className="text-lg self-center p-0">
-                    <Link to="/applauses/leaderboards/monthly">Explore all applauses &rarr;</Link>
-                    </Button>      
-            </div>
-                        <div className="grid grid-cols-3 gap-4">
-                <div>
-                    <h2 className="text-3xl font-bold leading-tight  tracking-tight">Yearly Leaderboard</h2>
-                    <p className="text-xl font-light text-foreground">The most applauded good deeds by year.</p>
-                </div>
-                {Array.from({length:7}).map((_,index) =>(<ApplauseCard
-            key={`applause-${index}`}
-            id={`applause-${index}`}
-                        title="asdf"
-                        description="asdf"
-                        commentsCount={12}
-                        viewsCount={12}
-                        applauseCount={120}
-                    />
-                    ))}  
-                <Button variant="link" asChild className="text-lg self-center p-0">
-                    <Link to="/applauses/leaderboards/yearly">Explore all applauses &rarr;</Link>
-                    </Button>      
-            </div>
+  return (
+    <div className="space-y-20">
+      <Hero
+        title="Leaderboards"
+        description="The most recognized growth actions on app_lause"
+      />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div>
+          <h2 className="text-3xl font-bold leading-tight tracking-tight">
+            Daily Leaderboard
+          </h2>
+          <p className="text-lg font-light text-foreground sm:text-xl">
+            The most recognized growth actions by day.
+          </p>
         </div>
-    );
+        {Array.from({ length: 7 }).map((_, index) => (
+          <ApplauseCard
+            key={`applause-${index}`}
+            id={`applause-${index}`}
+            title="asdf"
+            description="asdf"
+            commentsCount={12}
+            viewsCount={12}
+            applauseCount={120}
+          />
+        ))}
+        <Button variant="link" asChild className="self-center p-0 text-lg">
+          <Link to="/applauses/leaderboards/daily">
+            Explore all applauses &rarr;
+          </Link>
+        </Button>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div>
+          <h2 className="text-3xl font-bold leading-tight tracking-tight">
+            Weekly Leaderboard
+          </h2>
+          <p className="text-lg font-light text-foreground sm:text-xl">
+            The most recognized growth actions by week.
+          </p>
+        </div>
+        {Array.from({ length: 7 }).map((_, index) => (
+          <ApplauseCard
+            key={`applause-${index}`}
+            id={`applause-${index}`}
+            title="asdf"
+            description="asdf"
+            commentsCount={12}
+            viewsCount={12}
+            applauseCount={120}
+          />
+        ))}
+        <Button variant="link" asChild className="self-center p-0 text-lg">
+          <Link to="/applauses/leaderboards/weekly">
+            Explore all applauses &rarr;
+          </Link>
+        </Button>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div>
+          <h2 className="text-3xl font-bold leading-tight tracking-tight">
+            Monthly Leaderboard
+          </h2>
+          <p className="text-lg font-light text-foreground sm:text-xl">
+            The most recognized growth actions by month.
+          </p>
+        </div>
+        {Array.from({ length: 7 }).map((_, index) => (
+          <ApplauseCard
+            key={`applause-${index}`}
+            id={`applause-${index}`}
+            title="asdf"
+            description="asdf"
+            commentsCount={12}
+            viewsCount={12}
+            applauseCount={120}
+          />
+        ))}
+        <Button variant="link" asChild className="self-center p-0 text-lg">
+          <Link to="/applauses/leaderboards/monthly">
+            Explore all applauses &rarr;
+          </Link>
+        </Button>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div>
+          <h2 className="text-3xl font-bold leading-tight tracking-tight">
+            Yearly Leaderboard
+          </h2>
+          <p className="text-lg font-light text-foreground sm:text-xl">
+            The most recognized growth actions by year.
+          </p>
+        </div>
+        {Array.from({ length: 7 }).map((_, index) => (
+          <ApplauseCard
+            key={`applause-${index}`}
+            id={`applause-${index}`}
+            title="asdf"
+            description="asdf"
+            commentsCount={12}
+            viewsCount={12}
+            applauseCount={120}
+          />
+        ))}
+        <Button variant="link" asChild className="self-center p-0 text-lg">
+          <Link to="/applauses/leaderboards/yearly">
+            Explore all applauses &rarr;
+          </Link>
+        </Button>
+      </div>
+    </div>
+  );
 }

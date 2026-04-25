@@ -22,7 +22,7 @@ export default function CreatePraiseDialog() {
           Share your praise
         </DialogTitle>
         <DialogDescription>
-          Let the person know how their good deed inspired you.
+          Let the person know how their progress or action inspired you.
         </DialogDescription>
       </DialogHeader>
       <Form className="space-y-10">
@@ -30,7 +30,7 @@ export default function CreatePraiseDialog() {
           <Label className="flex flex-col gap-1">
             Rating
             <small className="text-muted-foreground">
-              How much do you appreciate this good deed?
+              How much do you appreciate this action?
             </small>
           </Label>
           <div className="flex gap-2 mt-5">

@@ -20,8 +20,8 @@ export default function SubmitTeamPage() {
         title="Create Team"
         description="Start a team and gather people around a shared growth goal."
       />
-      <Form className="max-w-screen-2xl flex flex-col items-center gap-10 mx-auto">
-        <div className="grid grid-cols-3 w-full gap-10">
+      <Form className="mx-auto flex max-w-screen-2xl flex-col items-center gap-10">
+        <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3">
           <InputPair
             label="What is your team name?"
             description="(20 characters max)"

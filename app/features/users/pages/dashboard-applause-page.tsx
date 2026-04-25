@@ -37,7 +37,7 @@ export default function DashboardApplausePage() {
   return (
     <div className="space-y-5">
       <h1 className="text-2xl font-semibold mb-6">Analytics</h1>
-      <Card className="w-1/2">
+      <Card className="w-full xl:w-1/2">
         <CardHeader>
           <CardTitle>Performance</CardTitle>
         </CardHeader>

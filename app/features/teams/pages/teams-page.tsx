@@ -24,7 +24,7 @@ export default function TeamsPage(_props: Route.ComponentProps) {
         title="Teams"
         description="Join a team built around habits, learning, and self-growth."
       />
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: 9 }).map((_, index) => (
           <TeamCard
             key={`team-${index}`}

@@ -20,7 +20,7 @@ export function action(_args: Route.ActionArgs) {
 export const meta: Route.MetaFunction = () => {
   return [
     { title: "Challenges | app_lause" },
-    { name: "description", content: "Browse challenge opportunities" },
+    { name: "description", content: "Browse self-growth challenges" },
   ];
 };
 
@@ -34,7 +34,7 @@ export default function ChallengesPage(_props: Route.ComponentProps) {
     <div className="space-y-20">
       <Hero
         title="Challenges"
-        description="Support organizations and causes making a difference."
+        description="Join challenges designed to build consistency, focus, and momentum."
       />
       <div className="grid grid-cols-1 xl:grid-cols-6 gap-20 items-start">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:col-span-4 gap-5">
@@ -43,13 +43,13 @@ export default function ChallengesPage(_props: Route.ComponentProps) {
               key={`donaId-${index}`}
               id={`donaId-${index}`}
               organizationLogoSrc="https://github.com/unicef.png"
-              organizationName="Unicef"
+              organizationName="app_lause"
               postedAt="11 hours ago"
-              title="Support Children in Crisis"
-              tags={["Regular Challenge", "Singular Challenge"]}
-              amountLabel="$10 / month"
-              locationLabel="Gaza Strip, Palestine"
-              donateButtonLabel="Donate now"
+              title="7-Day Morning Walk Challenge"
+              tags={["Wellness", "Solo"]}
+              amountLabel="7 days"
+              locationLabel="Anywhere"
+              donateButtonLabel="Join now"
             />
           ))}
         </div>

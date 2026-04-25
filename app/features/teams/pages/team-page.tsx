@@ -23,14 +23,14 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export default function TeamPage({ loaderData }: Route.ComponentProps) {
-    return (
+  return (
     <div className="space-y-20">
       <Hero
         title="Join Lynn's team"
         description="Grow with a small group that keeps each other consistent."
       />
-      <div className="grid grid-cols-6 gap-40 items-start">
-        <div className="col-span-4 grid grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 items-start gap-10 xl:grid-cols-6 xl:gap-20">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:col-span-4 xl:grid-cols-4">
           {[
             {
               title: "Team name",
@@ -49,7 +49,7 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
               value: 4,
             },
           ].map((item) => (
-            <Card>
+            <Card key={item.title}>
               <CardHeader>
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {item.title}
@@ -60,7 +60,7 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
               </CardHeader>
             </Card>
           ))}
-          <Card className="col-span-2">
+          <Card className="md:col-span-2">
             <CardHeader>
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Looking for
@@ -79,7 +79,7 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
               </CardContent>
             </CardHeader>
           </Card>
-          <Card className="col-span-2">
+          <Card className="md:col-span-2">
             <CardHeader>
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Team mission
@@ -94,7 +94,7 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
             </CardHeader>
           </Card>
         </div>
-        <aside className="col-span-2 space-y-5 border rounded-lg p-6 shadow-sm">
+        <aside className="space-y-5 rounded-lg border p-6 shadow-sm xl:col-span-2">
           <div className="flex gap-5">
             <Avatar className="size-14">
               <AvatarFallback>N</AvatarFallback>

@@ -26,7 +26,7 @@ export default function SubmitChallengesPage() {
       />
 
       <Form className="mx-auto flex max-w-6xl flex-col items-center gap-10">
-        <div className="grid w-full grid-cols-3 gap-10">
+        <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3">
           <InputPair
             label="Challenge Title"
             description="(40 characters max)"

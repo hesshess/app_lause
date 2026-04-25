@@ -21,9 +21,9 @@ export const loader = () => {
 export default function HomePage() {
   return (
     <div className="space-y-40">
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div>
-          <h2 className="text-5xl font-bold leading-tight  tracking-tight">
+          <h2 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
             Today's Applauses
           </h2>
           <p className="text-xl font-light text-foreground">
@@ -47,9 +47,9 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div>
-          <h2 className="text-5xl font-bold leading-tight  tracking-tight">
+          <h2 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
             Latest Discussions
           </h2>
           <p className="text-xl font-light text-foreground">
@@ -71,9 +71,9 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div>
-          <h2 className="text-5xl font-bold leading-tight  tracking-tight">
+          <h2 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
             IdeasGPT
           </h2>
           <p className="text-xl font-light text-foreground">
@@ -95,9 +95,9 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <div>
-          <h2 className="text-5xl font-bold leading-tight  tracking-tight">
+          <h2 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
             Latest Challenges
           </h2>
           <p className="text-xl font-light text-foreground">
@@ -122,9 +122,9 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <div>
-          <h2 className="text-5xl font-bold leading-tight  tracking-tight">
+          <h2 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
             Find a team
           </h2>
           <p className="text-xl font-light text-foreground">

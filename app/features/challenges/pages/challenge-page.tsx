@@ -15,10 +15,10 @@ export default function ChallengePage() {
     <div>
       <div className="h-60 w-full rounded-lg bg-linear-to-tr from-primary/80 to-primary/10"></div>
 
-      <div className="-mt-30 grid grid-cols-6 items-start gap-20">
-        <div className="col-span-4 space-y-10">
+      <div className="-mt-16 grid grid-cols-1 items-start gap-10 lg:-mt-24 xl:-mt-30 xl:grid-cols-6 xl:gap-20">
+        <div className="space-y-10 xl:col-span-4">
           <div className="space-y-5">
-            <div className="relative left-10 size-40 overflow-hidden rounded-full border-white bg-white">
+            <div className="relative left-4 size-24 overflow-hidden rounded-full border-white bg-white sm:left-6 sm:size-32 lg:left-10 lg:size-40">
               <img
                 src="https://github.com/octocat.png"
                 className="h-full w-full object-cover"
@@ -101,7 +101,7 @@ export default function ChallengePage() {
           </div>
         </div>
 
-        <div className="sticky top-20 col-span-2 mt-40 space-y-5 rounded-lg border p-6">
+        <div className="space-y-5 rounded-lg border p-6 xl:sticky xl:top-20 xl:col-span-2 xl:mt-40">
           <div className="flex flex-col">
             <span className="text-sm text-muted-foreground">Duration</span>
             <span className="text-2xl font-medium">7 days</span>

@@ -27,11 +27,11 @@ export default function CommunityPage() {
         title="Community"
         description="Discover stories, reflections, and small actions that inspire growth"
       />
-      <div className="grid grid-cols-6 items-start gap-40">
-        <div className="col-span-4 space-y-10">
-          <div className="flex justify-between">
+      <div className="grid grid-cols-1 items-start gap-10 xl:grid-cols-6 xl:gap-20">
+        <div className="space-y-10 xl:col-span-4">
+          <div className="flex flex-col gap-6 lg:flex-row lg:justify-between">
             <div className="space-y-5 w-full">
-              <div className="flex items-center gap-5">
+              <div className="flex flex-wrap items-center gap-5">
                 <DropdownMenu>
                   <DropdownMenuTrigger className="flex items-center gap-1">
                     <span className="text-sm capitalize">{sorting}</span>
@@ -79,7 +79,7 @@ export default function CommunityPage() {
                   </DropdownMenu>
                 )}
               </div>
-              <Form className="w-2/3">
+              <Form className="w-full lg:w-2/3">
                 <Input
                   type="text"
                   name="search"
@@ -106,7 +106,7 @@ category="Self Growth"
             ))}
           </div>
         </div>
-        <aside className="col-span-2 space-y-5">
+        <aside className="space-y-5 xl:col-span-2">
           <span className="text-sm font-bold text-muted-foreground uppercase">
             Topics
           </span>

@@ -59,14 +59,14 @@ export default function PostPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="grid grid-cols-6 gap-40 items-start">
-        <div className="col-span-4 space-y-10">
-          <div className="flex w-full items-start gap-10">
+      <div className="grid grid-cols-1 gap-10 items-start xl:grid-cols-6 xl:gap-20">
+        <div className="space-y-10 xl:col-span-4">
+          <div className="flex w-full flex-col items-start gap-6 lg:flex-row lg:gap-10">
             <Button variant="outline" className="flex flex-col h-14">
               <ChevronUpIcon className="size-4 shrink-0" />
               <span>10</span>
             </Button>
-            <div className="space-y-20">
+            <div className="space-y-10 lg:space-y-20">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold">
                   I started walking every morning for 7 days
@@ -78,7 +78,7 @@ export default function PostPage() {
                   <DotIcon className="size-5" />
                   <span>10 replies</span>
                 </div>
-                <p className="text-muted-foreground w-3/4">
+                <p className="text-muted-foreground lg:w-3/4">
                   For the past 7 days, I made myself go outside for a short walk
                   every morning before checking my phone. It felt small at
                   first, but it changed the tone of my whole day. I felt calmer,
@@ -88,7 +88,7 @@ export default function PostPage() {
                   action, and now I want to keep going.
                 </p>
               </div>
-              <Form className="flex items-start gap-5 w-3/4">
+              <Form className="flex w-full items-start gap-5 lg:w-3/4">
                 <Avatar className="size-14">
                   <AvatarFallback>N</AvatarFallback>
                   <AvatarImage src="https://github.com/hesshess.png" />
@@ -118,7 +118,7 @@ export default function PostPage() {
           </div>
         </div>
 
-        <aside className="col-span-2 space-y-5 border rounded-lg p-6 shadow-sm">
+        <aside className="space-y-5 rounded-lg border p-6 shadow-sm xl:col-span-2">
           <div className="flex gap-5">
             <Avatar className="size-14">
               <AvatarFallback>N</AvatarFallback>

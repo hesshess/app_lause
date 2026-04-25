@@ -35,8 +35,8 @@ export default function SettingsPage() {
   };
   return (
     <div className="space-y-20 ">
-      <div className="grid grid-cols-6 gap-40">
-        <div className="col-span-4 flex flex-col gap-10">
+      <div className="grid grid-cols-1 gap-10 xl:grid-cols-6 xl:gap-20">
+        <div className="flex flex-col gap-10 xl:col-span-4">
           <div className="space-y-2">
             <h2 className="text-2xl font-semibold">Edit growth profile</h2>
             <p className="text-muted-foreground">
@@ -44,7 +44,7 @@ export default function SettingsPage() {
               improving.
             </p>
           </div>
-          <Form className="flex flex-col w-1/2 gap-5">
+          <Form className="flex w-full flex-col gap-5 lg:w-2/3 xl:w-1/2">
             <InputPair
               label="Name"
               description="Your public display name"
@@ -91,7 +91,7 @@ export default function SettingsPage() {
             <Button className="w-full">Save growth profile</Button>
           </Form>
         </div>
-        <aside className="col-span-2 p-6 rounded-lg border shadow-md">
+        <aside className="rounded-lg border p-6 shadow-md xl:col-span-2">
           <Label className="flex flex-col gap-1">
             Profile photo
             <small className="text-muted-foreground">
@@ -99,7 +99,7 @@ export default function SettingsPage() {
             </small>
           </Label>
           <div className="space-y-5">
-            <div className="size-40 rounded-full shadow-xl overflow-hidden ">
+            <div className="size-32 overflow-hidden rounded-full shadow-xl sm:size-40">
               {avatar ? (
                 <img
                   src={avatar}
@@ -110,7 +110,7 @@ export default function SettingsPage() {
             </div>
             <Input
               type="file"
-              className="w-1/2"
+              className="w-full sm:w-1/2"
               onChange={onChange}
               required
               name="icon"

@@ -4,7 +4,7 @@ import MessageRoomCard from "../components/message-room-card";
 
 export default function MessagesLayout() {
   return (
-    <SidebarProvider className="flex max-h-[calc(100vh-14rem)] overflow-hidden h-[calc(100vh-14rem)] min-h-full">
+    <SidebarProvider className="flex h-[calc(100vh-12rem)] min-h-full max-h-[calc(100vh-12rem)] overflow-hidden">
       <Sidebar className="pt-16" variant="floating">
         <SidebarContent>
           <SidebarGroup>
@@ -22,7 +22,7 @@ export default function MessagesLayout() {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <div className=" h-full flex-1">
+      <div className="h-full flex-1 min-w-0">
         <Outlet />
       </div>
     </SidebarProvider>

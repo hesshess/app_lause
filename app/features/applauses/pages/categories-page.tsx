@@ -13,7 +13,7 @@ export default function CategoriesPage(_props: Route.ComponentProps) {
     return (
         <div className="space-y-10">
             <Hero title="Categories" description="Browse applauses by category"/>
-            <div className="grid grid-cols-4 gap-10">
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-4">
                 {Array.from({length:10}).map((_, index)=>(
                     <CategoryCard
                     key={`categoryId-${index}`}

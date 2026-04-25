@@ -21,7 +21,7 @@ export default function IdeasPage() {
   return (
     <div className="space-y-20">
       <Hero title="IdeasGPT" description="Find ideas for your next growth goal" />
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         {Array.from({ length: 10 }).map((_, index) => (
           <IdeaCard
             key={`ideaId-${index}`}

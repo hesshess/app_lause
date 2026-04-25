@@ -29,7 +29,7 @@ export default function SubmitPage(_props: Route.ComponentProps) {
         title="Share Your Action"
         description="Share a habit, action, or routine that helped you grow"
       />
-      <Form className="grid grid-cols-2 gap-10 max-w-2xl mx-auto">
+      <Form className="mx-auto grid max-w-2xl grid-cols-1 gap-10 lg:grid-cols-2">
         <div className="space-y-5">
           <InputPair
             label="Name"
@@ -87,7 +87,7 @@ export default function SubmitPage(_props: Route.ComponentProps) {
           />
         </div>
         <div className="flex flex-col space-y-3">
-          <div className="size-40 rounded-4xl shadow-2xl overflow-hidden mb-10">
+          <div className="mb-10 size-32 overflow-hidden rounded-4xl shadow-2xl sm:size-40">
             {icon ? (
               <img src={icon} className="object-cover w-full h-full" />
             ) : null}
@@ -109,7 +109,7 @@ export default function SubmitPage(_props: Route.ComponentProps) {
             <span>Allowed formats: PNG, JPEG</span>
             <span>Max file size: 1MB</span>
           </div>
-          <Button type="submit" className="w-xs" size="lg">
+          <Button type="submit" className="w-full sm:w-auto" size="lg">
             Submit
           </Button>
         </div>

@@ -2,8 +2,17 @@ import { Form, Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import type { Route } from "./+types/team-page";
 import { Hero } from "~/common/components/hero";
-import { Card, CardContent, CardHeader, CardTitle } from "~/common/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "~/common/components/ui/avatar";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "~/common/components/ui/card";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "~/common/components/ui/avatar";
 import { Badge } from "~/common/components/ui/badge";
 import InputPair from "~/common/components/input-pair";
 

@@ -4,6 +4,7 @@ import InputPair from "~/common/components/input-pair";
 import { Button } from "~/common/components/ui/button";
 import type { Route } from "./+types/submit-team-page";
 import SelectPair from "~/common/components/select-pair";
+import { TEAM_STAGES } from "../constans";
 
 
 export const meta: Route.MetaFunction = () => {
@@ -38,12 +39,7 @@ export default function SubmitTeamPage() {
             name="stage"
             required
             placeholder="Select your team stage"
-            options={[
-              { label: "Just starting", value: "starting" },
-              { label: "Looking for first members", value: "first-members" },
-              { label: "Already active", value: "active" },
-              { label: "Growing the circle", value: "expanding" },
-            ]}
+            options={TEAM_STAGES}
           />
           <InputPair
             label="How many people are already on your team?"

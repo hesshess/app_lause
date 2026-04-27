@@ -50,6 +50,13 @@
       "when": 1777246464339,
       "tag": "0006_neat_lockjaw",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1777264262366,
+      "tag": "0007_foamy_jimmy_woo",
+      "breakpoints": true
     }
   ]
 }

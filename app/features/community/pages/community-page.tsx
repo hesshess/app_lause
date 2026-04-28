@@ -12,12 +12,20 @@ import { PERIOD_OPTIONS, SORT_OPTIONS } from "../constants";
 import { Input } from "~/common/components/ui/input";
 import { PostCard } from "../components/post-card";
 import type { Route } from "./+types/community-page";
+import { getPosts, getTopics } from "~/features/users/queries";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | app_lause" }];
 };
 
-export default function CommunityPage() {
+export const loader = async () => {
+  const topics = await getTopics();
+  const posts = await getPosts();
+  return { topics, posts };
+};
+
+
+export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const sorting = searchParams.get("sorting") || "newest";
   const period = searchParams.get("period") || "all";
@@ -92,15 +100,16 @@ export default function CommunityPage() {
             </Button>
           </div>
           <div className="space-y-5">
-            {Array.from({ length: 11 }).map((_, index) => (
+            {loaderData.posts.map((post) => (
               <PostCard
-                key={`postId-${index}`}
-                id={`postId-${index}`}
-                title="I started walking every morning for 7 days"
-category="Self Growth"
-                author="Nico"
-                avatarSrc="https://github.com/apple.png"
-                postedAt="12 hours ago"
+                key={post.post_id}
+                id={post.post_id}
+                title={post.title}
+                author={post.author}
+                avatarSrc={post.author_avatar}
+                category={post.topic}
+                postedAt={post.created_at}
+                votesCount={post.upvotes}
                 expanded
               />
             ))}

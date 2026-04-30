@@ -3,7 +3,7 @@ import type { Route } from "./+types/daily-leaderboard-page";
 import { data, isRouteErrorResponse, Link } from "react-router";
 import z from "zod";
 import { Hero } from "~/common/components/hero";
-import { ApplauseCard } from "~/features/components/applause-card";
+import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import { Button } from "~/common/components/ui/button";
 import ApplausePagination from "~/common/components/applause-pagination";
 

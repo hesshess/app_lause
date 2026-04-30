@@ -1,11 +1,14 @@
 import { Link, type MetaFunction } from "react-router";
 
-import { ApplauseCard } from "~/features/components/applause-card";
+import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import { PostCard } from "~/features/community/components/post-card";
 import { DonaCard } from "~/features/challenges/components/challenge-card";
 import { TeamCard } from "~/features/teams/components/team-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { Button } from "../components/ui/button";
+import { getApplausesByDateRange } from "~/features/applauses/queries";
+import { DateTime } from "luxon";
+import type { Route } from "./+types/home-page";
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,11 +17,16 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = () => {
-  return {};
+export const loader = async () => {
+  const applauses = await getApplausesByDateRange({
+    startDate: DateTime.now().startOf("day"),
+    endDate: DateTime.now().endOf("day"),
+    limit: 7,
+  });
+  return { applauses };
 };
 
-export default function HomePage() {
+export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-40">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -35,15 +43,15 @@ export default function HomePage() {
             </Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.applauses.map((applause, index)=>(
           <ApplauseCard
-            key={`applause-${index}`}
-            id={`applause-${index}`}
-            title="asdf"
-            description="asdf"
-            commentsCount={12}
-            viewsCount={12}
-            applauseCount={120}
+            key={applause.applause_id}
+            id={applause.applause_id.toString()}
+            name={applause.name}
+            description={applause.description}
+            reviewsCount={applause.reviews}
+            viewsCount={applause.views}
+            votesCount={applause.upvotes}
           />
         ))}
       </div>
@@ -62,7 +70,7 @@ export default function HomePage() {
         {Array.from({ length: 10 }).map((_, index) => (
           <PostCard
             key={`communityId-${index}`}
-            id={`communityId-${index}`}
+            id={index}
             title="What changed after I tracked one habit for 7 days"
             author="Hess"
             avatarSrc="https://github.com/apple.png"

@@ -1,7 +1,7 @@
 import z from "zod";
 import type { Route } from "./+types/search-page";
 import { Hero } from "~/common/components/hero";
-import { ApplauseCard } from "~/features/components/applause-card";
+import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import ApplausePagination from "~/common/components/applause-pagination";
 import { Input } from "~/common/components/ui/input";
 import { Form } from "react-router";

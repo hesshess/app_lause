@@ -68,7 +68,6 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const applauses = await getApplausesByDateRange({
     startDate: date.startOf("day"),
     endDate: date.endOf("day"),
-    limit: PAGE_SIZE,
     page: Number(url.searchParams.get("page") || 1),
   });
   const totalPages = await getApplausePagesByDateRange({
@@ -129,7 +128,7 @@ export default function DailyLeaderboardPage({
           />
         ))}
       </div>
-      <ApplausePagination totalPages={10} />
+      <ApplausePagination totalPages={loaderData.totalPages} />
     </div>
   );
 }

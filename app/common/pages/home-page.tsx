@@ -9,6 +9,7 @@ import { Button } from "../components/ui/button";
 import { getApplausesByDateRange } from "~/features/applauses/queries";
 import { DateTime } from "luxon";
 import type { Route } from "./+types/home-page";
+import { getPosts } from "~/features/community/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -21,9 +22,13 @@ export const loader = async () => {
   const applauses = await getApplausesByDateRange({
     startDate: DateTime.now().startOf("day"),
     endDate: DateTime.now().endOf("day"),
-    limit: 7,
+    // limit: 7,
   });
-  return { applauses };
+  const posts = await getPosts({
+    limit: 7,
+    sorting: "newest",
+  });
+  return { applauses, posts };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -43,7 +48,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             </Link>
           </Button>
         </div>
-        {loaderData.applauses.map((applause, index)=>(
+        {loaderData.applauses.map((applause, index) => (
           <ApplauseCard
             key={applause.applause_id}
             id={applause.applause_id.toString()}
@@ -67,15 +72,16 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/community">Explore all allpauses &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 10 }).map((_, index) => (
+        {loaderData.posts.map((post) => (
           <PostCard
-            key={`communityId-${index}`}
-            id={index}
-            title="What changed after I tracked one habit for 7 days"
-            author="Hess"
-            avatarSrc="https://github.com/apple.png"
-            category="Reflection"
-            postedAt="12 hours ago"
+            key={post.post_id}
+            id={post.post_id}
+            title={post.title}
+            author={post.author}
+            avatarSrc={post.author_avatar}
+            category={post.topic}
+            postedAt={post.created_at}
+            votesCount={post.upvotes}
           />
         ))}
       </div>

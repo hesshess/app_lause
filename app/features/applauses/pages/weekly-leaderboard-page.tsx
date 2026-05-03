@@ -71,7 +71,6 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const applauses = await getApplausesByDateRange({
     startDate: date.startOf("week"),
     endDate: date.endOf("week"),
-    limit: PAGE_SIZE,
     page: Number(url.searchParams.get("page") || 1),
   });
   const totalPages = await getApplausePagesByDateRange({

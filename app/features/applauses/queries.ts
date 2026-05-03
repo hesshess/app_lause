@@ -5,12 +5,10 @@ import { PAGE_SIZE } from "./constant";
 export const getApplausesByDateRange = async ({
   startDate,
   endDate,
-  limit,
   page = 1,
 }: {
   startDate: DateTime;
   endDate: DateTime;
-  limit: number;
   page?: number;
 }) => {
   const { data, error } = await client

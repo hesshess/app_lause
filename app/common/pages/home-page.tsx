@@ -10,6 +10,7 @@ import { getApplausesByDateRange } from "~/features/applauses/queries";
 import { DateTime } from "luxon";
 import type { Route } from "./+types/home-page";
 import { getPosts } from "~/features/community/queries";
+import { getGptIdeas } from "~/features/ideas/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -28,7 +29,8 @@ export const loader = async () => {
     limit: 7,
     sorting: "newest",
   });
-  return { applauses, posts };
+  const ideas = await getGptIdeas({ limit: 7 });
+  return { applauses, posts, ideas };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -97,15 +99,15 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/ideas">Explore all ideas &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 10 }).map((_, index) => (
+        {loaderData.ideas.map((idea) => (
           <IdeaCard
-            key={`ideaId-${index}`}
-            id={`ideaId-${index}`}
-            title="Create a 14-day evening reset routine with journaling, light stretching, and a simple next-day plan to help you end the day with more clarity and start the next one with less friction."
-            viewsCount={123}
-            postedAt="12 hours ago"
-            likesCount={12}
-            claimed={index % 2 === 0}
+            key={idea.idea_id}
+            id={idea.idea_id}
+            title={idea.title}
+            viewsCount={idea.views_count}
+            postedAt={idea.created_at}
+            likesCount={idea.likes}
+            claimed={idea.is_claimed}
           />
         ))}
       </div>

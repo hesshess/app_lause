@@ -2,36 +2,43 @@ import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/idea-page";
 import { DotIcon, EyeIcon, HeartIcon } from "lucide-react";
 import { Button } from "~/common/components/ui/button";
+import { getGptIdea } from "../queries";
+import { DateTime } from "luxon";
 
-export const meta: Route.MetaFunction = ({ params }) => {
+export const meta = ({
+  loaderData: {
+    idea: { idea_id, title },
+  },
+}: Route.MetaArgs) => {
   return [
-    { title: `IdeasGPT | app_lause` },
-    { name: "description", content: "Find ideas for your next growth goal" },
+    { title: `Idea #${idea_id}: ${title} | applause` },
+    { name: "description", content: "Find ideas for your next applause" },
   ];
 };
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const idea = await getGptIdea(Number(params.ideaId));
+  return { idea };
+};  
 
-export default function IdeaPage({ params: { ideaId } }: Route.ComponentProps) {
+export default function IdeaPage({ loaderData }: Route.ComponentProps) {
   return (
     <div>
-      <Hero title={`Idea : ${ideaId}`} />
+        <Hero title={`Idea #${loaderData.idea.idea_id}`} />
       <div className="max-w-2xl mx-auto flex flex-col items-center gap-10">
-        <p className="italic text-center">
-          Start a 14-day focus sprint where you choose one habit that matters,
-          track it daily, write a short reflection at night, and review your
-          progress at the end of each week to see what actually helps you stay
-          consistent.
-        </p>
+        <p className="italic text-center">"{loaderData.idea.title}"</p>
         <div className="flex items-center text-sm">
           <div className="flex items-center gap-1">
             <EyeIcon />
-            <span>123</span>
+            <span>{loaderData.idea.views_count}</span>
           </div>
           <DotIcon className="w-4 h-4" />
-          <span>12 hours ago</span>
+           <span>
+            {DateTime.fromISO(loaderData.idea.created_at).toRelative()}
+          </span>
           <DotIcon className="w-4 h-4" />
           <Button variant="outline">
             <HeartIcon className="w-4 h-4" />
-            <span>45</span>
+            <span>{loaderData.idea.likes}</span>
           </Button>
         </div>
         <Button size="lg">Try this idea &rarr;</Button>

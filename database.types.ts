@@ -264,6 +264,13 @@ export type Database = {
             referencedColumns: ["idea_id"]
           },
           {
+            foreignKeyName: "idea_likes_idea_id_ideas_idea_id_fk"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas_view"
+            referencedColumns: ["idea_id"]
+          },
+          {
             foreignKeyName: "idea_likes_profile_id_profiles_profile_id_fk"
             columns: ["profile_id"]
             isOneToOne: false
@@ -763,6 +770,17 @@ export type Database = {
           topic: string | null
           topic_slug: string | null
           upvotes: number | null
+        }
+        Relationships: []
+      }
+      ideas_view: {
+        Row: {
+          created_at: string | null
+          idea_id: number | null
+          is_claimed: boolean | null
+          likes: number | null
+          title: string | null
+          views_count: number | null
         }
         Relationships: []
       }

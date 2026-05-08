@@ -2,7 +2,7 @@ import { Link, type MetaFunction } from "react-router";
 
 import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import { PostCard } from "~/features/community/components/post-card";
-import { DonaCard } from "~/features/challenges/components/challenge-card";
+import { ChallengeCard } from "~/features/challenges/components/challenge-card";
 import { TeamCard } from "~/features/teams/components/team-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { Button } from "../components/ui/button";
@@ -11,6 +11,7 @@ import { DateTime } from "luxon";
 import type { Route } from "./+types/home-page";
 import { getPosts } from "~/features/community/queries";
 import { getGptIdeas } from "~/features/ideas/queries";
+import { getChallenges } from "~/features/challenges/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,7 +31,9 @@ export const loader = async () => {
     sorting: "newest",
   });
   const ideas = await getGptIdeas({ limit: 7 });
-  return { applauses, posts, ideas };
+  const challenges = await getChallenges({ limit: 7 });
+
+  return { applauses, posts, ideas, challenges };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -123,18 +126,19 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/challenges">Explore all challenges &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
-          <DonaCard
-            key={`donaId-${index}`}
-            id={`donaId-${index}`}
-            organizationLogoSrc="https://github.com/unicef.png"
-            organizationName="app_lause"
-            postedAt="11 hours ago"
-            title="7-Day Morning Walk Reset"
-            tags={["Wellness", "Solo"]}
-            amountLabel="7 days"
-            locationLabel="Anywhere"
-            donateButtonLabel="Join now"
+        {loaderData.challenges.map((challenge) => (
+          <ChallengeCard
+            key={challenge.challenge_id}
+            id={challenge.challenge_id}
+            thumbnailSrc={challenge.thumbnail_url}
+            hostName={challenge.host_name}
+            postedAt={challenge.created_at}
+            title={challenge.title}
+            challengeTypeLabel={challenge.challenge_type}
+            participationLabel={challenge.participation_type}
+            tags={challenge.tags.split(",").map((tag) => tag.trim())}
+            durationLabel={challenge.duration}
+            locationLabel={challenge.location}
           />
         ))}
       </div>

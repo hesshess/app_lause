@@ -11,9 +11,6 @@ import { data, useSearchParams } from "react-router";
 import { getChallenges } from "../queries";
 import z from "zod";
 
-const challengeTypeValues = ["mindset", "wellness", "focus"] as const;
-const challengeParticipationTypeValues = ["solo", "pair", "group"] as const;
-
 export const meta: Route.MetaFunction = () => {
   return [
     { title: "Challenges | app_lause" },
@@ -22,8 +19,12 @@ export const meta: Route.MetaFunction = () => {
 };
 
 const searchParamsSchema = z.object({
-  type: z.enum(challengeTypeValues).optional(),
-  participationType: z.enum(challengeParticipationTypeValues).optional(),
+  type: z
+    .enum(CHALLENGE_TYPES.map((type) => type.value))
+    .optional(),
+  participationType: z
+    .enum(CHALLENGE_PARTICIPATION_TYPES.map((type) => type.value))
+    .optional(),
   duration: z.enum(CHALLENGE_DURATION_RANGES).optional(),
 });
 
@@ -57,9 +58,17 @@ export default function ChallengesPage({
   loaderData,
 }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const onFilterClick = (key: string, value: string) => {
-    searchParams.set(key, value);
-    setSearchParams(searchParams, { preventScrollReset: true });
+  const onFilterClick = (type: string, value: string) => {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    const currentValue = nextSearchParams.get(type);
+
+    if (currentValue === value) {
+      nextSearchParams.delete(type);
+    } else {
+      nextSearchParams.set(type, value);
+    }
+
+    setSearchParams(nextSearchParams, { preventScrollReset: true });
   };
   return (
     <div className="space-y-20">

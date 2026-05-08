@@ -66,9 +66,6 @@ export function ChallengeCard({
             <Badge variant="outline" className="capitalize">
               {displayParticipation}
             </Badge>
-            <Badge variant="outline" className="capitalize">
-              {durationLabel}
-            </Badge>
           </div>
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
@@ -76,9 +73,6 @@ export function ChallengeCard({
                 {tag}
               </Badge>
             ))}
-            <Badge variant="outline" className="capitalize">
-              {locationLabel}
-            </Badge>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">

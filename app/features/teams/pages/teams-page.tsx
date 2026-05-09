@@ -29,8 +29,8 @@ export default function TeamsPage({ loaderData }: Route.ComponentProps) {
             id={team.team_id}
             leaderUsername={team.leader_profile_id.username}
             leaderAvatarSrc={team.leader_profile_id.avatar}
-            positions={team.roles.split(",")}
-            projectDescription={team.description}
+            categories={team.roles.split(",")}
+            outro={team.description}
           />
         ))}
       </div>

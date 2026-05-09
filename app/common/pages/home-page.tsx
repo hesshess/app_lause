@@ -163,7 +163,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             leaderUsername={team.leader_profile_id.username}
             leaderAvatarSrc={team.leader_profile_id.avatar}
             categories={team.roles.split(",")}
-            description={team.description}
+            outro={team.description}
           />
         ))}
       </div>

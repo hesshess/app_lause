@@ -1,21 +1,15 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/challenges-page";
-import { DonaCard } from "../components/challenge-card";
+import { ChallengeCard } from "../components/challenge-card";
 import { Button } from "~/common/components/ui/button";
 import {
   CHALLENGE_DURATION_RANGES,
   CHALLENGE_PARTICIPATION_TYPES,
   CHALLENGE_TYPES,
 } from "../constants";
-import { Link, useSearchParams } from "react-router";
-
-export function loader(_args: Route.LoaderArgs) {
-  return {};
-}
-
-export function action(_args: Route.ActionArgs) {
-  return {};
-}
+import { data, useSearchParams } from "react-router";
+import { getChallenges } from "../queries";
+import z from "zod";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -24,11 +18,57 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export default function ChallengesPage(_props: Route.ComponentProps) {
+const searchParamsSchema = z.object({
+  type: z
+    .enum(CHALLENGE_TYPES.map((type) => type.value))
+    .optional(),
+  participationType: z
+    .enum(CHALLENGE_PARTICIPATION_TYPES.map((type) => type.value))
+    .optional(),
+  duration: z.enum(CHALLENGE_DURATION_RANGES).optional(),
+});
+
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const { success, data: parsedData } = searchParamsSchema.safeParse(
+    Object.fromEntries(url.searchParams)
+  );
+  if(!success) {
+    throw data(
+      {
+        error_code:"invalid_search_params",
+        message: "Invalid search params"
+      },
+      { status:400}
+    );
+  }
+  const challenges = await getChallenges({
+    limit:40,
+    participationType: parsedData.participationType,
+    type: parsedData.type,
+    duration: parsedData.duration 
+});
+  return { challenges };
+}
+
+
+
+export default function ChallengesPage({
+  loaderData,
+}: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const onFilterClick = (key: string, value: string) => {
-    searchParams.set(key, value);
-    setSearchParams(searchParams, { preventScrollReset: true });
+  const onFilterClick = (type: string, value: string) => {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    const currentValue = nextSearchParams.get(type);
+
+    if (currentValue === value) {
+      nextSearchParams.delete(type);
+    } else {
+      nextSearchParams.set(type, value);
+    }
+
+    setSearchParams(nextSearchParams, { preventScrollReset: true });
   };
   return (
     <div className="space-y-20">
@@ -38,18 +78,19 @@ export default function ChallengesPage(_props: Route.ComponentProps) {
       />
       <div className="grid grid-cols-1 xl:grid-cols-6 gap-20 items-start">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:col-span-4 gap-5">
-          {Array.from({ length: 20 }).map((_, index) => (
-            <DonaCard
-              key={`donaId-${index}`}
-              id={`donaId-${index}`}
-              organizationLogoSrc="https://github.com/unicef.png"
-              organizationName="app_lause"
-              postedAt="11 hours ago"
-              title="7-Day Morning Walk Challenge"
-              tags={["Wellness", "Solo"]}
-              amountLabel="7 days"
-              locationLabel="Anywhere"
-              donateButtonLabel="Join now"
+          {loaderData.challenges.map((challenge) => (
+            <ChallengeCard
+              key={challenge.challenge_id}
+              id={challenge.challenge_id}
+              thumbnailSrc={challenge.thumbnail_url}
+              hostName={challenge.host_name}
+              postedAt={challenge.created_at}
+              title={challenge.title}
+              challengeTypeLabel={challenge.challenge_type}
+              participationLabel={challenge.participation_type}
+              tags={challenge.tags.split(",").map((tag) => tag.trim())}
+              durationLabel={challenge.duration}
+              locationLabel={challenge.location}
             />
           ))}
         </div>
@@ -60,6 +101,7 @@ export default function ChallengesPage(_props: Route.ComponentProps) {
             <div className="flex flex-wrap gap-2">
               {CHALLENGE_TYPES.map((type) => (
                 <Button
+                  key={type.value}
                   variant="outline"
                   onClick={() => onFilterClick("type", type.value)}
                   className={
@@ -73,33 +115,39 @@ export default function ChallengesPage(_props: Route.ComponentProps) {
           </div>
           <div className="flex flex-col items-start gap-2.5">
             <h4 className="text-sm text-muted-foreground font-bold">
-              Location
+              Participation
             </h4>
             <div className="flex flex-wrap gap-2">
-              {CHALLENGE_PARTICIPATION_TYPES.map((region) => (
+              {CHALLENGE_PARTICIPATION_TYPES.map((type) => (
                 <Button
+                  key={type.value}
                   variant="outline"
-                  onClick={() => onFilterClick("region", region.value)}
+                  onClick={() =>
+                    onFilterClick("participationType", type.value)
+                  }
                   className={
-                    region.value === searchParams.get("region")
+                    type.value === searchParams.get("participationType")
                       ? "bg-accent"
                       : ""
                   }
                 >
-                  {region.label}
+                  {type.label}
                 </Button>
               ))}
             </div>
           </div>
           <div className="flex flex-col items-start gap-2.5">
-            <h4 className="text-sm text-muted-foreground font-bold">Type</h4>
+            <h4 className="text-sm text-muted-foreground font-bold">
+              Duration
+            </h4>
             <div className="flex flex-wrap gap-2">
               {CHALLENGE_DURATION_RANGES.map((range) => (
                 <Button
+                  key={range}
                   variant="outline"
-                  onClick={() => onFilterClick("range", range)}
+                  onClick={() => onFilterClick("duration", range)}
                   className={
-                    range === searchParams.get("range") ? "bg-accent" : ""
+                    range === searchParams.get("duration") ? "bg-accent" : ""
                   }
                 >
                   {range}

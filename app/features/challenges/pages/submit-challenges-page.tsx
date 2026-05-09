@@ -102,7 +102,7 @@ export default function SubmitChallengesPage() {
             id="hostName"
             label="Host Name"
             description="(40 characters max)"
-            name="hostName"
+            name="host_name"
             maxLength={40}
             type="text"
             required
@@ -113,7 +113,7 @@ export default function SubmitChallengesPage() {
             id="thumbnailUrl"
             label="Thumbnail URL"
             description="Paste an image URL for the challenge cover"
-            name="thumbnailUrl"
+            name="thumbnail_url"
             type="url"
             required
             placeholder="i.e https://example.com/challenge-cover.png"
@@ -133,7 +133,7 @@ export default function SubmitChallengesPage() {
           <SelectPair
             label="Challenge Type"
             description="Select the type of challenge"
-            name="challengeType"
+            name="challenge_type"
             required
             placeholder="Select the type of challenge"
             options={CHALLENGE_TYPES.map((type) => ({
@@ -145,7 +145,7 @@ export default function SubmitChallengesPage() {
           <SelectPair
             label="Participation Type"
             description="Choose how people will join this challenge"
-            name="participationType"
+            name="participation_type"
             required
             placeholder="Select participation type"
             options={CHALLENGE_PARTICIPATION_TYPES.map((type) => ({

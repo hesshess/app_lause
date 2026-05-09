@@ -1,14 +1,7 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/teams-page";
 import { TeamCard } from "../components/team-card";
-
-export function loader(_args: Route.LoaderArgs) {
-  return {};
-}
-
-export function action(_args: Route.ActionArgs) {
-  return {};
-}
+import { getTeams } from "../queries";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -17,7 +10,12 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export default function TeamsPage(_props: Route.ComponentProps) {
+export const loader = async () => {
+  const teams = await getTeams({ limit: 8 });
+  return { teams };
+};
+
+export default function TeamsPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-20">
       <Hero
@@ -25,15 +23,14 @@ export default function TeamsPage(_props: Route.ComponentProps) {
         description="Join a team built around habits, learning, and self-growth."
       />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {Array.from({ length: 9 }).map((_, index) => (
+        {loaderData.teams.map((team) => (
           <TeamCard
-            key={`team-${index}`}
-            id={`team-${index}`}
-            leaderUsername="hess"
-            leaderAvatarSrc="https://github.com/hesshess.png"
-            categories={["Seoul", "Habits", "Accountability"]}
-            outro="more consistency and focus into their daily life."
-            buttonLabel="See team"
+           key={team.team_id}
+            id={team.team_id}
+            leaderUsername={team.leader_profile_id.username}
+            leaderAvatarSrc={team.leader_profile_id.avatar}
+            categories={team.roles.split(",")}
+            outro={team.description}
           />
         ))}
       </div>

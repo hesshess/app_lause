@@ -1,11 +1,18 @@
 import { Link, type MetaFunction } from "react-router";
 
-import { ApplauseCard } from "~/features/components/applause-card";
+import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import { PostCard } from "~/features/community/components/post-card";
-import { DonaCard } from "~/features/challenges/components/challenge-card";
+import { ChallengeCard } from "~/features/challenges/components/challenge-card";
 import { TeamCard } from "~/features/teams/components/team-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { Button } from "../components/ui/button";
+import { getApplausesByDateRange } from "~/features/applauses/queries";
+import { DateTime } from "luxon";
+import type { Route } from "./+types/home-page";
+import { getPosts } from "~/features/community/queries";
+import { getGptIdeas } from "~/features/ideas/queries";
+import { getChallenges } from "~/features/challenges/queries";
+import { getTeams } from "~/features/teams/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,11 +21,24 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = () => {
-  return {};
+export const loader = async () => {
+  const applauses = await getApplausesByDateRange({
+    startDate: DateTime.now().startOf("day"),
+    endDate: DateTime.now().endOf("day"),
+    // limit: 7,
+  });
+  const posts = await getPosts({
+    limit: 7,
+    sorting: "newest",
+  });
+  const ideas = await getGptIdeas({ limit: 7 });
+  const challenges = await getChallenges({ limit: 7 });
+  const teams = await getTeams({ limit: 7 });
+
+  return { applauses, posts, ideas, challenges, teams };
 };
 
-export default function HomePage() {
+export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-40">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -35,15 +55,15 @@ export default function HomePage() {
             </Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.applauses.map((applause, index) => (
           <ApplauseCard
-            key={`applause-${index}`}
-            id={`applause-${index}`}
-            title="asdf"
-            description="asdf"
-            commentsCount={12}
-            viewsCount={12}
-            applauseCount={120}
+            key={applause.applause_id}
+            id={applause.applause_id.toString()}
+            name={applause.name}
+            description={applause.description}
+            reviewsCount={applause.reviews}
+            viewsCount={applause.views}
+            votesCount={applause.upvotes}
           />
         ))}
       </div>
@@ -59,15 +79,16 @@ export default function HomePage() {
             <Link to="/community">Explore all allpauses &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 10 }).map((_, index) => (
+        {loaderData.posts.map((post) => (
           <PostCard
-            key={`communityId-${index}`}
-            id={`communityId-${index}`}
-            title="What changed after I tracked one habit for 7 days"
-            author="Hess"
-            avatarSrc="https://github.com/apple.png"
-            category="Reflection"
-            postedAt="12 hours ago"
+            key={post.post_id}
+            id={post.post_id}
+            title={post.title}
+            author={post.author}
+            avatarSrc={post.author_avatar}
+            category={post.topic}
+            postedAt={post.created_at}
+            votesCount={post.upvotes}
           />
         ))}
       </div>
@@ -83,15 +104,15 @@ export default function HomePage() {
             <Link to="/ideas">Explore all ideas &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 10 }).map((_, index) => (
+        {loaderData.ideas.map((idea) => (
           <IdeaCard
-            key={`ideaId-${index}`}
-            id={`ideaId-${index}`}
-            title="Create a 14-day evening reset routine with journaling, light stretching, and a simple next-day plan to help you end the day with more clarity and start the next one with less friction."
-            viewsCount={123}
-            postedAt="12 hours ago"
-            likesCount={12}
-            claimed={index % 2 === 0}
+            key={idea.idea_id}
+            id={idea.idea_id}
+            title={idea.title}
+            viewsCount={idea.views_count}
+            postedAt={idea.created_at}
+            likesCount={idea.likes}
+            claimed={idea.is_claimed}
           />
         ))}
       </div>
@@ -107,18 +128,19 @@ export default function HomePage() {
             <Link to="/challenges">Explore all challenges &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
-          <DonaCard
-            key={`donaId-${index}`}
-            id={`donaId-${index}`}
-            organizationLogoSrc="https://github.com/unicef.png"
-            organizationName="app_lause"
-            postedAt="11 hours ago"
-            title="7-Day Morning Walk Reset"
-            tags={["Wellness", "Solo"]}
-            amountLabel="7 days"
-            locationLabel="Anywhere"
-            donateButtonLabel="Join now"
+        {loaderData.challenges.map((challenge) => (
+          <ChallengeCard
+            key={challenge.challenge_id}
+            id={challenge.challenge_id}
+            thumbnailSrc={challenge.thumbnail_url}
+            hostName={challenge.host_name}
+            postedAt={challenge.created_at}
+            title={challenge.title}
+            challengeTypeLabel={challenge.challenge_type}
+            participationLabel={challenge.participation_type}
+            tags={challenge.tags.split(",").map((tag) => tag.trim())}
+            durationLabel={challenge.duration}
+            locationLabel={challenge.location}
           />
         ))}
       </div>
@@ -134,15 +156,14 @@ export default function HomePage() {
             <Link to="/teams">Explore all teams &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {loaderData.teams.map((team)=>(
           <TeamCard
-            key={`teamId-${index}`}
-            id={`teamId-${index}`}
-            leaderUsername="bess"
-            leaderAvatarSrc="https://github.com/hesshess.png"
-            categories={["Seoul", "Habits", "Reflection"]}
-            outro="more consistency and focus into their daily life."
-            buttonLabel="Join team"
+            key={team.team_id}
+            id={team.team_id}
+            leaderUsername={team.leader_profile_id.username}
+            leaderAvatarSrc={team.leader_profile_id.avatar}
+            categories={team.roles.split(",")}
+            outro={team.description}
           />
         ))}
       </div>

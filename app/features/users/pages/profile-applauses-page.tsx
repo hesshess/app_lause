@@ -1,4 +1,4 @@
-import { ApplauseCard } from "~/features/components/applause-card";
+import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import type { Route } from "./+types/profile-applauses-page";
 
 export function loader({ params }: Route.LoaderArgs) {

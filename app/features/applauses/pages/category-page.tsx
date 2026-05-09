@@ -3,7 +3,7 @@ import type { Route } from "./+types/category-page";
 import { Form } from "react-router";
 import { Input } from "~/common/components/ui/input";
 import { Button } from "~/common/components/ui/button";
-import { ApplauseCard } from "~/features/components/applause-card";
+import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import ApplausePagination from "~/common/components/applause-pagination";
 
 

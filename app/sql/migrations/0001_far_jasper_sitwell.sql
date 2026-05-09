@@ -1,0 +1,1 @@
+ALTER TABLE "applauses" ALTER COLUMN "stats" SET DEFAULT '{"views":0,"praises":0,"upvotes":0}'::jsonb;

@@ -2,7 +2,7 @@ import { Button } from "~/common/components/ui/button";
 import type { Route } from "./+types/applause-praises-page";
 import { PraiseCard } from "../components/praise-card";
 import { Dialog, DialogTrigger } from "~/common/components/ui/dialog";
-import CreatePraiseDialog from "~/features/components/create-praise-dialog";
+import CreatePraiseDialog from "~/features/applauses/components/create-praise-dialog";
 
 export const meta: Route.MetaFunction = ({ params }) => {
   return [

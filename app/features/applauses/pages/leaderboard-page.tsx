@@ -1,23 +1,45 @@
-import { ApplauseCard } from "~/features/components/applause-card";
+import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import type { Route } from "./+types/leaderboard-page";
 import { Hero } from "~/common/components/hero";
 import { Button } from "~/common/components/ui/button";
 import { Link } from "react-router";
-
-export function loader(_args: Route.LoaderArgs) {
-    return {};
-}
-
-
+import { getApplausesByDateRange } from "../queries";
+import { DateTime } from "luxon";
 
 export const meta: Route.MetaFunction = () => {
-    return [
-        { title: "Leaderboard | app_lause" },
-        { name: "description", content: "Top applauses leaderBoard" },
-    ];
+  return [
+    { title: "Leaderboard | app_lause" },
+    { name: "description", content: "Top applauses leaderBoard" },
+  ];
+};
+export const loader = async () => {
+  const [dailyApplauses, weeklyApplauses, monthlyApplauses, yearlyApplauses] =
+    await Promise.all([
+      getApplausesByDateRange({
+        startDate: DateTime.now().startOf("day"),
+        endDate: DateTime.now().endOf("day"),
+        limit: 7,
+      }),
+      getApplausesByDateRange({
+        startDate: DateTime.now().startOf("week"),
+        endDate: DateTime.now().endOf("week"),
+        limit: 7,
+      }),
+      getApplausesByDateRange({
+        startDate: DateTime.now().startOf("month"),
+        endDate: DateTime.now().endOf("month"),
+        limit: 7,
+      }),
+      getApplausesByDateRange({
+        startDate: DateTime.now().startOf("year"),
+        endDate: DateTime.now().endOf("year"),
+        limit: 7,
+      }),
+    ]);
+  return { dailyApplauses, weeklyApplauses, monthlyApplauses, yearlyApplauses };
 };
 
-export default function LeaderBoardPage() {
+export default function LeaderboardPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-20">
       <Hero
@@ -33,15 +55,15 @@ export default function LeaderBoardPage() {
             The most recognized growth actions by day.
           </p>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {loaderData.dailyApplauses.map((applause) => (
           <ApplauseCard
-            key={`applause-${index}`}
-            id={`applause-${index}`}
-            title="asdf"
-            description="asdf"
-            commentsCount={12}
-            viewsCount={12}
-            applauseCount={120}
+            key={applause.applause_id.toString()}
+            id={applause.applause_id.toString()}
+            name={applause.name}
+            description={applause.description}
+            reviewsCount={applause.reviews}
+            viewsCount={applause.views}
+            votesCount={applause.upvotes}
           />
         ))}
         <Button variant="link" asChild className="self-center p-0 text-lg">
@@ -59,15 +81,15 @@ export default function LeaderBoardPage() {
             The most recognized growth actions by week.
           </p>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {loaderData.weeklyApplauses.map((applause) => (
           <ApplauseCard
-            key={`applause-${index}`}
-            id={`applause-${index}`}
-            title="asdf"
-            description="asdf"
-            commentsCount={12}
-            viewsCount={12}
-            applauseCount={120}
+            key={applause.applause_id.toString()}
+            id={applause.applause_id.toString()}
+            name={applause.name}
+            description={applause.description}
+            reviewsCount={applause.reviews}
+            viewsCount={applause.views}
+            votesCount={applause.upvotes}
           />
         ))}
         <Button variant="link" asChild className="self-center p-0 text-lg">
@@ -85,15 +107,15 @@ export default function LeaderBoardPage() {
             The most recognized growth actions by month.
           </p>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {loaderData.monthlyApplauses.map((applause) => (
           <ApplauseCard
-            key={`applause-${index}`}
-            id={`applause-${index}`}
-            title="asdf"
-            description="asdf"
-            commentsCount={12}
-            viewsCount={12}
-            applauseCount={120}
+            key={applause.applause_id.toString()}
+            id={applause.applause_id.toString()}
+            name={applause.name}
+            description={applause.description}
+            reviewsCount={applause.reviews}
+            viewsCount={applause.views}
+            votesCount={applause.upvotes}
           />
         ))}
         <Button variant="link" asChild className="self-center p-0 text-lg">
@@ -111,15 +133,15 @@ export default function LeaderBoardPage() {
             The most recognized growth actions by year.
           </p>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {loaderData.yearlyApplauses.map((applause) => (
           <ApplauseCard
-            key={`applause-${index}`}
-            id={`applause-${index}`}
-            title="asdf"
-            description="asdf"
-            commentsCount={12}
-            viewsCount={12}
-            applauseCount={120}
+            key={applause.applause_id.toString()}
+            id={applause.applause_id.toString()}
+            name={applause.name}
+            description={applause.description}
+            reviewsCount={applause.reviews}
+            viewsCount={applause.views}
+            votesCount={applause.upvotes}
           />
         ))}
         <Button variant="link" asChild className="self-center p-0 text-lg">

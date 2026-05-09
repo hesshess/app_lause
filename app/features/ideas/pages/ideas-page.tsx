@@ -1,14 +1,7 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/ideas-page";
 import { IdeaCard } from "../components/idea-card";
-
-export function loader(_args: Route.LoaderArgs) {
-  return {};
-}
-
-export function action(_args: Route.ActionArgs) {
-  return {};
-}
+import { getGptIdeas } from "../queries";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -17,24 +10,31 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export default function IdeasPage() {
+export const loader = async () => {
+  const ideas = await getGptIdeas({ limit: 20 });
+  return { ideas };
+};
+
+export default function IdeasPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-20">
-      <Hero title="IdeasGPT" description="Find ideas for your next growth goal" />
+      <Hero
+        title="IdeasGPT"
+        description="Find ideas for your next growth goal"
+      />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {Array.from({ length: 10 }).map((_, index) => (
+        {loaderData.ideas.map((idea) => (
           <IdeaCard
-            key={`ideaId-${index}`}
-            id={`ideaId-${index}`}
-            title="Build a 10-minute nightly reflection ritual where you write down one win, one lesson, and one priority for tomorrow to reduce stress and improve consistency."
-            viewsCount={123}
-            postedAt="12 hours ago"
-            likesCount={12}
-            claimed={index % 2 === 0}
+            key={idea.idea_id}
+            id={idea.idea_id}
+            title={idea.title}
+            viewsCount={idea.views_count}
+            postedAt={idea.created_at}
+            likesCount={idea.likes}
+            claimed={idea.is_claimed}
           />
         ))}
       </div>
-      
     </div>
   );
 }

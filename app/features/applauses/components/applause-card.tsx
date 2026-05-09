@@ -6,27 +6,27 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "~/comm
 
 interface ApplauseCardProps {
     id: string;
-    title: string;
+    name: string;
     description: string;
-    commentsCount: number;
-    viewsCount: number;
-    applauseCount: number;
+    reviewsCount: string;
+    viewsCount: string;
+    votesCount: string;
 }
 
 export function ApplauseCard({
     id,
-    title,
+    name,
     description,
-    commentsCount,
+    reviewsCount,
     viewsCount,
-    applauseCount,
+    votesCount,
 }: ApplauseCardProps) {
     return (
         <Link to={`/applauses/${id}`} className="block">
             <Card className="w-full flex flex-row items-center justify-between bg-transparent hover:bg-card/50">
                 <CardHeader className="w-full">
                     <CardTitle className="text-2xl font-semibold leading-none tracking-tight">
-                        {title}
+                        {name}
                     </CardTitle>
                     <CardDescription className="text-muted-foreground">
                         {description}
@@ -34,7 +34,7 @@ export function ApplauseCard({
                     <div className="flex items-center gap-4 mt-2">
                         <div className="flex items-center gap-px text-xs text-muted-foreground">
                             <MessageCircleIcon className="w-4 h-4" />
-                            <span>{commentsCount}</span>
+                            <span>{reviewsCount}</span>
                         </div>
                         <div className="flex items-center gap-px text-xs text-muted-foreground">
                             <EyeIcon className="w-4 h-4" />
@@ -45,7 +45,7 @@ export function ApplauseCard({
                 <CardFooter className="py-0">
                     <Button variant="outline" className="flex flex-col h-14">
                         <ChevronUpIcon className="size-4 shrink-0" />
-                        <span>{applauseCount}</span>
+                        <span>{votesCount}</span>
                     </Button>
                 </CardFooter>
             </Card>

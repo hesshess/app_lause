@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      __drizzle_migrations: {
+        Row: {
+          created_at: number | null
+          hash: string
+          id: number
+        }
+        Insert: {
+          created_at?: number | null
+          hash: string
+          id?: number
+        }
+        Update: {
+          created_at?: number | null
+          hash?: string
+          id?: number
+        }
+        Relationships: []
+      }
       applause_upvotes: {
         Row: {
           applause_id: number
@@ -243,6 +261,13 @@ export type Database = {
             columns: ["idea_id"]
             isOneToOne: false
             referencedRelation: "ideas"
+            referencedColumns: ["idea_id"]
+          },
+          {
+            foreignKeyName: "idea_likes_idea_id_ideas_idea_id_fk"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas_view"
             referencedColumns: ["idea_id"]
           },
           {
@@ -529,30 +554,30 @@ export type Database = {
           created_at: string
           post_id: number
           profile_id: string
-          stats: Json
           title: string
           topic_id: number
           updated_at: string
+          upvotes: number | null
         }
         Insert: {
           content: string
           created_at?: string
           post_id?: never
           profile_id: string
-          stats?: Json
           title: string
           topic_id: number
           updated_at?: string
+          upvotes?: number | null
         }
         Update: {
           content?: string
           created_at?: string
           post_id?: never
           profile_id?: string
-          stats?: Json
           title?: string
           topic_id?: number
           updated_at?: string
+          upvotes?: number | null
         }
         Relationships: [
           {
@@ -743,7 +768,19 @@ export type Database = {
           post_id: number | null
           title: string | null
           topic: string | null
+          topic_slug: string | null
           upvotes: number | null
+        }
+        Relationships: []
+      }
+      ideas_view: {
+        Row: {
+          created_at: string | null
+          idea_id: number | null
+          is_claimed: boolean | null
+          likes: number | null
+          title: string | null
+          views_count: number | null
         }
         Relationships: []
       }

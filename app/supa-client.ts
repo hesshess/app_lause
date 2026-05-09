@@ -16,6 +16,11 @@ type Database = MergeDeep<
             string | null
           >;
         };
+        ideas_view: {
+          Row: SetNonNullable<
+            SupabaseDatabase["public"]["Views"]["ideas_view"]["Row"]
+          >;
+        };
       };
     };
   }
@@ -23,7 +28,7 @@ type Database = MergeDeep<
 
 const client = createClient<Database>(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
+  process.env.SUPABASE_ANON_KEY!,
 );
 
 export default client;

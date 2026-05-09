@@ -45,7 +45,7 @@ export const applauses = pgTable("applauses", {
   description: text().notNull(),
   icon: text().notNull(),
   url: text().notNull(),
- stats: jsonb().notNull().default({ views: 0, praises: 0 }),
+  stats: jsonb().notNull().default({ views: 0, praises: 0, upvotes: 0 }),
   profile_id: uuid()
     .references(() => profiles.profile_id, { onDelete: "cascade" })
     .notNull(),

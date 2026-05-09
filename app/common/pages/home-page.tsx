@@ -12,6 +12,7 @@ import type { Route } from "./+types/home-page";
 import { getPosts } from "~/features/community/queries";
 import { getGptIdeas } from "~/features/ideas/queries";
 import { getChallenges } from "~/features/challenges/queries";
+import { getTeams } from "~/features/teams/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -32,8 +33,9 @@ export const loader = async () => {
   });
   const ideas = await getGptIdeas({ limit: 7 });
   const challenges = await getChallenges({ limit: 7 });
+  const teams = await getTeams({ limit: 7 });
 
-  return { applauses, posts, ideas, challenges };
+  return { applauses, posts, ideas, challenges, teams };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -154,15 +156,14 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/teams">Explore all teams &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {loaderData.teams.map((team)=>(
           <TeamCard
-            key={`teamId-${index}`}
-            id={`teamId-${index}`}
-            leaderUsername="bess"
-            leaderAvatarSrc="https://github.com/hesshess.png"
-            categories={["Seoul", "Habits", "Reflection"]}
-            outro="more consistency and focus into their daily life."
-            buttonLabel="Join team"
+            key={team.team_id}
+            id={team.team_id}
+            leaderUsername={team.leader_profile_id.username}
+            leaderAvatarSrc={team.leader_profile_id.avatar}
+            categories={team.roles.split(",")}
+            description={team.description}
           />
         ))}
       </div>

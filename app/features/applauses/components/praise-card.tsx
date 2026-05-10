@@ -4,9 +4,10 @@ import {
   AvatarImage,
 } from "~/common/components/ui/avatar";
 import { HeartIcon } from "lucide-react";
+import { DateTime } from "luxon";
 
 interface PraiseCardProps {
-  avatarSrc: string;
+  avatarSrc: string | null;
   handle: string;
   username: string;
   rating: number;
@@ -27,7 +28,7 @@ export function PraiseCard({
       <div className="flex items-center gap-2">
         <Avatar>
           <AvatarFallback>{username}</AvatarFallback>
-          <AvatarImage src={avatarSrc} />
+          {avatarSrc ? <AvatarImage src={avatarSrc} /> : null}
         </Avatar>
         <div>
           <h4 className="text-lg font-bold">{handle}</h4>
@@ -40,7 +41,9 @@ export function PraiseCard({
         ))}
       </div>
       <p className="text-muted-foreground">{content}</p>
-      <span className="text-xs text-muted-foreground">{postedAt}</span>
+        <span className="text-xs text-muted-foreground">
+        {DateTime.fromISO(postedAt).toRelative()}
+      </span>
     </div>
   );
 }

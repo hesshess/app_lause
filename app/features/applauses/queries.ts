@@ -127,3 +127,22 @@ export const getApplauseById = async (applauseId: number) => {
   if (error) throw error;
   return data;
 };
+
+export const getPraises = async (applauseId: number) => {
+  const { data, error } = await client
+    .from("praises")
+    .select(
+      `
+        praise_id,
+        rating,
+        content,
+        created_at,
+        user:profiles!inner(
+          name,username,avatar
+        )
+      `
+    )
+    .eq("applause_id", applauseId);
+  if (error) throw error;
+  return data;
+};

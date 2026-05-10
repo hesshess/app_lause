@@ -33,7 +33,7 @@ export default function ApplauseOverviewLayout({
           </div>
           <div>
             <h1 className="text-5xl font-bold">{loaderData.applause.name}</h1>
-            <p className=" text-2xl font-light">{loaderData.applause.tagline}</p>
+            {/* <p className=" text-2xl font-light">{loaderData.applause.tagline}</p> */}
             <div className="mt-5 flex items-center gap-2">
               <div className="flex text-yellow-400">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -98,7 +98,8 @@ export default function ApplauseOverviewLayout({
           context={{
             applause_id: loaderData.applause.applause_id,
             description: loaderData.applause.description,
-            tagline: loaderData.applause.tagline
+            tagline: loaderData.applause.tagline,
+            praises_cnt: loaderData.applause.praises
           }}
         />
       </div>

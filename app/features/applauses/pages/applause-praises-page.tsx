@@ -3,6 +3,8 @@ import type { Route } from "./+types/applause-praises-page";
 import { PraiseCard } from "../components/praise-card";
 import { Dialog, DialogTrigger } from "~/common/components/ui/dialog";
 import CreatePraiseDialog from "~/features/applauses/components/create-praise-dialog";
+import { useOutletContext } from "react-router";
+import { getPraises } from "../queries";
 
 export const meta: Route.MetaFunction = ({ params }) => {
   return [
@@ -11,25 +13,38 @@ export const meta: Route.MetaFunction = ({ params }) => {
   ];
 };
 
-export default function ApplausePraisesPage() {
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const praises = await getPraises(params.applauseId);
+  return { praises };
+};
+
+export default function ProductPraisesPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { praise_count } = useOutletContext<{
+    praise_count: string;
+  }>();
   return (
     <Dialog>
       <div className="space-y-10 max-w-2xl">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">10 Praises</h2>
+          <h2 className="text-2xl font-bold">
+            {praise_count} {praise_count === "1" ? "praise" : "praises"}
+          </h2>
           <DialogTrigger>
             <Button variant="secondary">Write a Praise</Button>
           </DialogTrigger>
         </div>
         <div className="space-y-20">
-          {Array.from({ length: 10 }).map((_, i) => (
+          {loaderData.praises.map((praise) => (
             <PraiseCard
-              avatarSrc="https://github.com/ebs.png"
-              handle="@username"
-              username="Hess Wang"
-              rating={5}
-              content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Id hic nulla autem iusto illo earum dolorum velit sint cumque. Eaque cupiditate itaque nihil quibusdam fugiat ipsum sit delectus soluta ad!"
-              postedAt="10 days ago"
+            key={praise.praise_id}
+              username={praise.user.name}
+              handle={praise.user.username}
+              avatarSrc={praise.user.avatar}
+              rating={praise.rating}
+              content={praise.content}
+              postedAt={praise.created_at}
             />
           ))}
         </div>

@@ -17,7 +17,7 @@ import {
 import { Textarea } from "~/common/components/ui/textarea";
 import { Reply } from "../components/reply";
 import { Badge } from "~/common/components/ui/badge";
-import { getPostById } from "../queries";
+import { getPostById, getReplies } from "../queries";
 import { DateTime } from "luxon";
 
 export const meta: Route.MetaFunction = ({ params }) => {
@@ -29,7 +29,8 @@ export const meta: Route.MetaFunction = ({ params }) => {
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const post = await getPostById(Number(params.postId));
-  return { post };
+  const replies = await getReplies(Number(params.postId));
+  return { post, replies };
 };
 
 export default function PostPage({ loaderData }: Route.ComponentProps) {
@@ -65,7 +66,7 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
               <ChevronUpIcon className="size-4 shrink-0" />
                 <span>{loaderData.post.upvotes}</span>
             </Button>
-            <div className="space-y-10 lg:space-y-20">
+            <div className="space-y-10 lg:space-y-20 w-full">
               <div className="space-y-2">
       <h2 className="text-3xl font-bold">{loaderData.post.title}</h2>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -100,13 +101,16 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
                   {loaderData.post.replies} Replies
                 </h4>
                 <div className="flex flex-col gap-5">
-                  <Reply
-                    username="Hess"
-                    avatarUrl="https://github.com/hesshess.png"
-                    content="I really love this perspective. We often think good actions only count when they help someone else, but taking care of yourself matters too. This inspired me to start a small morning routine of my own."
-                    timestamp="12 hours ago"
-                    topLevel
-                  />
+                   {loaderData.replies.map((reply) => (
+                    <Reply
+                      username={reply.user.name}
+                      avatarUrl={reply.user.avatar}
+                      content={reply.content}
+                      timestamp={reply.created_at}
+                      topLevel={true}
+                      replies={reply.post_replies}
+                    />
+                  ))}
                 </div>
               </div>
             </div>

@@ -7,9 +7,9 @@ import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import ApplausePagination from "~/common/components/applause-pagination";
 import z from "zod";
 import {
+  getApplausesByCategory,
   getCategory,
   getCategoryPages,
-  getProductsByCategory,
 } from "../queries";
 
 export const meta = ({ params }: Route.MetaArgs) => {
@@ -34,7 +34,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   }
   const [category, products, totalPages] = await Promise.all([
     getCategory(data.category),
-    getProductsByCategory({ categoryId: data.category, page: data.page }),
+    getApplausesByCategory({ categoryId: data.category, page: data.page }),
     getCategoryPages(data.category),
   ]);
   return { category, products, totalPages };
@@ -53,7 +53,7 @@ export default function CategoryPage({ loaderData }: Route.ComponentProps) {
             key={applause.applause_id}
             id={applause.applause_id}
             name={applause.name}
-            description={applause.description}
+            description={applause.tagline}
             reviewsCount={applause.reviews}
             viewsCount={applause.views}
             votesCount={applause.upvotes}

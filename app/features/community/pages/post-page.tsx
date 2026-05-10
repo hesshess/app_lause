@@ -46,7 +46,7 @@ export default function PostPage() {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/community?topic=productivity">Self Growth</Link>
+              <Link to="/community?topic=applauseivity">Self Growth</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

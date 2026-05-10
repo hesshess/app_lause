@@ -8,7 +8,7 @@ interface ApplauseCardProps {
     id: number | string;
     name: string;
     description: string;
-    reviewsCount: string;
+    praisesCount: string;
     viewsCount: string;
     votesCount: string;
 }
@@ -17,7 +17,7 @@ export function ApplauseCard({
     id,
     name,
     description,
-    reviewsCount,
+    praisesCount,
     viewsCount,
     votesCount,
 }: ApplauseCardProps) {
@@ -34,7 +34,7 @@ export function ApplauseCard({
                     <div className="flex items-center gap-4 mt-2">
                         <div className="flex items-center gap-px text-xs text-muted-foreground">
                             <MessageCircleIcon className="w-4 h-4" />
-                            <span>{reviewsCount}</span>
+                            <span>{praisesCount}</span>
                         </div>
                         <div className="flex items-center gap-px text-xs text-muted-foreground">
                             <EyeIcon className="w-4 h-4" />

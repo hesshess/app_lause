@@ -94,7 +94,7 @@ export default [
         index("features/users/pages/dashboard-page.tsx"),
         route("ideas", "features/users/pages/dashboard-ideas-page.tsx"),
         route(
-          "products/:productId",
+          "applauses/:applauseId",
           "features/users/pages/dashboard-applause-page.tsx",
         ),
       ]),

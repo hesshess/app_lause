@@ -3,7 +3,7 @@ import { ChevronRightIcon } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardTitle } from "~/common/components/ui/card";
 
 interface CategoryCardProps {
-    id: string;
+    id: number;
     name: string;
     description: string;
 }

@@ -61,7 +61,7 @@ export default [
   ]),
   ...prefix("challenges", [
     index("features/challenges/pages/challenges-page.tsx"),
-    route(":donaId", "features/challenges/pages/challenge-page.tsx"),
+    route(":challengeId", "features/challenges/pages/challenge-page.tsx"),
     route("submit", "features/challenges/pages/submit-challenges-page.tsx"),
   ]),
   ...prefix("auth", [

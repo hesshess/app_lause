@@ -14,7 +14,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
-  const praises = await getPraises(params.applauseId);
+  const praises = await getPraises(Number(params.applauseId));
   return { praises };
 };
 

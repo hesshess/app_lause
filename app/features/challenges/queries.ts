@@ -52,3 +52,14 @@ export const getChallenges = async ({
   }
   return data;
 };
+
+
+export const getChallengeById = async (challengeId: number) => {
+  const { data, error } = await client
+    .from("challenges")
+    .select("*")
+    .eq("challenge_id", challengeId)
+    .single();
+  if (error) throw error;
+  return data;
+};

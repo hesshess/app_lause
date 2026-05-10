@@ -99,3 +99,39 @@ export const getPosts = async ({
   if (error) throw new Error(error.message);
   return data;
 };
+
+export const getPostById = async (postId: number) => {
+  const { data, error } = await client
+    .from("community_post_detail_view")
+    .select("*")
+    .eq("post_id", postId)
+    .single();
+  if (error) throw error;
+  return data;
+};
+
+export const getReplies = async (postId: number) => {
+  const replyQuery = `
+    post_reply_id,
+    content,
+    created_at,
+    user:profiles (
+      name,
+      avatar,
+      username
+    )
+  `;
+  const { data, error } = await client
+    .from("post_replies")
+    .select(
+      `
+      ${replyQuery},
+      post_replies (
+        ${replyQuery}
+      )
+      `
+    )
+    .eq("post_id", postId);
+  if (error) throw error;
+  return data;
+};

@@ -15,14 +15,8 @@ import {
 } from "~/common/components/ui/avatar";
 import { Badge } from "~/common/components/ui/badge";
 import InputPair from "~/common/components/input-pair";
+import { getTeamById } from "../queries";
 
-export function loader({ params }: Route.LoaderArgs) {
-  return { teamId: params.teamId };
-}
-
-export function action(_args: Route.ActionArgs) {
-  return {};
-}
 
 export const meta: Route.MetaFunction = ({ params }) => {
   return [
@@ -30,32 +24,29 @@ export const meta: Route.MetaFunction = ({ params }) => {
     { name: "description", content: "View a growth team and apply to join" },
   ];
 };
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const team = await getTeamById(Number(params.teamId));
+  return { team };
+};
 
 export default function TeamPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-20">
-      <Hero
-        title="Join Lynn's team"
-        description="Grow with a small group that keeps each other consistent."
-      />
+      <Hero title={`Join ${loaderData.team.team_leader.name}'s team`} />
       <div className="grid grid-cols-1 items-start gap-10 xl:grid-cols-6 xl:gap-20">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:col-span-4 xl:grid-cols-4">
           {[
             {
               title: "Team name",
-              value: "Morning Reset Circle",
-            },
-            {
-              title: "Focus",
-              value: "Self Growth",
+              value: loaderData.team.name,
             },
             {
               title: "Team size",
-              value: 3,
+              value: loaderData.team.size,
             },
             {
               title: "Open spots",
-              value: 4,
+              value: loaderData.team.open_spots
             },
           ].map((item) => (
             <Card key={item.title}>
@@ -63,7 +54,7 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {item.title}
                 </CardTitle>
-                <CardContent className="p-0 font-bold text-2xl">
+                 <CardContent className="p-0 capitalize font-bold text-2xl">
                   <p>{item.value}</p>
                 </CardContent>
               </CardHeader>
@@ -76,12 +67,7 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
               </CardTitle>
               <CardContent className="p-0 font-bold text-2xl">
                 <ul className="text-lg list-disc list-inside">
-                  {[
-                    "Habit accountability partners",
-                    "Morning routine builders",
-                    "Reflective journalers",
-                    "Weekly check-in buddies",
-                  ].map((item) => (
+              {loaderData.team.roles.split(",").map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
@@ -91,14 +77,10 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
           <Card className="md:col-span-2">
             <CardHeader>
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Team mission
+                Team description
               </CardTitle>
               <CardContent className="p-0 font-medium text-xl">
-                <p>
-                  Morning Reset Circle helps people build better routines
-                  through shared check-ins, weekly reflection, and steady
-                  accountability around the habits they want to keep.
-                </p>
+                     <p>{loaderData.team.description}</p>
               </CardContent>
             </CardHeader>
           </Card>
@@ -106,12 +88,20 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
         <aside className="space-y-5 rounded-lg border p-6 shadow-sm xl:col-span-2">
           <div className="flex gap-5">
             <Avatar className="size-14">
-              <AvatarFallback>N</AvatarFallback>
-              <AvatarImage src="https://github.com/inthetiger.png" />
+              <AvatarFallback>
+                {loaderData.team.team_leader.name[0]}
+              </AvatarFallback>
+              {loaderData.team.team_leader.avatar ? (
+                <AvatarImage src={loaderData.team.team_leader.avatar} />
+              ) : null}
             </Avatar>
             <div className="flex flex-col">
-              <h4 className="text-lg font-medium">Lynn</h4>
-              <Badge variant="secondary">Growth Coach</Badge>
+                         <h4 className="text-lg font-medium">
+                {loaderData.team.team_leader.name}
+              </h4>
+              <Badge variant="secondary" className="capitalize">
+                {loaderData.team.team_leader.role}
+              </Badge>
             </div>
           </div>
           <Form className="space-y-5">

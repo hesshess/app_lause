@@ -17,14 +17,8 @@ import {
 import { Textarea } from "~/common/components/ui/textarea";
 import { Reply } from "../components/reply";
 import { Badge } from "~/common/components/ui/badge";
-
-export function loader({ params }: Route.LoaderArgs) {
-  return { postId: params.postId };
-}
-
-export function action(_args: Route.ActionArgs) {
-  return {};
-}
+import { getPostById, getReplies } from "../queries";
+import { DateTime } from "luxon";
 
 export const meta: Route.MetaFunction = ({ params }) => {
   return [
@@ -33,7 +27,13 @@ export const meta: Route.MetaFunction = ({ params }) => {
   ];
 };
 
-export default function PostPage() {
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const post = await getPostById(Number(params.postId));
+  const replies = await getReplies(Number(params.postId));
+  return { post, replies };
+};
+
+export default function PostPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-10">
       <Breadcrumb>
@@ -46,15 +46,15 @@ export default function PostPage() {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/community?topic=applauseivity">Self Growth</Link>
+              <Link to={`/community?topic=${loaderData.post.topic_slug}`}>
+                {loaderData.post.topic_name}
+              </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/community/postId">
-                I started walking every morning for 7 days
-              </Link>
+              <Link to={`/community/postId`}>{loaderData.post.title}</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
@@ -64,28 +64,22 @@ export default function PostPage() {
           <div className="flex w-full flex-col items-start gap-6 lg:flex-row lg:gap-10">
             <Button variant="outline" className="flex flex-col h-14">
               <ChevronUpIcon className="size-4 shrink-0" />
-              <span>10</span>
+                <span>{loaderData.post.upvotes}</span>
             </Button>
-            <div className="space-y-10 lg:space-y-20">
+            <div className="space-y-10 lg:space-y-20 w-full">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold">
-                  I started walking every morning for 7 days
-                </h2>
+      <h2 className="text-3xl font-bold">{loaderData.post.title}</h2>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>@hess</span>
+                  <span>{loaderData.post.author_name}</span>
                   <DotIcon className="size-5" />
-                  <span>12 hours ago</span>
+               <span>
+                    {DateTime.fromISO(loaderData.post.created_at).toRelative()}
+                  </span>
                   <DotIcon className="size-5" />
-                  <span>10 replies</span>
+                    <span>{loaderData.post.replies} replies</span>
                 </div>
                 <p className="text-muted-foreground lg:w-3/4">
-                  For the past 7 days, I made myself go outside for a short walk
-                  every morning before checking my phone. It felt small at
-                  first, but it changed the tone of my whole day. I felt calmer,
-                  more awake, and more present. I used to think doing something
-                  good had to be for someone else, but I am part of the world
-                  too. Taking care of myself turned out to be a meaningful
-                  action, and now I want to keep going.
+         {loaderData.post.content}
                 </p>
               </div>
               <Form className="flex w-full items-start gap-5 lg:w-3/4">
@@ -103,15 +97,20 @@ export default function PostPage() {
                 </div>
               </Form>
               <div className="space-y-10">
-                <h4 className="font-semibold">10 Replies</h4>
+                      <h4 className="font-semibold">
+                  {loaderData.post.replies} Replies
+                </h4>
                 <div className="flex flex-col gap-5">
-                  <Reply
-                    username="Hess"
-                    avatarUrl="https://github.com/hesshess.png"
-                    content="I really love this perspective. We often think good actions only count when they help someone else, but taking care of yourself matters too. This inspired me to start a small morning routine of my own."
-                    timestamp="12 hours ago"
-                    topLevel
-                  />
+                   {loaderData.replies.map((reply) => (
+                    <Reply
+                      username={reply.user.name}
+                      avatarUrl={reply.user.avatar}
+                      content={reply.content}
+                      timestamp={reply.created_at}
+                      topLevel={true}
+                      replies={reply.post_replies}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -121,17 +120,24 @@ export default function PostPage() {
         <aside className="space-y-5 rounded-lg border p-6 shadow-sm xl:col-span-2">
           <div className="flex gap-5">
             <Avatar className="size-14">
-              <AvatarFallback>N</AvatarFallback>
-              <AvatarImage src="https://github.com/hesshess.png" />
+              <AvatarFallback>{loaderData.post.author_name[0]}</AvatarFallback>
+              {loaderData.post.author_avatar ? (
+                <AvatarImage src={loaderData.post.author_avatar} />
+              ) : null}
             </Avatar>
-            <div className="flex flex-col">
-              <h4 className="text-lg font-medium">Hess</h4>
-              <Badge variant="secondary">Self Growth</Badge>
+            <div className="flex flex-col items-start">
+              <h4 className="text-lg font-medium">
+                {loaderData.post.author_name}
+              </h4>
+              <Badge variant="secondary" className="capitalize">
+                {loaderData.post.author_role}
+              </Badge>
             </div>
           </div>
           <div className="gap-2 text-sm flex flex-col">
-            <span>🌱 Joined 3 months ago</span>
-            <span>👏 Shared 10 actions</span>
+            <span>🌱 Joined{" "}{DateTime.fromISO(loaderData.post.author_created_at).toRelative()}{" "}
+              ago</span>
+            <span>👏 Shared {loaderData.post.applauses} applauses</span>
           </div>
           <Button variant="outline" className="w-full">
             Follow Journey

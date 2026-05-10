@@ -1,4 +1,5 @@
 import { DotIcon, MessageCircleIcon } from "lucide-react";
+import { DateTime } from "luxon";
 import { useState } from "react";
 import { Form, Link } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "~/common/components/ui/avatar";
@@ -8,10 +9,20 @@ import { Textarea } from "~/common/components/ui/textarea";
 
 interface ReplyProps {
   username: string;
-  avatarUrl: string;
+  avatarUrl: string | null;
   content: string;
   timestamp: string;
   topLevel: boolean;
+    replies?: {
+    post_reply_id: number;
+    content: string;
+    created_at: string;
+    user: {
+      name: string;
+      avatar: string | null;
+      username: string;
+    };
+  }[];
 }
 
 export function Reply({
@@ -20,23 +31,26 @@ export function Reply({
   content,
   timestamp,
   topLevel,
+   replies,
 }: ReplyProps) {
   const [replying, setReplying] = useState(false);
   const toggleReplying = () => setReplying((prev) => !prev);
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2w-full">
       <div className="flex items-start gap-5 w-2/3">
         <Avatar className="size-14">
           <AvatarFallback>{username[0]}</AvatarFallback>
-          <AvatarImage src={avatarUrl} />
+            {avatarUrl ? <AvatarImage src={avatarUrl} /> : null}
         </Avatar>
-        <div className="flex flex-col gap-2 items-start">
+        <div className="flex flex-col gap-2 items-start w-full">
           <div className="flex gap-2 items-center">
             <Link to={`/users/${username}`}>
               <h4 className="font-medium">{username}</h4>
             </Link>
             <DotIcon className="size-5" />
-            <span className="text-xs text-muted-foreground">{timestamp}</span>
+             <span className="text-xs text-muted-foreground">
+              {DateTime.fromISO(timestamp).toRelative()}
+            </span>
           </div>
           <p className="text-muted-foreground">{content}</p>
           <Button variant="ghost" className="self-end" onClick={toggleReplying}>
@@ -61,15 +75,17 @@ export function Reply({
           </div>
         </Form>
       )}
-      {topLevel && (
+       {topLevel && replies && (
         <div className="pl-20 w-full">
-          <Reply
-            username="Nicolas"
-            avatarUrl="https://github.com/hesshess.png"
-            content="This really resonated with me. I used to think self-care was selfish, but posts like this remind me that taking care of yourself is also meaningful."
-            timestamp="12 hours ago"
-            topLevel={false}
-          />
+          {replies.map((reply) => (
+            <Reply
+              username={reply.user.name}
+              avatarUrl={reply.user.avatar}
+              content={reply.content}
+              timestamp={reply.created_at}
+              topLevel={false}
+            />
+          ))}
         </div>
       )}
     </div>

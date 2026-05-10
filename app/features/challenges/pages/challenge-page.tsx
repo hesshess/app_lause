@@ -2,15 +2,25 @@ import { Badge } from "~/common/components/ui/badge";
 import type { Route } from "./+types/challenge-page";
 import { DotIcon } from "lucide-react";
 import { Button } from "~/common/components/ui/button";
+import { DateTime } from "luxon";
+import { getChallengeById } from "../queries";
 
 export const meta: Route.MetaFunction = () => {
   return [
     { title: `Challenge Details | app_lause` },
-    { name: "description", content: "View details for a self-growth challenge" },
+    {
+      name: "description",
+      content: "View details for a self-growth challenge",
+    },
   ];
 };
 
-export default function ChallengePage() {
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const challenge = await getChallengeById(Number(params.challengeId));
+  return { challenge };
+};
+
+export default function ChallengePage({ loaderData }: Route.ComponentProps) {
   return (
     <div>
       <div className="h-60 w-full rounded-lg bg-linear-to-tr from-primary/80 to-primary/10"></div>
@@ -20,81 +30,48 @@ export default function ChallengePage() {
           <div className="space-y-5">
             <div className="relative left-4 size-24 overflow-hidden rounded-full border-white bg-white sm:left-6 sm:size-32 lg:left-10 lg:size-40">
               <img
-                src="https://github.com/octocat.png"
+                src={loaderData.challenge.thumbnail_url}
                 className="h-full w-full object-cover"
                 alt="Challenge cover"
               />
             </div>
 
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold">7-Day Morning Walk Challenge</h1>
-              <h4 className="text-sm text-muted-foreground">
-                Created by Hess
+              <h1 className="text-4xl font-bold">{loaderData.challenge.title}</h1>
+              <h4 className="text-lg text-muted-foreground">
+                {loaderData.challenge.goal}
               </h4>
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <Badge variant="secondary">Wellness</Badge>
-            <Badge variant="secondary">Solo</Badge>
-            <Badge variant="secondary">1 Week</Badge>
+          <div className="flex gap-2 capitalize">
+            <Badge variant={"secondary"}>{loaderData.challenge.challenge_type}</Badge>
+            <Badge variant={"secondary"}>{loaderData.challenge.location}</Badge>
           </div>
 
           <div className="space-y-2.5">
             <h4 className="text-2xl font-bold">Overview</h4>
-            <p className="text-lg text-muted-foreground">
-              This challenge helps you build a healthier morning routine by
-              taking a short walk every day for seven days. The goal is to start
-              your day with more energy, clarity, and consistency through one
-              small action.
-            </p>
+            <p className="text-lg">{loaderData.challenge.overview}</p>
           </div>
 
           <div className="space-y-2.5">
-            <h4 className="text-2xl font-bold">Goal</h4>
-            <p className="text-lg text-muted-foreground">
-              Build a simple habit that helps you feel more awake, focused, and
-              grounded each morning.
-            </p>
+            <h4 className="text-2xl font-bold">Instructions</h4>
+<p className="text-lg">{loaderData.challenge.instructions}</p>
           </div>
 
           <div className="space-y-2.5">
-            <h4 className="text-2xl font-bold">How It Works</h4>
+            <h4 className="text-2xl font-bold">Benefits</h4>
             <ul className="list-inside list-disc text-lg text-muted-foreground">
-              {[
-                "Walk for at least 20 minutes every morning",
-                "Upload a short reflection or photo each day",
-                "Track your progress for 7 days",
-                "Encourage others by sharing your experience",
-              ].map((item) => (
+              {loaderData.challenge.benefits.split(",").map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
           </div>
 
           <div className="space-y-2.5">
-            <h4 className="text-2xl font-bold">Why Join</h4>
+            <h4 className="text-2xl font-bold">Tags</h4>
             <ul className="list-inside list-disc text-lg text-muted-foreground">
-              {[
-                "Create a healthier daily rhythm",
-                "Improve your mood and energy",
-                "Stay accountable through small actions",
-                "Turn personal growth into shared inspiration",
-              ].map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="space-y-2.5">
-            <h4 className="text-2xl font-bold">What You’ll Need</h4>
-            <ul className="list-inside list-disc text-lg text-muted-foreground">
-              {[
-                "Comfortable walking shoes",
-                "A safe walking route",
-                "10–20 minutes each morning",
-                "A willingness to stay consistent",
-              ].map((item) => (
+              {loaderData.challenge.tags.split(",").map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -104,21 +81,29 @@ export default function ChallengePage() {
         <div className="space-y-5 rounded-lg border p-6 xl:sticky xl:top-20 xl:col-span-2 xl:mt-40">
           <div className="flex flex-col">
             <span className="text-sm text-muted-foreground">Duration</span>
-            <span className="text-2xl font-medium">7 days</span>
+                   <span className="text-2xl font-medium">
+              {loaderData.challenge.duration}
+            </span>
           </div>
 
           <div className="flex flex-col">
             <span className="text-sm text-muted-foreground">Participation</span>
-            <span className="text-2xl font-medium">Solo</span>
+          <span className="text-2xl font-medium capitalize">
+              {loaderData.challenge.participation_type}
+            </span>
           </div>
 
           <div className="flex flex-col">
             <span className="text-sm text-muted-foreground">Category</span>
-            <span className="text-2xl font-medium">Wellness</span>
+                        <span className="text-2xl font-medium capitalize">
+              {loaderData.challenge.challenge_type}
+            </span>
           </div>
 
           <div className="flex items-center">
-            <span className="text-sm text-muted-foreground">Posted 2 days ago</span>
+            <span className="text-sm text-muted-foreground">
+              Posted {DateTime.fromISO(loaderData.challenge.created_at).toRelative()}
+            </span>
             <DotIcon className="size-4" />
             <span className="text-sm text-muted-foreground">395 views</span>
           </div>

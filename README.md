@@ -1,6 +1,6 @@
 # Welcome to React Router!
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A modern, applauseion-ready template for building full-stack React applications using React Router.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
 
@@ -36,7 +36,7 @@ Your application will be available at `http://localhost:5173`.
 
 ## Building for Production
 
-Create a production build:
+Create a applauseion build:
 
 ```bash
 npm run build
@@ -66,7 +66,7 @@ The containerized application can be deployed to any platform that supports Dock
 
 ### DIY Deployment
 
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
+If you're familiar with deploying Node applications, the built-in app server is applauseion-ready.
 
 Make sure to deploy the output of `npm run build`
 

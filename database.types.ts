@@ -53,6 +53,13 @@ export type Database = {
             foreignKeyName: "applause_upvotes_applause_id_applauses_applause_id_fk"
             columns: ["applause_id"]
             isOneToOne: false
+            referencedRelation: "applause_overview_view"
+            referencedColumns: ["applause_id"]
+          },
+          {
+            foreignKeyName: "applause_upvotes_applause_id_applauses_applause_id_fk"
+            columns: ["applause_id"]
+            isOneToOne: false
             referencedRelation: "applauses"
             referencedColumns: ["applause_id"]
           },
@@ -629,6 +636,13 @@ export type Database = {
             foreignKeyName: "praises_applause_id_applauses_applause_id_fk"
             columns: ["applause_id"]
             isOneToOne: false
+            referencedRelation: "applause_overview_view"
+            referencedColumns: ["applause_id"]
+          },
+          {
+            foreignKeyName: "praises_applause_id_applauses_applause_id_fk"
+            columns: ["applause_id"]
+            isOneToOne: false
             referencedRelation: "applauses"
             referencedColumns: ["applause_id"]
           },
@@ -759,6 +773,21 @@ export type Database = {
       }
     }
     Views: {
+      applause_overview_view: {
+        Row: {
+          applause_id: number | null
+          average_rating: number | null
+          description: string | null
+          icon: string | null
+          name: string | null
+          praises: string | null
+          tagline: string | null
+          upvotes: string | null
+          url: string | null
+          views: string | null
+        }
+        Relationships: []
+      }
       community_post_list_view: {
         Row: {
           author: string | null

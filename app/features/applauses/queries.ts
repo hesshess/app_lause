@@ -8,7 +8,7 @@ const applauseListSelect = `
   tagline,
   upvotes:stats->>upvotes,
   views:stats->>views,
-  reviews:stats->>reviews
+  praises:stats->>praises
 `;
 
 export const getApplausesByDateRange = async ({
@@ -116,4 +116,14 @@ export const getPagesBySearch = async ({ query }: { query: string }) => {
   if (error) throw error;
   if (!count) return 1;
   return Math.ceil(count / PAGE_SIZE);
+};
+
+export const getApplauseById = async (applauseId: number) => {
+  const { data, error } = await client
+    .from("applause_overview_view")
+    .select("*")
+    .eq("applause_id", applauseId)
+    .single();
+  if (error) throw error;
+  return data;
 };

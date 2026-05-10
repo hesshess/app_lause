@@ -110,7 +110,7 @@ export default function YearlyLeaderboardPage({
             id={applause.applause_id.toString()}
             name={applause.name}
             description={applause.tagline}
-            reviewsCount={applause.reviews}
+            praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
           />

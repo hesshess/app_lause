@@ -32,12 +32,12 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   if (!success) {
     throw new Response("Invalid category", { status: 400 });
   }
-  const [category, products, totalPages] = await Promise.all([
+  const [category, applauses, totalPages] = await Promise.all([
     getCategory(data.category),
     getApplausesByCategory({ categoryId: data.category, page: data.page }),
     getCategoryPages(data.category),
   ]);
-  return { category, products, totalPages };
+  return { category, applauses, totalPages };
 };
 
 export default function CategoryPage({ loaderData }: Route.ComponentProps) {
@@ -48,13 +48,13 @@ export default function CategoryPage({ loaderData }: Route.ComponentProps) {
         description={loaderData.category.description}
       />
       <div className="space-y-5 w-full max-w-3xl mx-auto">
-        {loaderData.products.map((applause) => (
+        {loaderData.applauses.map((applause) => (
           <ApplauseCard
             key={applause.applause_id}
             id={applause.applause_id}
             name={applause.name}
             description={applause.tagline}
-            reviewsCount={applause.reviews}
+            praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
           />

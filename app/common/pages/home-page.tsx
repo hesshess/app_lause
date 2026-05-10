@@ -62,7 +62,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             id={applause.applause_id}
             name={applause.name}
             description={applause.tagline}
-            reviewsCount={applause.reviews}
+            praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
           />

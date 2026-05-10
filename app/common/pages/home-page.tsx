@@ -22,19 +22,20 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async () => {
-  const applauses = await getApplausesByDateRange({
-    startDate: DateTime.now().startOf("day"),
-    endDate: DateTime.now().endOf("day"),
-    // limit: 7,
-  });
-  const posts = await getPosts({
-    limit: 7,
-    sorting: "newest",
-  });
-  const ideas = await getGptIdeas({ limit: 7 });
-  const challenges = await getChallenges({ limit: 7 });
-  const teams = await getTeams({ limit: 7 });
-
+  const [applauses, posts, ideas, challenges, teams] = await Promise.all([
+    getApplausesByDateRange({
+      startDate: DateTime.now().startOf("day"),
+      endDate: DateTime.now().endOf("day"),
+      // limit: 7,
+    }),
+    getPosts({
+      limit: 7,
+      sorting: "newest",
+    }),
+    getGptIdeas({ limit: 7 }),
+    getChallenges({ limit: 7 }),
+    getTeams({ limit: 7 }),
+  ]);
   return { applauses, posts, ideas, challenges, teams };
 };
 
@@ -58,7 +59,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         {loaderData.applauses.map((applause, index) => (
           <ApplauseCard
             key={applause.applause_id}
-            id={applause.applause_id.toString()}
+            id={applause.applause_id}
             name={applause.name}
             description={applause.description}
             reviewsCount={applause.reviews}
@@ -156,7 +157,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/teams">Explore all teams &rarr;</Link>
           </Button>
         </div>
-        {loaderData.teams.map((team)=>(
+        {loaderData.teams.map((team) => (
           <TeamCard
             key={team.team_id}
             id={team.team_id}

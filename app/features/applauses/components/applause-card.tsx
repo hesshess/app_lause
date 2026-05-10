@@ -5,7 +5,7 @@ import { Button } from "~/common/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "~/common/components/ui/card";
 
 interface ApplauseCardProps {
-    id: string;
+    id: number | string;
     name: string;
     description: string;
     reviewsCount: string;

@@ -18,22 +18,18 @@ export const loader = async () => {
       getApplausesByDateRange({
         startDate: DateTime.now().startOf("day"),
         endDate: DateTime.now().endOf("day"),
-        limit: 7,
       }),
       getApplausesByDateRange({
         startDate: DateTime.now().startOf("week"),
         endDate: DateTime.now().endOf("week"),
-        limit: 7,
       }),
       getApplausesByDateRange({
         startDate: DateTime.now().startOf("month"),
         endDate: DateTime.now().endOf("month"),
-        limit: 7,
       }),
       getApplausesByDateRange({
         startDate: DateTime.now().startOf("year"),
         endDate: DateTime.now().endOf("year"),
-        limit: 7,
       }),
     ]);
   return { dailyApplauses, weeklyApplauses, monthlyApplauses, yearlyApplauses };

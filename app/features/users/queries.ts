@@ -1,57 +1,56 @@
-// import db from "~/db";
-// import { posts, postUpvotes, topics } from "./schema";
-// import { asc, count, desc, eq } from "drizzle-orm";
-// import { profiles } from "../users/schema";
-
 import client from "~/supa-client";
+import { features } from "process";
+import { applauseListSelect } from "../applauses/queries";
 
-// export const getTopics = async () => {
-//   const allTopics = await db
-//     .select({
-//       name: topics.name,
-//       slug: topics.slug,
-//     })
-//     .from(topics);
-//   return allTopics;
-// };
-
-// export const getPosts = async () => {
-//   const allPosts = await db
-//     .select({
-//       id: posts.post_id,
-//       title: posts.title,
-//       createdAt: posts.created_at,
-//       topic: topics.name,
-//       author: profiles.name,
-//       authorAvatarUrl: profiles.avatar,
-//       username: profiles.username,
-//       upvotes: count(postUpvotes.post_id),
-//     })
-//     .from(posts)
-//     .innerJoin(topics, eq(posts.topic_id, topics.topic_id))
-//     .innerJoin(profiles, eq(posts.profile_id, profiles.profile_id))
-//     .leftJoin(postUpvotes, eq(posts.post_id, postUpvotes.post_id))
-//     .groupBy(
-//       posts.post_id,
-//       profiles.name,
-//       profiles.avatar,
-//       profiles.username,
-//       topics.name
-//     )
-//     .orderBy(asc(posts.post_id));
-//   return allPosts;
-// };
-
-export const getTopics = async () => {
-  const { data, error } = await client.from("topics").select("name, slug");
-  if (error) throw new Error(error.message);
+export const getUserProfile = async (username: string) => {
+  const { data, error } = await client
+    .from("profiles")
+    .select(
+      `
+        profile_id,
+        name,
+        username,
+        avatar,
+        role,
+        headline,
+        bio
+        `,
+    )
+    .eq("username", username)
+    .single();
+  if (error) {
+    throw error;
+  }
   return data;
 };
 
-export const getPosts = async () => {
+export const getUserApplauses = async (username: string) => {
   const { data, error } = await client
-    .from("community_post_list_view")
-    .select(`*`);
-  if (error) throw new Error(error.message);
+    .from("applauses")
+    .select(
+      `
+        ${applauseListSelect},profiles!applauses_profile_id_profiles_profile_id_fk!inner(profile_id)
+    `,
+    )
+    .eq("profiles.username", username);
+  if (error) {
+    throw error;
+  }
+  return data;
+};
+
+export const getUserPosts = async (username: string) => {
+  const { data, error } = await client
+    .from("posts")
+    .select(
+      `
+*,
+author:profile_id!inner(username)
+`,
+    )
+    .eq("profile_id.username", username);
+  if (error) {
+    throw error;
+  }
   return data;
 };

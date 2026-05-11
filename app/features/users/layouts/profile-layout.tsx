@@ -16,24 +16,32 @@ import {
   DialogTrigger,
 } from "~/common/components/ui/dialog";
 import { Textarea } from "~/common/components/ui/textarea";
+import type { Route } from "./+types/profile-layout";
+import { getUserProfile } from "../queries";
 
-export default function ProfileLayout() {
-  const { username } = useParams();
-  const profileUrl = `/users/${username}`;
-  const displayName = username ?? "member";
+export const loader = async ({
+  params,
+}: Route.LoaderArgs ) => {
+  const user = await getUserProfile(params.username);
+  return { user };
+};
 
+export default function ProfileLayout({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-10">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
         <Avatar className="size-24 sm:size-32 lg:size-40">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>
-            {displayName.slice(0, 2).toUpperCase()}
-          </AvatarFallback>
+          {loaderData.user.avatar ? (
+            <AvatarImage src={loaderData.user.avatar} />
+          ) : (
+            <AvatarFallback className="text-2xl">
+              {loaderData.user.name[0]}
+            </AvatarFallback>
+          )}
         </Avatar>
         <div className="space-y-5">
           <div className="flex flex-wrap gap-2">
-            <h1 className="text-2xl font-semibold">@{displayName}</h1>
+       <h1 className="text-2xl font-semibold">{loaderData.user.name}</h1>
             <Button variant="outline" asChild>
               <Link to="/my/settings">Edit profile</Link>
             </Button>
@@ -48,7 +56,7 @@ export default function ProfileLayout() {
                 </DialogHeader>
                 <DialogDescription className="space-y-4">
                   <span className="text-sm text-muted-foreground">
-                    Send a check-in message to @{displayName}
+                    Send a check-in message to @{loaderData.user.name}
                   </span>
                   <Form className="space-y-4">
                     <Textarea
@@ -63,10 +71,12 @@ export default function ProfileLayout() {
             </Dialog>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm text-muted-foreground">
-              @{displayName}
+         <span className="text-sm text-muted-foreground">
+              @{loaderData.user.username}
             </span>
-            <Badge variant={"secondary"}>Habit Builder</Badge>
+            <Badge variant={"secondary"} className="capitalize">
+              {loaderData.user.role}
+            </Badge>
             <Badge variant={"secondary"}>100 followers</Badge>
             <Badge variant={"secondary"}>100 following</Badge>
           </div>
@@ -74,9 +84,12 @@ export default function ProfileLayout() {
       </div>
       <div className="flex flex-wrap gap-3">
         {[
-          { label: "About", to: profileUrl },
-          { label: "Actions", to: `${profileUrl}/applauses` },
-          { label: "Posts", to: `${profileUrl}/posts` },
+          { label: "About", to: `/users/${loaderData.user.username}` },
+          {
+            label: "Applauses",
+            to: `/users/${loaderData.user.username}/applauses`,
+          },
+          { label: "Posts", to: `/users/${loaderData.user.username}/posts` },
         ].map((item) => (
           <NavLink
             end
@@ -93,8 +106,13 @@ export default function ProfileLayout() {
           </NavLink>
         ))}
       </div>
-      <div className="max-w-screen-md">
-        <Outlet />
+      <div className="max-w-3xl">
+          <Outlet
+          context={{
+            headline: loaderData.user.headline,
+            bio: loaderData.user.bio,
+          }}
+        />
       </div>
     </div>
   );

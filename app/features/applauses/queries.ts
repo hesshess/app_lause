@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import client from "~/supa-client";
 import { PAGE_SIZE } from "./constant";
 
-const applauseListSelect = `
+export const applauseListSelect = `
   applause_id,
   name,
   tagline,

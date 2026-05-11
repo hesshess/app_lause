@@ -18,7 +18,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
   return { praises };
 };
 
-export default function ProductPraisesPage({
+export default function ApplausePraisesPage({
   loaderData,
 }: Route.ComponentProps) {
   const { praise_count } = useOutletContext<{

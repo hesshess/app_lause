@@ -44,13 +44,13 @@ export default function DashboardLayout() {
             </SidebarMenu>
           </SidebarGroup>
           <SidebarGroup>
-            <SidebarGroupLabel>Product Analytics</SidebarGroupLabel>
+            <SidebarGroupLabel>Applause Analytics</SidebarGroupLabel>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link to="/my/dashboard/applauses/1">
                     <RocketIcon className="size-4" />
-                    <span>Product 1</span>
+                    <span>Applause 1</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

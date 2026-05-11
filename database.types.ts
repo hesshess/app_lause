@@ -213,6 +213,27 @@ export type Database = {
         }
         Relationships: []
       }
+      events: {
+        Row: {
+          created_at: string | null
+          event_data: Json | null
+          event_id: string
+          event_type: Database["public"]["Enums"]["event_type"] | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_id?: string
+          event_type?: Database["public"]["Enums"]["event_type"] | null
+        }
+        Update: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_id?: string
+          event_type?: Database["public"]["Enums"]["event_type"] | null
+        }
+        Relationships: []
+      }
       follows: {
         Row: {
           created_at: string
@@ -855,7 +876,13 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      track_event: {
+        Args: {
+          event_data: Json
+          event_type: Database["public"]["Enums"]["event_type"]
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       applause_category:
@@ -883,6 +910,7 @@ export type Database = {
         | "mindset"
         | "routine"
         | "reflection"
+      event_type: "applause_view" | "applause_visit" | "profile_view"
       notification_type: "follow" | "praise" | "reply" | "mention"
       role:
         | "habit-builder"
@@ -1047,6 +1075,7 @@ export const Constants = {
         "routine",
         "reflection",
       ],
+      event_type: ["applause_view", "applause_visit", "profile_view"],
       notification_type: ["follow", "praise", "reply", "mention"],
       role: [
         "habit-builder",

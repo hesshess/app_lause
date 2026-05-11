@@ -2,8 +2,19 @@ import { ChevronUpIcon } from "lucide-react";
 import { Button } from "~/common/components/ui/button";
 import { Link, useOutletContext } from "react-router";
 import type { Route } from "./+types/applause-overview-page";
+import client from "~/supa-client";
 
-export default function ProductOverviewPage() {
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  await client.rpc("track_event", {
+    event_type: "applause_view",
+    event_data: {
+      applause_id: params.applauseId,
+    },
+  });
+  return null;
+};
+
+export default function ApplauseOverviewPage() {
   const { description, tagline } = useOutletContext<{
     description: string;
     tagline: string;

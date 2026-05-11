@@ -15,6 +15,13 @@
       "when": 1777535420684,
       "tag": "0001_far_jasper_sitwell",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1778497124396,
+      "tag": "0002_sleepy_odin",
+      "breakpoints": true
     }
   ]
 }

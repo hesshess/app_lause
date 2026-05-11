@@ -1,5 +1,5 @@
 import { ChevronUpIcon, StarIcon } from "lucide-react";
-import { NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 import { Button, buttonVariants } from "~/common/components/ui/button";
 import { cn } from "~/lib/utils";
 import type { Route } from "./+types/applause-overview-layout";
@@ -18,10 +18,10 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 };
 
 export default function ApplauseOverviewLayout({
-  loaderData
+  loaderData,
 }: Route.ComponentProps) {
   return (
-   <div className="space-y-10">
+    <div className="space-y-10">
       <div className="flex justify-between">
         <div className="flex gap-10">
           <div className="size-40 rounded-xl shadow-xl bg-primary/50">
@@ -59,8 +59,11 @@ export default function ApplauseOverviewLayout({
             variant={"secondary"}
             size="lg"
             className="text-lg h-14 px-10"
+            asChild
           >
-            Visit Website
+            <Link to={`/applauses/${loaderData.applause.applause_id}/visit`}>
+              Visit Website
+            </Link>
           </Button>
           <Button size="lg" className="text-lg h-14 px-10">
             <ChevronUpIcon className="size-4" />
@@ -74,7 +77,7 @@ export default function ApplauseOverviewLayout({
           className={({ isActive }) =>
             cn(
               buttonVariants({ variant: "outline" }),
-              isActive && "bg-accent text-foreground "
+              isActive && "bg-accent text-foreground ",
             )
           }
           to={`/applauses/${loaderData.applause.applause_id}/overview`}
@@ -85,7 +88,7 @@ export default function ApplauseOverviewLayout({
           className={({ isActive }) =>
             cn(
               buttonVariants({ variant: "outline" }),
-              isActive && "bg-accent text-foreground "
+              isActive && "bg-accent text-foreground ",
             )
           }
           to={`/applauses/${loaderData.applause.applause_id}/praises`}
@@ -99,7 +102,7 @@ export default function ApplauseOverviewLayout({
             applause_id: loaderData.applause.applause_id,
             description: loaderData.applause.description,
             tagline: loaderData.applause.tagline,
-            praises_cnt: loaderData.applause.praises
+            praises_cnt: loaderData.applause.praises,
           }}
         />
       </div>

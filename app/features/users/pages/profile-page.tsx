@@ -1,35 +1,32 @@
+import { useOutletContext } from "react-router";
 import type { Route } from "./+types/profile-page";
+import client from "~/supa-client";
 
-export const meta: Route.MetaFunction = ({ params }) => {
-  return [
-    { title: `${params.username}'s Profile | app_lause` },
-  ];
+
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  await client.rpc("track_event", {
+    event_type: "profile_view",
+    event_data: {
+      username: params.username,
+    },
+  });
+  return null;
 };
 
-export function loader({ params }: Route.LoaderArgs) {
-  return { username: params.username };
-}
-
-export function action(_args: Route.ActionArgs) {
-  return {};
-}
-
-export default function ProfilePage({ loaderData }: Route.ComponentProps) {
+export default function ProfilePage() {
+  const { headline, bio } = useOutletContext<{
+    headline: string;
+    bio: string;
+  }>();
   return (
-    <div className="max-w-screen-md flex flex-col space-y-10">
+    <div className="max-w-3xl flex flex-col space-y-10">
       <div className="space-y-2">
         <h4 className="text-lg font-bold">Headline</h4>
-        <p className="text-muted-foreground">
-          @{loaderData.username} is building better routines through small,
-          consistent actions and weekly reflection.
-        </p>
+        <p className="text-muted-foreground">{headline}</p>
       </div>
       <div className="space-y-2">
-        <h4 className="text-lg font-bold">About</h4>
-        <p className="text-muted-foreground">
-          Focused on self-growth, accountability, and turning everyday progress
-          into habits that last.
-        </p>
+        <h4 className="text-lg font-bold">Bio</h4>
+        <p className="text-muted-foreground">{bio}</p>
       </div>
     </div>
   );

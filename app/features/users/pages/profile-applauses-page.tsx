@@ -2,15 +2,6 @@ import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import type { Route } from "./+types/profile-applauses-page";
 import { getUserApplauses } from "../queries";
 
-export const meta: Route.MetaFunction = ({ params }) => {
-  return [
-    { title: `${params.username}'s Applauses | app_lause` },
-    {
-      name: "description",
-      content: "View self-growth actions recognized by this user",
-    },
-  ];
-};
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const applauses = await getUserApplauses(params.username);
   return { applauses };

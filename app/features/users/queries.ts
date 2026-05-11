@@ -41,14 +41,9 @@ export const getUserApplauses = async (username: string) => {
 
 export const getUserPosts = async (username: string) => {
   const { data, error } = await client
-    .from("posts")
-    .select(
-      `
-*,
-author:profile_id!inner(username)
-`,
-    )
-    .eq("profile_id.username", username);
+    .from("community_post_list_view")
+    .select("*")
+    .eq("author_username", username);
   if (error) {
     throw error;
   }

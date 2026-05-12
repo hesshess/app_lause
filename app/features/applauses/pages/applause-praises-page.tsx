@@ -5,6 +5,7 @@ import { Dialog, DialogTrigger } from "~/common/components/ui/dialog";
 import CreatePraiseDialog from "~/features/applauses/components/create-praise-dialog";
 import { useOutletContext } from "react-router";
 import { getPraises } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = ({ params }) => {
   return [
@@ -13,8 +14,11 @@ export const meta: Route.MetaFunction = ({ params }) => {
   ];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const praises = await getPraises(Number(params.applauseId));
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const praises = await getPraises(client, {
+    applauseId: Number(params.applauseId),
+  });
   return { praises };
 };
 

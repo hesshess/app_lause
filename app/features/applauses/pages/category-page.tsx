@@ -11,6 +11,7 @@ import {
   getCategory,
   getCategoryPages,
 } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta = ({ params }: Route.MetaArgs) => {
   return [
@@ -27,15 +28,19 @@ const paramsSchema = z.object({
 });
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
   const url = new URL(request.url);
   const { data, success } = paramsSchema.safeParse(params);
   if (!success) {
     throw new Response("Invalid category", { status: 400 });
   }
   const [category, applauses, totalPages] = await Promise.all([
-    getCategory(data.category),
-    getApplausesByCategory({ categoryId: data.category, page: data.page }),
-    getCategoryPages(data.category),
+    getCategory(client, { categoryId: data.category }),
+    getApplausesByCategory(client, {
+      categoryId: data.category,
+      page: data.page,
+    }),
+    getCategoryPages(client, { categoryId: data.category }),
   ]);
   return { category, applauses, totalPages };
 };

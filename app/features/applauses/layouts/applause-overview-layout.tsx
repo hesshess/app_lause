@@ -4,6 +4,7 @@ import { Button, buttonVariants } from "~/common/components/ui/button";
 import { cn } from "~/lib/utils";
 import type { Route } from "./+types/applause-overview-layout";
 import { getApplauseById } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export function meta({ data }: Route.MetaArgs) {
   return [
@@ -12,8 +13,9 @@ export function meta({ data }: Route.MetaArgs) {
   ];
 }
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const applause = await getApplauseById(Number(params.applauseId));
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
+  const {client, headers} = makeSSRClient(request);
+  const applause = await getApplauseById(client,{applauseId:Number(params.applauseId)});
   return { applause };
 };
 

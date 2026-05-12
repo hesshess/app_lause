@@ -10,6 +10,7 @@ import {
 import { data, useSearchParams } from "react-router";
 import { getChallenges } from "../queries";
 import z from "zod";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -43,7 +44,8 @@ export async function loader({ request }: Route.LoaderArgs) {
       { status:400}
     );
   }
-  const challenges = await getChallenges({
+  const{client, headers} = makeSSRClient(request);
+  const challenges = await getChallenges(client, {
     limit:40,
     participationType: parsedData.participationType,
     type: parsedData.type,

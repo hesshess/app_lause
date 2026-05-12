@@ -2,9 +2,10 @@ import { ChevronUpIcon } from "lucide-react";
 import { Button } from "~/common/components/ui/button";
 import { Link, useOutletContext } from "react-router";
 import type { Route } from "./+types/applause-overview-page";
-import client from "~/supa-client";
+import { makeSSRClient } from "~/supa-client";
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
+  const {client, headers} = makeSSRClient(request)
   await client.rpc("track_event", {
     event_type: "applause_view",
     event_data: {

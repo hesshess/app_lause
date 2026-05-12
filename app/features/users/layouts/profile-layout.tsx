@@ -18,6 +18,7 @@ import {
 import { Textarea } from "~/common/components/ui/textarea";
 import type { Route } from "./+types/profile-layout";
 import { getUserProfile } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = ({ params }) => {
   return [{ title: `${params.username}'s Profile | app_lause` }];
@@ -26,8 +27,10 @@ export const meta: Route.MetaFunction = ({ params }) => {
 
 export const loader = async ({
   params,
+  request,
 }: Route.LoaderArgs ) => {
-  const user = await getUserProfile(params.username);
+  const { client } = makeSSRClient(request);
+  const user = await getUserProfile(client, { username: params.username });
   return { user };
 };
 

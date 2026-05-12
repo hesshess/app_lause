@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
-import client from "~/supa-client";
 import { PAGE_SIZE } from "./constant";
+import type { Database } from "~/supa-client";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const applauseListSelect = `
   applause_id,
@@ -11,18 +12,21 @@ export const applauseListSelect = `
   praises:stats->>praises
 `;
 
-export const getApplausesByDateRange = async ({
-  startDate,
-  endDate,
-  page = 1,
-}: {
-  startDate: DateTime;
-  endDate: DateTime;
-  page?: number;
-}) => {
+export const getApplausesByDateRange = async (
+  client: SupabaseClient<Database>,
+  {
+    startDate,
+    endDate,
+    page = 1,
+  }: {
+    startDate: DateTime;
+    endDate: DateTime;
+    page?: number;
+  },
+) => {
   const { data, error } = await client
     .from("applauses")
-    .select( applauseListSelect)
+    .select(applauseListSelect)
     .order("stats->>upvotes", { ascending: false })
     .gte("created_at", startDate.toISO())
     .lte("created_at", endDate.toISO())
@@ -31,13 +35,16 @@ export const getApplausesByDateRange = async ({
   return data;
 };
 
-export const getApplausePagesByDateRange = async ({
-  startDate,
-  endDate,
-}: {
-  startDate: DateTime;
-  endDate: DateTime;
-}) => {
+export const getApplausePagesByDateRange = async (
+  client: SupabaseClient<Database>,
+  {
+    startDate,
+    endDate,
+  }: {
+    startDate: DateTime;
+    endDate: DateTime;
+  },
+) => {
   const { count, error } = await client
     .from("applauses")
     .select(`applause_id`, { count: "exact", head: true })
@@ -48,7 +55,7 @@ export const getApplausePagesByDateRange = async ({
   return Math.ceil(count / PAGE_SIZE);
 };
 
-export const getCategories = async () => {
+export const getCategories = async (client: SupabaseClient<Database>) => {
   const { data, error } = await client
     .from("categories")
     .select("category_id, name, description");
@@ -56,7 +63,10 @@ export const getCategories = async () => {
   return data;
 };
 
-export const getCategory = async (categoryId: number) => {
+export const getCategory = async (
+  client: SupabaseClient<Database>,
+  { categoryId }: { categoryId: number },
+) => {
   const { data, error } = await client
     .from("categories")
     .select("category_id, name, description")
@@ -66,13 +76,16 @@ export const getCategory = async (categoryId: number) => {
   return data;
 };
 
-export const getApplausesByCategory = async ({
-  categoryId,
-  page,
-}: {
-  categoryId: number;
-  page: number;
-}) => {
+export const getApplausesByCategory = async (
+  client: SupabaseClient<Database>,
+  {
+    categoryId,
+    page,
+  }: {
+    categoryId: number;
+    page: number;
+  },
+) => {
   const { data, error } = await client
     .from("applauses")
     .select(applauseListSelect)
@@ -82,7 +95,10 @@ export const getApplausesByCategory = async ({
   return data;
 };
 
-export const getCategoryPages = async (categoryId: number) => {
+export const getCategoryPages = async (
+  client: SupabaseClient<Database>,
+  { categoryId }: { categoryId: number },
+) => {
   const { count, error } = await client
     .from("applauses")
     .select(`applause_id`, { count: "exact", head: true })
@@ -92,13 +108,16 @@ export const getCategoryPages = async (categoryId: number) => {
   return Math.ceil(count / PAGE_SIZE);
 };
 
-export const getApplausesBySearch = async ({
-  query,
-  page,
-}: {
-  query: string;
-  page: number;
-}) => {
+export const getApplausesBySearch = async (
+  client: SupabaseClient<Database>,
+  {
+    query,
+    page,
+  }: {
+    query: string;
+    page: number;
+  },
+) => {
   const { data, error } = await client
     .from("applauses")
     .select(applauseListSelect)
@@ -108,7 +127,10 @@ export const getApplausesBySearch = async ({
   return data;
 };
 
-export const getPagesBySearch = async ({ query }: { query: string }) => {
+export const getPagesBySearch = async (
+  client: SupabaseClient<Database>,
+  { query }: { query: string },
+) => {
   const { count, error } = await client
     .from("applauses")
     .select(`applause_id`, { count: "exact", head: true })
@@ -118,7 +140,10 @@ export const getPagesBySearch = async ({ query }: { query: string }) => {
   return Math.ceil(count / PAGE_SIZE);
 };
 
-export const getApplauseById = async (applauseId: number) => {
+export const getApplauseById = async (
+  client: SupabaseClient<Database>,
+  { applauseId }: { applauseId: number },
+) => {
   const { data, error } = await client
     .from("applause_overview_view")
     .select("*")
@@ -128,7 +153,10 @@ export const getApplauseById = async (applauseId: number) => {
   return data;
 };
 
-export const getPraises = async (applauseId: number) => {
+export const getPraises = async (
+  client: SupabaseClient<Database>,
+  { applauseId }: { applauseId: number },
+) => {
   const { data, error } = await client
     .from("praises")
     .select(
@@ -140,7 +168,7 @@ export const getPraises = async (applauseId: number) => {
         user:profiles!inner(
           name,username,avatar
         )
-      `
+      `,
     )
     .eq("applause_id", applauseId);
   if (error) throw error;

@@ -4,6 +4,7 @@ import { DotIcon } from "lucide-react";
 import { Button } from "~/common/components/ui/button";
 import { DateTime } from "luxon";
 import { getChallengeById } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -15,8 +16,9 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const challenge = await getChallengeById(Number(params.challengeId));
+export const loader = async ({ request,params }: Route.LoaderArgs) => {
+  const {client, headers} = makeSSRClient(request);
+  const challenge = await getChallengeById(client, {challengeId: Number(params.challengeId)});
   return { challenge };
 };
 

@@ -5,6 +5,7 @@ import { Button } from "~/common/components/ui/button";
 import { Link } from "react-router";
 import { getApplausesByDateRange } from "../queries";
 import { DateTime } from "luxon";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -12,22 +13,23 @@ export const meta: Route.MetaFunction = () => {
     { name: "description", content: "Top applauses leaderBoard" },
   ];
 };
-export const loader = async () => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
   const [dailyApplauses, weeklyApplauses, monthlyApplauses, yearlyApplauses] =
     await Promise.all([
-      getApplausesByDateRange({
+      getApplausesByDateRange(client, {
         startDate: DateTime.now().startOf("day"),
         endDate: DateTime.now().endOf("day"),
       }),
-      getApplausesByDateRange({
+      getApplausesByDateRange(client, {
         startDate: DateTime.now().startOf("week"),
         endDate: DateTime.now().endOf("week"),
       }),
-      getApplausesByDateRange({
+      getApplausesByDateRange(client, {
         startDate: DateTime.now().startOf("month"),
         endDate: DateTime.now().endOf("month"),
       }),
-      getApplausesByDateRange({
+      getApplausesByDateRange(client, {
         startDate: DateTime.now().startOf("year"),
         endDate: DateTime.now().endOf("year"),
       }),

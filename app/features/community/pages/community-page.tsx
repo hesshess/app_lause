@@ -14,6 +14,7 @@ import { PostCard } from "../components/post-card";
 import type { Route } from "./+types/community-page";
 import z from "zod";
 import { getPosts, getTopics } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | app_lause" }];
@@ -32,7 +33,7 @@ const searchParamsSchema = z.object({
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   const { success, data: parsedData } = searchParamsSchema.safeParse(
-    Object.fromEntries(url.searchParams)
+    Object.fromEntries(url.searchParams),
   );
   if (!success) {
     throw data(
@@ -40,15 +41,14 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
         error_code: "invalid_search_params",
         message: "Invalid search params",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
-
-
+  const { client, headers } = makeSSRClient(request);
   const [topics, posts] = await Promise.all([
-    getTopics(),
-    getPosts({
+    getTopics(client),
+    getPosts(client, {
       limit: 20,
       sorting: parsedData.sorting,
       period: parsedData.period,
@@ -58,7 +58,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   ]);
   return { topics, posts };
 };
-
 
 export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -156,11 +155,11 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
           </span>
           <div className="flex flex-col gap-2 items-start">
             {[
-  "Self Growth",
-  "Wellness",
-  "Mindset",
-  "Routine",
-  "Reflection",
+              "Self Growth",
+              "Wellness",
+              "Mindset",
+              "Routine",
+              "Reflection",
             ].map((category) => (
               <Button asChild variant={"link"} key={category} className="pl-0">
                 <Link to={`/community?topic=${category}`}>{category}</Link>

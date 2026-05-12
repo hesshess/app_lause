@@ -13,6 +13,7 @@ import { getPosts } from "~/features/community/queries";
 import { getGptIdeas } from "~/features/ideas/queries";
 import { getChallenges } from "~/features/challenges/queries";
 import { getTeams } from "~/features/teams/queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: MetaFunction = () => {
   return [
@@ -21,20 +22,21 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async () => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
+   const { client, headers } = makeSSRClient(request);
   const [applauses, posts, ideas, challenges, teams] = await Promise.all([
-    getApplausesByDateRange({
+    getApplausesByDateRange(client,{
       startDate: DateTime.now().startOf("day"),
       endDate: DateTime.now().endOf("day"),
       // limit: 7,
     }),
-    getPosts({
+    getPosts(client,{
       limit: 7,
       sorting: "newest",
     }),
-    getGptIdeas({ limit: 7 }),
-    getChallenges({ limit: 7 }),
-    getTeams({ limit: 7 }),
+    getGptIdeas(client,{ limit: 7 }),
+    getChallenges(client,{ limit: 7 }),
+    getTeams(client,{ limit: 7 }),
   ]);
   return { applauses, posts, ideas, challenges, teams };
 };

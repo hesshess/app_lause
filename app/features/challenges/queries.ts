@@ -1,4 +1,4 @@
-import client from "~/supa-client";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "database.types";
 
 type ChallengeType = Database["public"]["Enums"]["challenge_type"];
@@ -6,7 +6,7 @@ type ChallengeParticipationType =
   Database["public"]["Enums"]["challenge_participation_type"];
 type ChallengeDuration = Database["public"]["Enums"]["challenge_duration"];
 
-export const getChallenges = async ({
+export const getChallenges = async (client: SupabaseClient<Database>,{
   limit,
   type,
   participationType,
@@ -54,7 +54,7 @@ export const getChallenges = async ({
 };
 
 
-export const getChallengeById = async (challengeId: number) => {
+export const getChallengeById = async (client: SupabaseClient<Database>,{challengeId}:{challengeId: number}) => {
   const { data, error } = await client
     .from("challenges")
     .select("*")

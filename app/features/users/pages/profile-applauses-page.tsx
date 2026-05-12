@@ -1,9 +1,13 @@
 import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import type { Route } from "./+types/profile-applauses-page";
 import { getUserApplauses } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const applauses = await getUserApplauses(params.username);
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const applauses = await getUserApplauses(client, {
+    username: params.username,
+  });
   return { applauses };
 };
 

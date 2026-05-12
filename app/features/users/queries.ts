@@ -1,8 +1,11 @@
-import client from "~/supa-client";
-import { features } from "process";
+import type { Database } from "~/supa-client";
 import { applauseListSelect } from "../applauses/queries";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export const getUserProfile = async (username: string) => {
+export const getUserProfile = async (
+  client: SupabaseClient<Database>,
+  { username }: { username: string },
+) => {
   const { data, error } = await client
     .from("profiles")
     .select(
@@ -24,7 +27,10 @@ export const getUserProfile = async (username: string) => {
   return data;
 };
 
-export const getUserApplauses = async (username: string) => {
+export const getUserApplauses = async (
+  client: SupabaseClient<Database>,
+  { username }: { username: string },
+) => {
   const { data, error } = await client
     .from("applauses")
     .select(
@@ -39,7 +45,10 @@ export const getUserApplauses = async (username: string) => {
   return data;
 };
 
-export const getUserPosts = async (username: string) => {
+export const getUserPosts = async (
+  client: SupabaseClient<Database>,
+  { username }: { username: string },
+) => {
   const { data, error } = await client
     .from("community_post_list_view")
     .select("*")

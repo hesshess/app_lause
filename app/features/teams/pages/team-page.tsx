@@ -16,6 +16,7 @@ import {
 import { Badge } from "~/common/components/ui/badge";
 import InputPair from "~/common/components/input-pair";
 import { getTeamById } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 
 export const meta: Route.MetaFunction = ({ params }) => {
@@ -24,8 +25,9 @@ export const meta: Route.MetaFunction = ({ params }) => {
     { name: "description", content: "View a growth team and apply to join" },
   ];
 };
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const team = await getTeamById(Number(params.teamId));
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const team = await getTeamById(client, { teamId: Number(params.teamId) });
   return { team };
 };
 

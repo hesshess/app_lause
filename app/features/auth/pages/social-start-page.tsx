@@ -1,43 +1,33 @@
-import { Form } from "react-router";
-import { Button } from "~/common/components/ui/button";
+import { redirect } from "react-router";
+import z from "zod";
+import { makeSSRClient } from "~/supa-client";
 import type { Route } from "./+types/social-start-page";
 
-export const meta: Route.MetaFunction = ({ params }) => {
-  return [
-    { title: `${params.provider} Login | app_lause` },
-    {
-      name: "description",
-      content: `Start ${params.provider} social authentication`,
+const paramsSchema = z.object({
+  provider: z.enum(["github", "kakao", "google"]),
+});
+
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { success, data } = paramsSchema.safeParse(params);
+  if (!success) {
+    return redirect("/auth/login");
+  }
+  const { provider } = data;
+  const redirectTo = `http://localhost:5173/auth/social/${provider}/complete`;
+  const { client, headers } = makeSSRClient(request);
+  const {
+    data: { url },
+    error,
+  } = await client.auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo,
     },
-  ];
+  });
+  if (url) {
+    return redirect(url, { headers });
+  }
+  if (error) {
+    throw error;
+  }
 };
-
-export function loader({ params }: Route.LoaderArgs) {
-  return { provider: params.provider };
-}
-
-export async function action({ params }: Route.ActionArgs) {
-  return { provider: params.provider };
-}
-
-export default function SocialStartPage({
-  loaderData,
-}: Route.ComponentProps) {
-  return (
-    <div className="space-y-6 text-center">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-semibold tracking-tight capitalize">
-          Continue with {loaderData.provider}
-        </h1>
-        <p className="text-muted-foreground">
-          Start the social login flow for {loaderData.provider}.
-        </p>
-      </div>
-      <Form method="post">
-        <Button type="submit" className="w-full capitalize">
-          Continue with {loaderData.provider}
-        </Button>
-      </Form>
-    </div>
-  );
-}

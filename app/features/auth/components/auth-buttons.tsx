@@ -1,4 +1,4 @@
-import { GithubIcon, LockIcon, MessageCircleIcon } from "lucide-react";
+import { GithubIcon, GlobeIcon, LockIcon, MessageCircleIcon } from "lucide-react";
 import { Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import { Separator } from "~/common/components/ui/separator";
@@ -14,6 +14,12 @@ export default function AuthButtons() {
         <Separator className="w-full" />
       </div>
       <div className="w-full flex flex-col gap-2">
+        <Button variant="outline" className="w-full" asChild>
+          <Link to="/auth/social/google/start">
+            <GlobeIcon className="w-4 h-4" />
+            Google
+          </Link>
+        </Button>
         <Button variant="outline" className="w-full" asChild>
           <Link to="/auth/social/kakao/start">
             <MessageCircleIcon className="w-4 h-4" />

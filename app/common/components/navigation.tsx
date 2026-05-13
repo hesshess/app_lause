@@ -1,17 +1,40 @@
 import { Link } from "react-router";
 import { Separator } from "../components/ui/separator";
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "./ui/navigation-menu";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "./ui/navigation-menu";
 import { cn } from "~/lib/utils";
 import { Button } from "./ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { BarChartIcon, BellIcon, LogOutIcon, MessageCircleIcon, SettingsIcon, UserIcon } from "lucide-react";
+import {
+  BarChartIcon,
+  BellIcon,
+  LogOutIcon,
+  MessageCircleIcon,
+  SettingsIcon,
+  UserIcon,
+} from "lucide-react";
 
 const menus = [
   {
     name: "Applauses",
     to: "/applauses",
-   items: [
+    items: [
       {
         name: "Leaderboards",
         description: "See the most recognized habits and growth actions",
@@ -44,7 +67,7 @@ const menus = [
     to: "/challenges",
     items: [
       {
-       name: "Explore",
+        name: "Explore",
         description: "Join challenges designed for consistency and growth",
         to: "/challenges",
       },
@@ -103,10 +126,20 @@ const menus = [
   },
 ];
 
-
-export default function Navigation({isLoggedIn, hasNotifications, hasMessages,}:{ isLoggedIn: boolean;
-hasNotifications: boolean;
-hasMessages: boolean;
+export default function Navigation({
+  isLoggedIn,
+  hasNotifications,
+  hasMessages,
+  username,
+  avatar,
+  name,
+}: {
+  isLoggedIn: boolean;
+  hasNotifications: boolean;
+  hasMessages: boolean;
+  username?: string;
+  avatar?: string | null;
+  name?: string;
 }) {
   return (
     <nav className="flex px-20 h-16 items-center justify-between backdrop-blur fixed top-0 left-0 right-0 z-50 bg-background/50">
@@ -169,69 +202,75 @@ hasMessages: boolean;
           <Button size="icon" variant="ghost" asChild className="relative">
             <Link to="/my/notifications">
               <BellIcon className="size-4" />
-            {hasNotifications &&(
-              <div className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full"/>
-            )}
+              {hasNotifications && (
+                <div className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full" />
+              )}
             </Link>
           </Button>
           <Button size="icon" variant="ghost" asChild className="relative">
             <Link to="/my/messages">
-              <MessageCircleIcon  className="size-4" />
-            {hasMessages &&(
-              <div className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full"/>
-            )}
+              <MessageCircleIcon className="size-4" />
+              {hasMessages && (
+                <div className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full" />
+              )}
             </Link>
           </Button>
-        <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Avatar>
-            <AvatarImage src="https://github.com/hesshess.png" />
-            <AvatarFallback>Anonymous
-            </AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel className="flex flex-col">
-            <span className="font-medium">Hess</span>
-            <span className="text-xs text-muted-foreground">
-              @username
-            </span>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem asChild className="cursor-pointer">
-              <Link to="/my/dashboard">
-              <BarChartIcon className="size-4 mr-2" />
-              Dashboard</Link>
-              </DropdownMenuItem>  
-            <DropdownMenuItem asChild className="cursor-pointer">
-              <Link to="/my/profile">
-              <UserIcon className="size-4 mr-2" />
-              Profile</Link>
-              </DropdownMenuItem> 
-            <DropdownMenuItem asChild className="cursor-pointer">
-              <Link to="/my/settings">
-              <SettingsIcon   className="size-4 mr-2" />
-              Settings</Link>
-              </DropdownMenuItem>  
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild className="cursor-pointer">
-            <Link to="/auth/logout">
-              <LogOutIcon className="size-4 mr-2" />
-              Logout
-            </Link>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu> 
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar>
+                {avatar ? (
+                  <AvatarImage src={avatar} />
+                ) : (
+                  <AvatarFallback>{name?.[0]}</AvatarFallback>
+                )}
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel className="flex flex-col">
+                <span className="font-medium">{name}</span>
+                <span className="text-xs text-muted-foreground">
+                  @{username}
+                </span>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/my/dashboard">
+                    <BarChartIcon className="size-4 mr-2" />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/my/profile">
+                    <UserIcon className="size-4 mr-2" />
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/my/settings">
+                    <SettingsIcon className="size-4 mr-2" />
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link to="/auth/logout">
+                  <LogOutIcon className="size-4 mr-2" />
+                  Logout
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      ) : ( <div className="flex item-center gap-4">
-            <Button asChild variant="secondary" >
-                <Link to="/auth/login">Login</Link>
-            </Button>
-            <Button asChild>
-              <Link to="/auth/join">Join</Link>
-            </Button>
+      ) : (
+        <div className="flex item-center gap-4">
+          <Button asChild variant="secondary">
+            <Link to="/auth/login">Login</Link>
+          </Button>
+          <Button asChild>
+            <Link to="/auth/join">Join</Link>
+          </Button>
         </div>
       )}
     </nav>

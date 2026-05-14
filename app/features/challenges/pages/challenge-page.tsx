@@ -6,12 +6,11 @@ import { DateTime } from "luxon";
 import { getChallengeById } from "../queries";
 import { makeSSRClient } from "~/supa-client";
 
-export const meta: Route.MetaFunction = () => {
+export const meta: Route.MetaFunction = ({data}) => {
   return [
-    { title: `Challenge Details | app_lause` },
+    { title: `${data.challenge.title}  | app_lause` },
     {
       name: "description",
-      content: "View details for a self-growth challenge",
     },
   ];
 };

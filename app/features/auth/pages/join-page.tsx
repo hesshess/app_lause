@@ -6,7 +6,7 @@ import AuthButtons from "../components/auth-buttons";
 import z from "zod";
 import { checkUsernameExists } from "../queries";
 import { makeSSRClient } from "~/supa-client";
-import { LoaderCircle } from "lucide-react";
+import AuthSubmitFeedback from "../components/auth-submit-feedback";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -120,16 +120,15 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
           {actionData && "formErrors" in actionData && (
             <p className="text-red-500">{actionData?.formErrors?.password}</p>
           )}
-          <Button className="w-full" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <LoaderCircle className="animate-spin" />
-            ) : (
-              "Create account"
-            )}
-          </Button>
-          {actionData && "signUpError" in actionData && (
-            <p className="text-red-500">{actionData.signUpError}</p>
-          )}
+          <AuthSubmitFeedback
+            error={
+              actionData && "signUpError" in actionData
+                ? actionData.signUpError
+                : null
+            }
+            isSubmitting={isSubmitting}
+            submitLabel="Create account"
+          />
         </Form>
         <AuthButtons />
       </div>

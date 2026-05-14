@@ -21,17 +21,17 @@ import { getPostById, getReplies } from "../queries";
 import { DateTime } from "luxon";
 import { makeSSRClient } from "~/supa-client";
 
-export const meta: Route.MetaFunction = ({ params }) => {
+export const meta: Route.MetaFunction = ({ data }) => {
   return [
-    { title: `Post ${params.postId} | app_lause` },
-    { name: "description", content: "View a community post" },
+    { title: `${data.post.title} on ${data.post.topic_name} | app_lause` },
+    { name: "description", content: "Post a community post" },
   ];
 };
 
 export const loader = async ({ request, params }: Route.LoaderArgs) => {
   const { client, headers } = makeSSRClient(request);
-  const post = await getPostById(client, {postId: Number(params.postId)});
-  const replies = await getReplies(client, {postId: Number(params.postId)});
+  const post = await getPostById(client, { postId: Number(params.postId) });
+  const replies = await getReplies(client, { postId: Number(params.postId) });
   return { post, replies };
 };
 
@@ -66,22 +66,24 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
           <div className="flex w-full flex-col items-start gap-6 lg:flex-row lg:gap-10">
             <Button variant="outline" className="flex flex-col h-14">
               <ChevronUpIcon className="size-4 shrink-0" />
-                <span>{loaderData.post.upvotes}</span>
+              <span>{loaderData.post.upvotes}</span>
             </Button>
             <div className="space-y-10 lg:space-y-20 w-full">
               <div className="space-y-2">
-      <h2 className="text-3xl font-bold">{loaderData.post.title}</h2>
+                <h2 className="text-3xl font-bold">{loaderData.post.title}</h2>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <span>{loaderData.post.author_name}</span>
                   <DotIcon className="size-5" />
-               <span>
-                    {DateTime.fromISO(loaderData.post.created_at).toRelative()}
+                  <span>
+                    {DateTime.fromISO(loaderData.post.created_at, {
+                      zone: "utc",
+                    }).toRelative({ unit: "hours" })}
                   </span>
                   <DotIcon className="size-5" />
-                    <span>{loaderData.post.replies} replies</span>
+                  <span>{loaderData.post.replies} replies</span>
                 </div>
                 <p className="text-muted-foreground lg:w-3/4">
-         {loaderData.post.content}
+                  {loaderData.post.content}
                 </p>
               </div>
               <Form className="flex w-full items-start gap-5 lg:w-3/4">
@@ -99,11 +101,11 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
                 </div>
               </Form>
               <div className="space-y-10">
-                      <h4 className="font-semibold">
+                <h4 className="font-semibold">
                   {loaderData.post.replies} Replies
                 </h4>
                 <div className="flex flex-col gap-5">
-                   {loaderData.replies.map((reply) => (
+                  {loaderData.replies.map((reply) => (
                     <Reply
                       username={reply.user.name}
                       avatarUrl={reply.user.avatar}
@@ -137,8 +139,13 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
             </div>
           </div>
           <div className="gap-2 text-sm flex flex-col">
-            <span>🌱 Joined{" "}{DateTime.fromISO(loaderData.post.author_created_at).toRelative()}{" "}
-              ago</span>
+            <span>
+              🌱 Joined{" "}
+              {DateTime.fromISO(loaderData.post.author_created_at, {
+                zone: "utc",
+              }).toRelative({ unit: "hours" })}{" "}
+              ago
+            </span>
             <span>👏 Shared {loaderData.post.applauses} applauses</span>
           </div>
           <Button variant="outline" className="w-full">

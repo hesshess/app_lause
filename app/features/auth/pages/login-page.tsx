@@ -3,9 +3,9 @@ import { Button } from "~/common/components/ui/button";
 import type { Route } from "./+types/login-page";
 import InputPair from "~/common/components/input-pair";
 import AuthButtons from "../components/auth-buttons";
-import { LoaderCircle } from "lucide-react";
 import z from "zod";
 import { makeSSRClient } from "~/supa-client";
+import AuthSubmitFeedback from "../components/auth-submit-feedback";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -100,16 +100,15 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
               {actionData?.formErrors?.password?.join(", ")}
             </p>
           )}
-          <Button className="w-full" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <LoaderCircle className="animate-spin" />
-            ) : (
-              "Log in"
-            )}
-          </Button>
-    {actionData && "loginError" in actionData && (
-            <p className="text-sm text-red-500">{actionData.loginError}</p>
-               )}
+          <AuthSubmitFeedback
+            error={
+              actionData && "loginError" in actionData
+                ? actionData.loginError
+                : null
+            }
+            isSubmitting={isSubmitting}
+            submitLabel="Log in"
+          />
         </Form>
         <AuthButtons />
       </div>

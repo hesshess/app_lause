@@ -1,42 +1,27 @@
-import { Link } from "react-router";
+import { Link, redirect } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import type { Route } from "./+types/social-complete-page";
+import z from "zod";
+import { makeSSRClient } from "~/supa-client";
 
-export const meta: Route.MetaFunction = ({ params }) => {
-  return [
-    { title: `${params.provider} Complete | app_lause` },
-    {
-      name: "description",
-      content: `Complete ${params.provider} social authentication`,
-    },
-  ];
+const paramsSchema = z.object({
+  provider: z.enum(["github", "kakao", "google"]),
+});
+
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { success, data } = paramsSchema.safeParse(params);
+  if (!success) {
+    return redirect("/auth/login");
+  }
+  const url = new URL(request.url);
+  const code = url.searchParams.get("code");
+  if (!code) {
+    return redirect("/auth/login");
+  }
+  const { client, headers } = makeSSRClient  (request);
+  const { error } = await client.auth.exchangeCodeForSession(code);
+  if (error) {
+    throw error;
+  }
+  return redirect("/", { headers });
 };
-
-export function loader({ params }: Route.LoaderArgs) {
-  return { provider: params.provider };
-}
-
-export async function action({ params }: Route.ActionArgs) {
-  return { provider: params.provider };
-}
-
-export default function SocialCompletePage({
-  loaderData,
-}: Route.ComponentProps) {
-  return (
-    <div className="space-y-6 text-center">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-semibold tracking-tight capitalize">
-          {loaderData.provider} connected
-        </h1>
-        <p className="text-muted-foreground">
-          The social sign-in flow for {loaderData.provider} is ready for the next
-          step.
-        </p>
-      </div>
-      <Button asChild className="w-full">
-        <Link to="/auth/login">Back to login</Link>
-      </Button>
-    </div>
-  );
-}

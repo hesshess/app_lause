@@ -1,17 +1,56 @@
-import { Form } from "react-router";
-import { Button } from "~/common/components/ui/button";
-import type { Route } from "./+types/otp-complete-page";
+import { LoaderCircle } from "lucide-react";
+import { Form, redirect, useNavigation, useSearchParams } from "react-router";
+import { z } from "zod";
 import InputPair from "~/common/components/input-pair";
+import { Button } from "~/common/components/ui/button";
+import { makeSSRClient } from "~/supa-client";
+import type { Route } from "./+types/otp-complete-page";
+import AuthSubmitFeedback from "../components/auth-submit-feedback";
 
 export const meta: Route.MetaFunction = () => {
-  return [
-    { title: "OTP Complete | app_lause" },
-    { name: "description", content: "Complete one-time passcode verification" },
-  ];
+  return [{ title: "Verify OTP | app_lause" }];
 };
 
-export default function OtpCompletePage() {
-   return (
+const formSchema = z.object({
+  email: z.string().email(),
+  otp: z.string().min(8).max(8),
+});
+
+export const action = async ({ request }: Route.ActionArgs) => {
+  const formData = await request.formData();
+  const { data, success, error } = formSchema.safeParse(
+    Object.fromEntries(formData),
+  );
+  if (!success) {
+    return { fieldErrors: error.flatten().fieldErrors };
+  }
+  const { email, otp } = data;
+  const { client, headers } = makeSSRClient(request);
+
+  const { error: verifyError } = await client.auth.verifyOtp({
+    email,
+    token: otp,
+    type: "email",
+  });
+  if (verifyError) {
+    return { verifyError: verifyError.message };
+  }
+  return redirect("/", { headers });
+};
+
+export default function OtpPage({ actionData }: Route.ComponentProps) {
+  const [searchParams] = useSearchParams();
+  const email = searchParams.get("email");
+  const navigation = useNavigation();
+  const isSubmitting =
+    navigation.state === "submitting" || navigation.state === "loading";
+  const submitError =
+    actionData && "fieldErrors" in actionData
+      ? actionData.fieldErrors?.otp?.join(", ")
+      : actionData && "verifyError" in actionData
+        ? actionData.verifyError
+        : null;
+  return (
     <div className="flex flex-col relative items-center justify-center h-full">
       <div className="flex items-center flex-col justify-center w-full max-w-md gap-10">
         <div className="text-center">
@@ -20,16 +59,22 @@ export default function OtpCompletePage() {
             Enter the OTP code sent to your email address.
           </p>
         </div>
-        <Form className="w-full space-y-4">
+        <Form className="w-full space-y-4" method="post">
           <InputPair
             label="Email"
             description="Enter your email address"
             name="email"
+            defaultValue={email || ""}
             id="email"
             required
             type="email"
-            placeholder="i.e wemake@example.com"
+            placeholder="i.e applause@example.com"
           />
+          {actionData && "fieldErrors" in actionData && (
+            <p className="text-sm text-red-500">
+              {actionData.fieldErrors?.email?.join(", ")}
+            </p>
+          )}
           <InputPair
             label="OTP"
             description="Enter the OTP code sent to your email address"
@@ -39,9 +84,11 @@ export default function OtpCompletePage() {
             type="number"
             placeholder="i.e 1234"
           />
-          <Button className="w-full" type="submit">
-            Log in
-          </Button>
+<AuthSubmitFeedback
+error={submitError}
+isSubmitting={isSubmitting}
+submitLabel="Verify OTP"
+/>
         </Form>
       </div>
     </div>

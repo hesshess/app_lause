@@ -15,6 +15,23 @@ begin
                 values (new.id, 'Anonymous', 'ms.' || substr(md5(random()::text), 1, 8), 'habit-builder');
             end if;
         end if;
+            
+         if new.raw_app_meta_data ? 'provider' AND new.raw_app_meta_data ->> 'provider' = 'kakao' then
+            insert into public.profiles (profile_id, name, username, role, avatar)
+            values (new.id, new.raw_user_meta_data ->> 'name', new.raw_user_meta_data ->> 'preferred_username' || substr(md5(random()::text), 1, 5), 'habit-builder', new.raw_user_meta_data ->> 'avatar_url');
+        end if;
+
+
+        if new.raw_app_meta_data ? 'provider' AND new.raw_app_meta_data ->> 'provider' = 'github' then
+            insert into public.profiles (profile_id, name, username, role, avatar)
+            values (new.id, new.raw_user_meta_data ->> 'full_name', new.raw_user_meta_data ->> 'user_name' || substr(md5(random()::text), 1, 5), 'habit-builder', new.raw_user_meta_data ->> 'avatar_url');
+        end if;
+
+        if new.raw_app_meta_data ? 'provider' AND new.raw_app_meta_data ->> 'provider' = 'google' then
+            insert into public.profiles (profile_id, name, username, role, avatar)
+            values (new.id, new.raw_user_meta_data ->> 'full_name', new.raw_user_meta_data ->> 'name' || substr(md5(random()::text), 1, 5), 'habit-builder', new.raw_user_meta_data ->> 'avatar_url');
+        end if;
+
     end if;
     return new;
 end;

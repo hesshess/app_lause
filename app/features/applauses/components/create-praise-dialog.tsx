@@ -1,6 +1,6 @@
 import { HeartIcon } from "lucide-react";
 import { useState } from "react";
-import { Form } from "react-router";
+import { Form, useActionData } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import { Button } from "~/common/components/ui/button";
 import {
@@ -11,21 +11,21 @@ import {
   DialogTitle,
 } from "~/common/components/ui/dialog";
 import { Label } from "~/common/components/ui/label";
+import type { action } from "../pages/applause-praises-page";
 
 export default function CreatePraiseDialog() {
   const [rating, setRating] = useState<number>(0);
   const [hoveredHeart, setHoveredHeart] = useState<number>(0);
+  const actionData = useActionData<typeof action>();
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle className="text-2xl">
-          Share your praise
-        </DialogTitle>
+        <DialogTitle className="text-2xl">Share your praise</DialogTitle>
         <DialogDescription>
           Let the person know how their progress or action inspired you.
         </DialogDescription>
       </DialogHeader>
-      <Form className="space-y-10">
+      <Form className="space-y-10" method="post">
         <div>
           <Label className="flex flex-col gap-1">
             Rating
@@ -44,12 +44,14 @@ export default function CreatePraiseDialog() {
                 <HeartIcon
                   className="size-5 text-violet-400"
                   fill={
-                    hoveredHeart >= heart || rating >= heart ? "currentColor" : "none"
+                    hoveredHeart >= heart || rating >= heart
+                      ? "currentColor"
+                      : "none"
                   }
                 />
                 <input
                   type="radio"
-                  value="heart"
+                  value={heart}
                   name="rating"
                   required
                   className="opacity-0 h-px w-px absolute"
@@ -58,15 +60,26 @@ export default function CreatePraiseDialog() {
               </label>
             ))}
           </div>
+          {actionData?.formErrors?.rating && (
+            <p className="text-red-500">
+              {actionData.formErrors.rating.join(", ")}
+            </p>
+          )}
         </div>
         <InputPair
           textArea
           label="Praise"
+          name="praise"
           placeholder="Write a message of appreciation or encouragementd"
           description="Maximum 1000 characters"
         />
+                {actionData?.formErrors?.praise && (
+          <p className="text-red-500">
+            {actionData.formErrors.praise.join(", ")}
+          </p>
+        )}
         <DialogFooter>
-          <Button type="submit">Submit praise</Button>
+          <Button>Submit praise</Button>
         </DialogFooter>
       </Form>
     </DialogContent>

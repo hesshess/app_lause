@@ -89,7 +89,8 @@ export const getReplies = async (client: SupabaseClient<Database>, {postId}: {po
       )
       `
     )
-    .eq("post_id", postId);
+    .eq("post_id", postId)
+    .order("created_at", { ascending: false });
   if (error) throw error;
   return data;
 };

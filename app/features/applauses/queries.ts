@@ -170,7 +170,8 @@ export const getPraises = async (
         )
       `,
     )
-    .eq("applause_id", applauseId);
+    .eq("applause_id", applauseId)
+    .order("created_at", { ascending: false });
   if (error) throw error;
   return data;
 };

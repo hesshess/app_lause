@@ -10,8 +10,18 @@ import {
 } from "~/common/components/ui/sidebar";
 import { Link, Outlet, useLocation } from "react-router";
 import { HomeIcon, RocketIcon, SparklesIcon } from "lucide-react";
+import type { Route } from "./+types/dashboard-layout";
+import { makeSSRClient } from "~/supa-client";
+import { getApplausesByUserId, getLoggedInUserId } from "../queries";
 
-export default function DashboardLayout() {
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client } = await makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const applauses = await getApplausesByUserId(client, { userId });
+  return { userId, applauses };
+};
+
+export default function DashboardLayout({ loaderData }: Route.ComponentProps) {
   const location = useLocation();
   return (
     <SidebarProvider className="flex min-h-full">
@@ -46,14 +56,16 @@ export default function DashboardLayout() {
           <SidebarGroup>
             <SidebarGroupLabel>Applause Analytics</SidebarGroupLabel>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link to="/my/dashboard/applauses/1">
-                    <RocketIcon className="size-4" />
-                    <span>Applause 1</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {loaderData.applauses.map((applause) => (
+                <SidebarMenuItem key={applause.applause_id}>
+                  <SidebarMenuButton asChild>
+                    <Link to={`/my/dashboard/applauses/${applause.applause_id}`}>
+                      <RocketIcon className="size-4" />
+                      <span>{applause.name}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>

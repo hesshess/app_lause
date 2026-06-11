@@ -1,8 +1,11 @@
-import { Link } from "react-router";
+import { Link, redirect } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "~/common/components/ui/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "~/common/components/ui/card";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import type { Route } from "./+types/dashboard-applause-page";
+import { makeSSRClient } from "~/supa-client";
+import { getLoggedInUserId } from "../queries";
 
 
 export const meta = () => {
@@ -13,14 +16,29 @@ export const meta = () => {
 };
 
 
-const chartData = [
-  { month: "January", views: 186, visitors: 100 },
-  { month: "February", views: 305, visitors: 34 },
-  { month: "March", views: 237, visitors: 65 },
-  { month: "April", views: 73, visitors: 32 },
-  { month: "May", views: 209, visitors: 66 },
-  { month: "June", views: 214, visitors: 434 },
-];
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
+  const { client } = await makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const { error } = await client
+    .from("applauses")
+    .select("applause_id")
+    .eq("profile_id", userId)
+    .eq("applause_id", +params.applauseId)
+    .single();
+  if (error) {
+    throw redirect("/my/dashboard/applauses");
+  }
+  const { data, error: rcpError } = await client.rpc("get_applause_stats", {
+    applause_id: params.applauseId,
+  });
+  if (rcpError) {
+    throw error;
+  }
+  return {
+    chartData: data,
+  };
+};
+
 const chartConfig = {
   views: {
     label: "Page Views",
@@ -33,7 +51,9 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 
-export default function DashboardApplausePage() {
+export default function DashboardProductPage({
+  loaderData,
+}: Route.ComponentProps) {
   return (
     <div className="space-y-5">
       <h1 className="text-2xl font-semibold mb-6">Analytics</h1>
@@ -45,7 +65,7 @@ export default function DashboardApplausePage() {
           <ChartContainer config={chartConfig}>
             <AreaChart
               accessibilityLayer
-              data={chartData}
+              data={loaderData.chartData}
               margin={{
                 left: 12,
                 right: 12,
@@ -57,10 +77,10 @@ export default function DashboardApplausePage() {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                tickFormatter={(value) => value.slice(0, 3)}
+                padding={{ left: 15, right: 15 }}
               />
               <Area
-                dataKey="views"
+                dataKey="applause_views"
                 type="natural"
                 stroke="var(--color-views)"
                 fill="var(--color-views)"
@@ -68,7 +88,7 @@ export default function DashboardApplausePage() {
                 dot={false}
               />
               <Area
-                dataKey="visitors"
+                dataKey="applause_visits"
                 type="natural"
                 stroke="var(--color-visitors)"
                 fill="var(--color-visitors)"

@@ -58,8 +58,16 @@ export default function DashboardLayout({ loaderData }: Route.ComponentProps) {
             <SidebarMenu>
               {loaderData.applauses.map((applause) => (
                 <SidebarMenuItem key={applause.applause_id}>
-                  <SidebarMenuButton asChild>
-                    <Link to={`/my/dashboard/applauses/${applause.applause_id}`}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={
+                      location.pathname ===
+                      `/my/dashboard/applause/${applause.applause_id}`
+                    }
+                  >
+                    <Link
+                      to={`/my/dashboard/applauses/${applause.applause_id}`}
+                    >
                       <RocketIcon className="size-4" />
                       <span>{applause.name}</span>
                     </Link>

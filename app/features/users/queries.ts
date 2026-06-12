@@ -39,7 +39,10 @@ export const getUserById = async (
         profile_id,
         name,
         username,
-        avatar 
+        avatar,
+        headline,
+        bio,
+        role
         `,
     )
     .eq("profile_id", id)
@@ -98,7 +101,7 @@ export const getApplausesByUserId = async (
     .from("applauses")
     .select(`name, applause_id`)
     .eq("profile_id", userId);
-  if(error){
+  if (error) {
     throw error;
   }
   return data;

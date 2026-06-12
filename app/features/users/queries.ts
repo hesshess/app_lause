@@ -30,7 +30,7 @@ export const getUserProfile = async (
 
 export const getUserById = async (
   client: SupabaseClient<Database>,
-  { id }: { id: string }
+  { id }: { id: string },
 ) => {
   const { data, error } = await client
     .from("profiles")
@@ -39,8 +39,11 @@ export const getUserById = async (
         profile_id,
         name,
         username,
-        avatar 
-        `
+        avatar,
+        headline,
+        bio,
+        role
+        `,
     )
     .eq("profile_id", id)
     .single();
@@ -88,4 +91,18 @@ export const getLoggedInUserId = async (client: SupabaseClient<Database>) => {
     throw redirect("/auth/login");
   }
   return data.user.id;
+};
+
+export const getApplausesByUserId = async (
+  client: SupabaseClient<Database>,
+  { userId }: { userId: string },
+) => {
+  const { data, error } = await client
+    .from("applauses")
+    .select(`name, applause_id`)
+    .eq("profile_id", userId);
+  if (error) {
+    throw error;
+  }
+  return data;
 };

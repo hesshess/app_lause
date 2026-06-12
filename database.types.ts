@@ -876,6 +876,21 @@ export type Database = {
       }
     }
     Functions: {
+      get_applause_stats: {
+        Args: { applause_id: string }
+        Returns: {
+          applause_views: number
+          applause_visit: number
+          month: string
+        }[]
+      }
+      get_dashboard_stats: {
+        Args: { user_id: string }
+        Returns: {
+          month: string
+          views: number
+        }[]
+      }
       track_event: {
         Args: {
           event_data: Json

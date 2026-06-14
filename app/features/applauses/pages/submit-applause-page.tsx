@@ -1,5 +1,5 @@
 import { Hero } from "~/common/components/hero";
-import { Form } from "react-router";
+import { Form, redirect } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import SelectPair from "~/common/components/select-pair";
 import { Label } from "~/common/components/ui/label";
@@ -7,6 +7,11 @@ import { Input } from "~/common/components/ui/input";
 import { useState } from "react";
 import { Button } from "~/common/components/ui/button";
 import type { Route } from "./+types/submit-applause-page";
+import z from "zod";
+import { makeSSRClient } from "~/supa-client";
+import { getLoggedInUserId } from "~/features/users/queries";
+import { createApplause } from "../mutations";
+import { getCategories } from "../queries";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -15,7 +20,64 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export default function SubmitPage(_props: Route.ComponentProps) {
+const formSchema = z.object({
+  name: z.string().min(1),
+  tagline: z.string().min(1),
+  url: z.string().min(1),
+  description: z.string().min(1),
+  howItWorks: z.string().min(1),
+  category: z.coerce.number(),
+  icon: z.instanceof(File).refine((file) => {
+    return file.size <= 2097152 && file.type.startsWith("image/");
+  }),
+});
+
+export const action = async ({ request }: Route.ActionArgs) => {
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const formData = await request.formData();
+  const { data, success, error } = formSchema.safeParse(
+    Object.fromEntries(formData),
+  );
+  if (!success) {
+    return { formErrors: error.flatten().fieldErrors };
+  }
+  const { icon, ...rest } = data;
+  const { data: uploadData, error: uploadError } = await client.storage
+    .from("icons")
+    .upload(`${userId}/${Date.now()}`, icon, {
+      contentType: icon.type,
+      upsert: false,
+    });
+  if (uploadError) {
+    return { formErrors: { icon: ["Failed to upload icon"] } };
+  }
+  const {
+    data: { publicUrl },
+  } = await client.storage.from("icons").getPublicUrl(uploadData.path);
+  const applauseId = await createApplause(client, {
+    name: rest.name,
+    tagline: rest.tagline,
+    description: rest.description,
+    url: rest.url,
+    iconUrl: publicUrl,
+    categoryId: rest.category,
+    userId,
+  });
+  return redirect(`/applauses/${applauseId}`);
+};
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const categories = await getCategories(client);
+  return { categories };
+};
+
+export default function SubmitPage({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
   const [icon, setIcon] = useState<string | null>(null);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -29,7 +91,11 @@ export default function SubmitPage(_props: Route.ComponentProps) {
         title="Share Your Action"
         description="Share a habit, action, or routine that helped you grow"
       />
-      <Form className="mx-auto grid max-w-2xl grid-cols-1 gap-10 lg:grid-cols-2">
+      <Form
+        className="mx-auto grid max-w-2xl grid-cols-1 gap-10 lg:grid-cols-2"
+        method="post"
+        encType="multipart/form-data"
+      >
         <div className="space-y-5">
           <InputPair
             label="Name"
@@ -39,6 +105,11 @@ export default function SubmitPage(_props: Route.ComponentProps) {
             type="text"
             placeholder="Name of your action or routine"
           />
+          {actionData &&
+            "formErrors" in actionData &&
+            actionData?.formErrors?.name && (
+              <p className="text-red-500">{actionData.formErrors.name}</p>
+            )}
           <InputPair
             label="Tagline"
             description="60 characters or less"
@@ -48,6 +119,11 @@ export default function SubmitPage(_props: Route.ComponentProps) {
             type="text"
             placeholder="A concise summary of the action you took"
           />
+          {actionData &&
+            "formErrors" in actionData &&
+            actionData?.formErrors?.tagline && (
+              <p className="text-red-500">{actionData.formErrors.tagline}</p>
+            )}
           <InputPair
             label="URL"
             description="An optional link related to your action"
@@ -57,6 +133,11 @@ export default function SubmitPage(_props: Route.ComponentProps) {
             type="url"
             placeholder="https://example.com"
           />
+          {actionData &&
+            "formErrors" in actionData &&
+            actionData?.formErrors?.url && (
+              <p className="text-red-500">{actionData.formErrors.url}</p>
+            )}
           <InputPair
             textArea
             label="Description"
@@ -67,24 +148,29 @@ export default function SubmitPage(_props: Route.ComponentProps) {
             type="text"
             placeholder="A detailed description of your applause"
           />
+          {actionData &&
+            "formErrors" in actionData &&
+            actionData?.formErrors?.description && (
+              <p className="text-red-500">
+                {actionData.formErrors.description}
+              </p>
+            )}
           <SelectPair
             label="Category"
             description="The category of your applause"
             name="category"
             required
             placeholder="Select a category"
-            options={[
-              { label: "Mindset", value: "mindset" },
-              { label: "Wellness", value: "wellness" },
-              { label: "Focus", value: "focus" },
-              { label: "Routine", value: "routine" },
-              { label: "Reflection", value: "reflection" },
-              { label: "Learning", value: "learning" },
-              { label: "Creativity", value: "creativity" },
-              { label: "Relationships", value: "relationships" },
-              { label: "Energy", value: "energy" },
-            ]}
+            options={loaderData.categories.map((category) => ({
+              label: category.name,
+              value: category.category_id.toString(),
+            }))}
           />
+          {actionData &&
+            "formErrors" in actionData &&
+            actionData?.formErrors?.category && (
+              <p className="text-red-500">{actionData.formErrors.category}</p>
+            )}
         </div>
         <div className="flex flex-col space-y-3">
           <div className="mb-10 size-32 overflow-hidden rounded-4xl shadow-2xl sm:size-40">
@@ -98,12 +184,12 @@ export default function SubmitPage(_props: Route.ComponentProps) {
               This is the image shown for your action.
             </small>
           </Label>
-          <Input
-            type="file"
-            onChange={onChange}
-            required
-            name="icon"
-          />
+          <Input type="file" onChange={onChange} required name="icon" />
+          {actionData &&
+            "formErrors" in actionData &&
+            actionData?.formErrors?.icon && (
+              <p className="text-red-500">{actionData.formErrors.icon}</p>
+            )}
           <div className="flex flex-col text-xs text-muted-foreground">
             <span>Recomended size: 128x128px</span>
             <span>Allowed formats: PNG, JPEG</span>

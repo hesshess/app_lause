@@ -14,8 +14,10 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 export const loader = async ({ request, params }: Route.LoaderArgs) => {
-  const {client, headers} = makeSSRClient(request);
-  const applause = await getApplauseById(client,{applauseId:Number(params.applauseId)});
+  const { client, headers } = makeSSRClient(request);
+  const applause = await getApplauseById(client, {
+    applauseId: Number(params.applauseId),
+  });
   return { applause };
 };
 
@@ -26,7 +28,7 @@ export default function ApplauseOverviewLayout({
     <div className="space-y-10">
       <div className="flex justify-between">
         <div className="flex gap-10">
-          <div className="size-40 rounded-xl shadow-xl bg-primary/50">
+          <div className="size-40 rounded-xl shadow-xl bg-primary/50 overflow-hidden">
             <img
               src={loaderData.applause.icon}
               alt={loaderData.applause.name}

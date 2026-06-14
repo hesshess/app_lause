@@ -8,7 +8,7 @@ import { getPraises } from "../queries";
 import { makeSSRClient } from "~/supa-client";
 import z from "zod";
 import { getLoggedInUserId } from "~/features/users/queries";
-import { createProductReview } from "../mutations";
+import { createApplauseReview } from "../mutations";
 import { useEffect, useState } from "react";
 
 export const meta: Route.MetaFunction = ({ params }) => {
@@ -43,7 +43,7 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
       formErrors: error.flatten().fieldErrors,
     };
   }
-  await createProductReview(client, {
+  await createApplauseReview(client, {
     applauseId: params.applauseId,
     praise: data.praise,
     rating: data.rating,

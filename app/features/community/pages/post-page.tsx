@@ -24,6 +24,7 @@ import z from "zod";
 import { getLoggedInUserId } from "~/features/users/queries";
 import { createReply } from "../mutations";
 import { useEffect, useRef } from "react";
+import { cn } from "~/lib/utils";
 
 export const meta: Route.MetaFunction = ({ data }) => {
   return [
@@ -115,7 +116,13 @@ export default function PostPage({
       <div className="grid grid-cols-1 gap-10 items-start xl:grid-cols-6 xl:gap-20">
         <div className="space-y-10 xl:col-span-4">
           <div className="flex w-full flex-col items-start gap-6 lg:flex-row lg:gap-10">
-            <Button variant="outline" className="flex flex-col h-14">
+            <Button
+              variant="outline"
+              className={cn(
+                "flex flex-col h-14",
+                loaderData.post.is_upvoted ? "border-primary text-primary" : "",
+              )}
+            >
               <ChevronUpIcon className="size-4 shrink-0" />
               <span>{loaderData.post.upvotes}</span>
             </Button>

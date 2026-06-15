@@ -1,6 +1,6 @@
 import { ChevronUpIcon, DotIcon } from "lucide-react";
 import { DateTime } from "luxon";
-import { Link } from "react-router";
+import { Link, useFetcher } from "react-router";
 
 import {
   Avatar,
@@ -39,6 +39,19 @@ export function PostCard({
   votesCount = 0,
   isUpvoted = false,
 }: PostCardProps) {
+  const fetcher = useFetcher();
+  const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    fetcher.submit(
+      {
+        postId: id,
+      },
+      {
+        method: "POST",
+        action: `/community/${id}/upvote`,
+      },
+    );
+  };
   return (
     <Link to={`/community/${id}`} className="block">
       <Card
@@ -71,6 +84,7 @@ export function PostCard({
         {expanded && (
           <CardFooter className="flex justify-end  pb-0">
             <Button
+              onClick={absorbClick}
               variant="outline"
               className={cn(
                 "flex flex-col h-14",

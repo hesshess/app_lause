@@ -1,6 +1,6 @@
 import { ChevronUpIcon, DotIcon } from "lucide-react";
 import { DateTime } from "luxon";
-import { Link } from "react-router";
+import { Link, useFetcher } from "react-router";
 
 import {
   Avatar,
@@ -39,6 +39,21 @@ export function PostCard({
   votesCount = 0,
   isUpvoted = false,
 }: PostCardProps) {
+  const fetcher = useFetcher();
+  const optimisitcVotesCount =
+    fetcher.state === "idle"
+      ? votesCount
+      : isUpvoted
+        ? votesCount - 1
+        : votesCount + 1;
+  const optimisitcIsUpvoted = fetcher.state === "idle" ? isUpvoted : !isUpvoted;
+  const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    fetcher.submit(null, {
+      method: "POST",
+      action: `/community/${id}/upvote`,
+    });
+  };
   return (
     <Link to={`/community/${id}`} className="block">
       <Card
@@ -71,14 +86,15 @@ export function PostCard({
         {expanded && (
           <CardFooter className="flex justify-end  pb-0">
             <Button
+              onClick={absorbClick}
               variant="outline"
               className={cn(
                 "flex flex-col h-14",
-                isUpvoted ? "border-primary text-primary" : "",
+                optimisitcIsUpvoted ? "border-primary text-primary" : "",
               )}
             >
               <ChevronUpIcon className="size-4 shrink-0" />
-              <span>{votesCount}</span>
+              <span>{optimisitcVotesCount}</span>
             </Button>
           </CardFooter>
         )}

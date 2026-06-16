@@ -51,7 +51,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 
-export default function DashboardProductPage({
+export default function DashboardApplausePage({
   loaderData,
 }: Route.ComponentProps) {
   return (

@@ -1,5 +1,5 @@
 import { EyeIcon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useFetcher } from "react-router";
 import {
   Avatar,
   AvatarFallback,
@@ -24,6 +24,7 @@ interface NotificationCardProps {
   applauseName?: string;
   payloadId?: number;
   postTitle?: string;
+  id: number;
 }
 
 export function NotificationCard({
@@ -36,8 +37,9 @@ export function NotificationCard({
   applauseName,
   postTitle,
   payloadId,
+  id,
 }: NotificationCardProps) {
-    const getMessage = (type: "follow" | "reply" | "praise") => {
+  const getMessage = (type: "follow" | "reply" | "praise") => {
     switch (type) {
       case "follow":
         return " followed you.";
@@ -47,8 +49,12 @@ export function NotificationCard({
         return " replied to your post: ";
     }
   };
+  const fetcher = useFetcher();
+  const optimiscitSeen = fetcher.state === "idle" ? seen : true;
   return (
-    <Card className={cn("min-w-[450px]", seen ? "" : "bg-yellow-500/60")}>
+    <Card
+      className={cn("min-w-[450px]", optimiscitSeen ? "" : "bg-yellow-500/60")}
+    >
       <CardHeader className="flex flex-row gap-5 space-y-0 items-start">
         <Avatar className="">
           <AvatarImage src={avatarUrl} />
@@ -57,7 +63,7 @@ export function NotificationCard({
         <div>
           <CardTitle className="text-lg space-y-0 font-bold">
             <span>{userName}</span>
-                        <span>{getMessage(type)}</span>
+            <span>{getMessage(type)}</span>
             {applauseName && (
               <Button variant={"ghost"} asChild className="text-lg">
                 <Link to={`/applauses/${payloadId}`}>{applauseName}</Link>
@@ -73,9 +79,13 @@ export function NotificationCard({
         </div>
       </CardHeader>
       <CardFooter className="flex justify-end">
-        <Button variant="outline" size="icon">
-          <EyeIcon className="w-4 h-4" />
-        </Button>
+        {optimiscitSeen ? null : (
+          <fetcher.Form method="post" action={`/my/notifications/${id}/see`}>
+            <Button variant="outline" size="icon">
+              <EyeIcon className="w-4 h-4" />
+            </Button>
+          </fetcher.Form>
+        )}
       </CardFooter>
     </Card>
   );

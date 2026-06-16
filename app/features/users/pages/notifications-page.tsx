@@ -1,13 +1,8 @@
+import { makeSSRClient } from "~/supa-client";
 import { NotificationCard } from "../components/notification-card";
 import type { Route } from "./+types/notifications-page";
-
-export function loader(_args: Route.LoaderArgs) {
-  return {};
-}
-
-export function action(_args: Route.ActionArgs) {
-  return {};
-}
+import { getLoggedInUserId, getNotifications } from "../queries";
+import { DateTime } from "luxon";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -16,19 +11,36 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export default function NotificationsPage(_props: Route.ComponentProps) {
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const notifications = await getNotifications(client, { userId });
+  return { notifications };
+};
+
+export default function NotificationsPage({
+  loaderData,
+}: Route.ComponentProps) {
   return (
     <div className="space-y-20">
       <h1 className="text-4xl font-bold">Notifications</h1>
       <div className="flex flex-col items-start gap-5">
-        <NotificationCard
-          avatarUrl="https://github.com/hesshess.png"
-          avatarFallback="H"
-          userName="Hess"
-          message=" invited you to a weekly reflection check-in."
-          timestamp="2 days ago"
-          seen={false}
-        />
+        {loaderData.notifications.map((notification) => (
+          <NotificationCard
+            key={notification.notification_id}
+            avatarUrl={notification.source?.avatar ?? ""}
+            avatarFallback={notification.source?.name?.[0] ?? ""}
+            userName={notification.source?.name ?? ""}
+            type={notification.type}
+            applauseName={notification.applause?.name ?? ""}
+            postTitle={notification.post?.title ?? ""}
+            payloadId={
+              notification.applause?.applause_id ?? notification.post?.post_id
+            }
+            timestamp={DateTime.fromISO(notification.created_at).toRelative()!}
+            seen={notification.seen}
+          />
+        ))}
       </div>
     </div>
   );

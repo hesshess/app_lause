@@ -25,8 +25,8 @@ DECLARE
     applause_owner uuid;
 BEGIN
     SELECT profile_id INTO applause_owner FROM public.applauses WHERE applause_id = NEW.applause_id;
-    INSERT INTO public.notifications (type, source_id, target_id)
-    VALUES ('praise', NEW.profile_id, applause_owner);
+    INSERT INTO public.notifications (type, source_id, target_id, applause_id)
+    VALUES ('praise', NEW.profile_id, applause_owner, NEW.applause_id);
     RETURN NEW;
 END;
 $$;
@@ -45,8 +45,8 @@ DECLARE
     post_owner uuid;
 BEGIN
     SELECT profile_id INTO post_owner FROM public.posts WHERE post_id = NEW.post_id;
-    INSERT INTO public.notifications (type, source_id, target_id)
-    VALUES ('reply', NEW.profile_id, post_owner);
+    INSERT INTO public.notifications (type, source_id, target_id, post_id)
+    VALUES ('reply', NEW.profile_id, post_owner, NEW.post_id);
     RETURN NEW;
 END;
 $$;

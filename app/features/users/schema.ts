@@ -10,6 +10,8 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
+import { applauses } from "../applauses/schema";
+import { posts } from "../community/schema";
 
 const users = pgSchema("auth").table("users", { id: uuid().primaryKey() });
 
@@ -64,8 +66,15 @@ export const notifications = pgTable("notifications", {
   source_id: uuid().references(() => profiles.profile_id, {
     onDelete: "cascade",
   }),
-  applause_id: bigint({ mode: "number" }),
-  post_id: bigint({ mode: "number" }),
+  applause_id: bigint({ mode: "number" }).references(
+    () => applauses.applause_id,
+    {
+      onDelete: "cascade",
+    },
+  ),
+  post_id: bigint({ mode: "number" }).references(() => posts.post_id, {
+    onDelete: "cascade",
+  }),
   target_id: uuid()
     .references(() => profiles.profile_id, {
       onDelete: "cascade",

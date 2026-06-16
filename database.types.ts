@@ -237,18 +237,18 @@ export type Database = {
       follows: {
         Row: {
           created_at: string
-          follower_id: string | null
-          following_id: string | null
+          follower_id: string
+          following_id: string
         }
         Insert: {
           created_at?: string
-          follower_id?: string | null
-          following_id?: string | null
+          follower_id: string
+          following_id: string
         }
         Update: {
           created_at?: string
-          follower_id?: string | null
-          following_id?: string | null
+          follower_id?: string
+          following_id?: string
         }
         Relationships: [
           {
@@ -441,6 +441,7 @@ export type Database = {
           created_at: string
           notification_id: number
           post_id: number | null
+          seen: boolean
           source_id: string | null
           target_id: string
           type: Database["public"]["Enums"]["notification_type"]
@@ -450,6 +451,7 @@ export type Database = {
           created_at?: string
           notification_id?: never
           post_id?: number | null
+          seen?: boolean
           source_id?: string | null
           target_id: string
           type: Database["public"]["Enums"]["notification_type"]
@@ -459,11 +461,47 @@ export type Database = {
           created_at?: string
           notification_id?: never
           post_id?: number | null
+          seen?: boolean
           source_id?: string | null
           target_id?: string
           type?: Database["public"]["Enums"]["notification_type"]
         }
         Relationships: [
+          {
+            foreignKeyName: "notifications_applause_id_applauses_applause_id_fk"
+            columns: ["applause_id"]
+            isOneToOne: false
+            referencedRelation: "applause_overview_view"
+            referencedColumns: ["applause_id"]
+          },
+          {
+            foreignKeyName: "notifications_applause_id_applauses_applause_id_fk"
+            columns: ["applause_id"]
+            isOneToOne: false
+            referencedRelation: "applauses"
+            referencedColumns: ["applause_id"]
+          },
+          {
+            foreignKeyName: "notifications_post_id_posts_post_id_fk"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_post_detail_view"
+            referencedColumns: ["post_id"]
+          },
+          {
+            foreignKeyName: "notifications_post_id_posts_post_id_fk"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_post_list_view"
+            referencedColumns: ["post_id"]
+          },
+          {
+            foreignKeyName: "notifications_post_id_posts_post_id_fk"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["post_id"]
+          },
           {
             foreignKeyName: "notifications_source_id_profiles_profile_id_fk"
             columns: ["source_id"]
@@ -647,29 +685,29 @@ export type Database = {
       }
       praises: {
         Row: {
-          applause_id: number | null
+          applause_id: number
           content: string
           created_at: string
           praise_id: number
-          profile_id: string | null
+          profile_id: string
           rating: number
           updated_at: string
         }
         Insert: {
-          applause_id?: number | null
+          applause_id: number
           content: string
           created_at?: string
           praise_id?: never
-          profile_id?: string | null
+          profile_id: string
           rating: number
           updated_at?: string
         }
         Update: {
-          applause_id?: number | null
+          applause_id?: number
           content?: string
           created_at?: string
           praise_id?: never
-          profile_id?: string | null
+          profile_id?: string
           rating?: number
           updated_at?: string
         }
@@ -928,7 +966,7 @@ export type Database = {
         | "routine"
         | "reflection"
       event_type: "applause_view" | "applause_visit" | "profile_view"
-      notification_type: "follow" | "praise" | "reply" | "mention"
+      notification_type: "follow" | "praise" | "reply"
       role:
         | "habit-builder"
         | "mindful-learner"
@@ -1093,7 +1131,7 @@ export const Constants = {
         "reflection",
       ],
       event_type: ["applause_view", "applause_visit", "profile_view"],
-      notification_type: ["follow", "praise", "reply", "mention"],
+      notification_type: ["follow", "praise", "reply"],
       role: [
         "habit-builder",
         "mindful-learner",

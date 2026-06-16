@@ -1,0 +1,2 @@
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_applause_id_applauses_applause_id_fk" FOREIGN KEY ("applause_id") REFERENCES "public"."applauses"("applause_id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_post_id_posts_post_id_fk" FOREIGN KEY ("post_id") REFERENCES "public"."posts"("post_id") ON DELETE cascade ON UPDATE no action;

@@ -106,3 +106,54 @@ export const getApplausesByUserId = async (
   }
   return data;
 };
+
+export const getNotifications = async (
+  client: SupabaseClient<Database>,
+  { userId }: { userId: string },
+) => {
+  const { data, error } = await client
+    .from("notifications")
+    .select(
+      `
+      notification_id,
+      type,
+      source:profiles!source_id(
+        profile_id,
+        name,
+        avatar
+      ),
+      applause:applauses!applause_id(
+        applause_id,
+        name
+      ),
+      post:posts!post_id(
+        post_id,
+        title
+      ),
+      seen,
+      created_at
+      `,
+    )
+    .eq("target_id", userId)
+    .order("created_at", { ascending: false });
+  if (error) {
+    throw error;
+  }
+  return data;
+};
+
+
+export const countNotifications = async (
+  client: SupabaseClient<Database>,
+  { userId }: { userId: string }
+) => {
+  const { count, error } = await client
+    .from("notifications")
+    .select("*", { count: "exact", head: true })
+    .eq("seen", false)
+    .eq("target_id", userId);
+  if (error) {
+    throw error;
+  }
+  return count ?? 0;
+};

@@ -164,7 +164,7 @@ export default function PostPage({
                   </Avatar>
                   <div className="flex flex-col gap-5 items-end w-full">
                     <Textarea
-                      name="content"
+                      name="reply"
                       placeholder="Write a reply"
                       className="w-full resize-none"
                       rows={5}

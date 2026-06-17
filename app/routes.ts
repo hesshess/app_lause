@@ -119,5 +119,6 @@ export default [
       route("applauses", "features/users/pages/profile-applauses-page.tsx"),
       route("posts", "features/users/pages/profile-posts-page.tsx"),
     ]),
+    route("/messages", "features/users/pages/send-message-page.tsx"),
   ]),
 ] satisfies RouteConfig;

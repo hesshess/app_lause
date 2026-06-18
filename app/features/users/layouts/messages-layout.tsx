@@ -1,5 +1,11 @@
-import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarProvider } from "~/common/components/ui/sidebar";
-import { Outlet } from "react-router";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarMenu,
+  SidebarProvider,
+} from "~/common/components/ui/sidebar";
+import { Outlet, useOutletContext } from "react-router";
 import MessageRoomCard from "../components/message-room-card";
 import type { Route } from "./+types/messages-layout";
 import { makeSSRClient } from "~/supa-client";
@@ -15,13 +21,14 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 export default function MessagesLayout({ loaderData }: Route.ComponentProps) {
+  const { userId } = useOutletContext<{ userId: string }>();
   return (
     <SidebarProvider className="flex h-[calc(100vh-12rem)] min-h-full max-h-[calc(100vh-12rem)] overflow-hidden">
       <Sidebar className="pt-16" variant="floating">
         <SidebarContent>
           <SidebarGroup>
             <SidebarMenu>
-             {loaderData.messages.map((message) => (
+              {loaderData.messages.map((message) => (
                 <MessageRoomCard
                   key={message.message_room_id}
                   id={message.message_room_id.toString()}
@@ -35,7 +42,7 @@ export default function MessagesLayout({ loaderData }: Route.ComponentProps) {
         </SidebarContent>
       </Sidebar>
       <div className="h-full flex-1 min-w-0">
-        <Outlet />
+        <Outlet context={{ userId }} />
       </div>
     </SidebarProvider>
   );

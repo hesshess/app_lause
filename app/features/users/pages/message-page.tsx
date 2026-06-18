@@ -1,49 +1,75 @@
-import { Form, Link } from "react-router";
+import { Form, Link, useOutletContext } from "react-router";
 import { Button } from "~/common/components/ui/button";
-import type { Route } from "./+types/message-page";
-import { Card, CardDescription, CardHeader, CardTitle } from "~/common/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "~/common/components/ui/avatar";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/common/components/ui/card";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "~/common/components/ui/avatar";
 import { MessageBubble } from "../components/message-bubble";
 import { Textarea } from "~/common/components/ui/textarea";
 import { SendIcon } from "lucide-react";
-
-export function loader({ params }: Route.LoaderArgs) {
-  return { messageId: params.messageId };
-}
-
-export function action(_args: Route.ActionArgs) {
-  return {};
-}
+import { makeSSRClient } from "~/supa-client";
+import {
+  getLoggedInUserId,
+  getMessagesByMessagesRoomId,
+  getRoomsParticipant,
+} from "../queries";
+import type { Route } from "./+types/message-page";
 
 export const meta: Route.MetaFunction = ({ params }) => {
-  return [
-    { title: `Message ${params.messageId} | app_lause` },
-  ];
+  return [{ title: `Message ${params.messageRoomId} | app_lause` }];
+};
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
+  const { client } = await makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const messages = await getMessagesByMessagesRoomId(client, {
+    messageRoomId: params.messageRoomId,
+    userId,
+  });
+  const participants = await getRoomsParticipant(client, {
+    messageRoomId: params.messageRoomId,
+    userId,
+  });
+  return {
+    messages,
+    participants,
+  };
 };
 
-export default function MessagePage() {
-    return (
-     <div className="h-full flex flex-col justify-between">
+export default function MessagePage({ loaderData }: Route.ComponentProps) {
+  const { userId } = useOutletContext<{ userId: string }>();
+  return (
+    <div className="h-full flex flex-col justify-between">
       <Card>
         <CardHeader className="flex flex-row items-center gap-4">
           <Avatar className="size-14">
-            <AvatarImage src="https://github.com/stevejobs.png" />
-            <AvatarFallback>S</AvatarFallback>
+            <AvatarImage src={loaderData.participants?.profile?.avatar ?? ""} />
+            <AvatarFallback>
+              {loaderData.participants?.profile?.name.charAt(0) ?? ""}
+            </AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-0">
-            <CardTitle className="text-xl">Steve Jobs</CardTitle>
+          <CardTitle className="text-xl">
+              {loaderData.participants?.profile?.name ?? ""}
+            </CardTitle>
             <CardDescription>2 days ago</CardDescription>
           </div>
         </CardHeader>
       </Card>
-      <div className="py-10 overflow-y-scroll flex flex-col justify-start h-full">
-        {Array.from({ length: 10 }).map((_, index) => (
+      <div className="py-10 overflow-y-scroll space-y-4 flex flex-col justify-start h-full">
+        {loaderData.messages.map((message) => (
           <MessageBubble
-            key={index}
-            avatarUrl="https://github.com/stevejobs.png"
-            avatarFallback="S"
-            content="this is a message from steve jobs in iheaven, make sure to reply because if you don't, you will be punished."
-            isCurrentUser={index % 2 === 0}
+           key={message.message_id}
+            avatarUrl={message.sender?.avatar ?? ""}
+            avatarFallback={message.sender?.name.charAt(0) ?? ""}
+            content={message.content}
+            isCurrentUser={message.sender?.profile_id === userId}
           />
         ))}
       </div>

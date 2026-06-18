@@ -79,15 +79,21 @@ export const sendMessage = async (
       to_user_id: toUserId,
     })
     .maybeSingle();
+    if (fromUserId === toUserId) {
+    throw new Error("You cannot send a message to yourself.");
+  }
   if (error) {
     throw error;
   }
   if (data?.message_room_id) {
-    await client.from("messages").insert({
+    const { error: messageError } = await client.from("messages").insert({
       message_room_id: data.message_room_id,
       sender_id: fromUserId,
       content,
     });
+    if (messageError) { 
+      throw messageError;
+    }
     return data.message_room_id;
   } else {
     const { data: roomData, error: roomError } = await client
@@ -98,21 +104,29 @@ export const sendMessage = async (
     if (roomError) {
       throw roomError;
     }
-    await client.from("message_room_members").insert([
-      {
-        message_room_id: roomData.message_room_id,
-        profile_id: fromUserId,
-      },
-      {
-        message_room_id: roomData.message_room_id,
-        profile_id: toUserId,
-      },
-    ]);
-    await client.from("messages").insert({
+  const { error: membersError } = await client
+      .from("message_room_members")
+      .insert([
+        {
+          message_room_id: roomData.message_room_id,
+          profile_id: fromUserId,
+        },
+        {
+          message_room_id: roomData.message_room_id,
+          profile_id: toUserId,
+        },
+      ]);
+    if (membersError) {
+      throw membersError;
+    }
+    const { error: messageError } = await client.from("messages").insert({
       message_room_id: roomData.message_room_id,
       sender_id: fromUserId,
       content,
     });
+    if (messageError) {
+      throw messageError;
+    }
     return roomData.message_room_id;
   }
 };

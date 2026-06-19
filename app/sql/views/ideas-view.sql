@@ -1,7 +1,7 @@
 CREATE OR REPLACE VIEW ideas_view AS
 SELECT ideas.idea_id,
     CASE
-        WHEN gpt_ideas.claimed_at IS NULL THEN gpt_ideas.title
+        WHEN ideas.claimed_at IS NULL THEN ideas.title
         ELSE 'ClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimed'
     END AS title,
     ideas.views_count,

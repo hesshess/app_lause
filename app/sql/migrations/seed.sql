@@ -276,7 +276,7 @@ VALUES
   (1, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', NULL, NULL, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', 'follow', '2026-04-01 22:00:00'),
   (2, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', 1, NULL, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', 'praise', '2026-04-02 22:00:00'),
   (3, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', NULL, 1, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', 'reply', '2026-04-03 22:00:00'),
-  (4, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', NULL, 3, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', 'mention', '2026-04-04 22:00:00'),
+  (4, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', NULL, 3, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', 'reply', '2026-04-04 22:00:00'),
   (5, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', 5, NULL, 'cae6e820-ea10-4d4d-87a6-85c8d5fba908', 'praise', '2026-04-05 22:00:00');
 
 COMMIT;

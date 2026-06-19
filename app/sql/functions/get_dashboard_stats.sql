@@ -1,8 +1,11 @@
-create or replace function get_dashboard_stats(user_id uuid)
+create or replace function public.get_dashboard_stats(user_id uuid)
 returns table (
     views bigint,
     month text
-) as $$
+)
+language plpgsql
+set search_path = ''
+as $$
 begin
     return query
     select
@@ -14,4 +17,4 @@ begin
     group by to_char(events.created_at, 'YYYY-MM')
     order by month;
 end;
-$$ language plpgsql;
+$$;

@@ -953,7 +953,7 @@ export type Database = {
         Args: { applause_id: string }
         Returns: {
           applause_views: number
-          applause_visit: number
+          applause_visits: number
           month: string
         }[]
       }

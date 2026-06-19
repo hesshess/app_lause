@@ -18,7 +18,6 @@ import InputPair from "~/common/components/input-pair";
 import { getTeamById } from "../queries";
 import { makeSSRClient } from "~/supa-client";
 
-
 export const meta: Route.MetaFunction = ({ params }) => {
   return [
     { title: `Team ${params.teamId} | app_lause` },
@@ -48,7 +47,7 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
             },
             {
               title: "Open spots",
-              value: loaderData.team.open_spots
+              value: loaderData.team.open_spots,
             },
           ].map((item) => (
             <Card key={item.title}>
@@ -56,7 +55,7 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {item.title}
                 </CardTitle>
-                 <CardContent className="p-0 capitalize font-bold text-2xl">
+                <CardContent className="p-0 capitalize font-bold text-2xl">
                   <p>{item.value}</p>
                 </CardContent>
               </CardHeader>
@@ -69,7 +68,7 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
               </CardTitle>
               <CardContent className="p-0 font-bold text-2xl">
                 <ul className="text-lg list-disc list-inside">
-              {loaderData.team.roles.split(",").map((item) => (
+                  {loaderData.team.roles.split(",").map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
@@ -82,7 +81,7 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
                 Team description
               </CardTitle>
               <CardContent className="p-0 font-medium text-xl">
-                     <p>{loaderData.team.description}</p>
+                <p>{loaderData.team.description}</p>
               </CardContent>
             </CardHeader>
           </Card>
@@ -97,8 +96,8 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
                 <AvatarImage src={loaderData.team.team_leader.avatar} />
               ) : null}
             </Avatar>
-            <div className="flex flex-col">
-                         <h4 className="text-lg font-medium">
+            <div className="flex flex-col items-start">
+              <h4 className="text-lg font-medium">
                 {loaderData.team.team_leader.name}
               </h4>
               <Badge variant="secondary" className="capitalize">
@@ -106,11 +105,15 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
               </Badge>
             </div>
           </div>
-          <Form className="space-y-5">
+          <Form
+            className="space-y-5"
+            method="post"
+            action={`/users/${loaderData.team.team_leader.username}/messages`}
+          >
             <InputPair
               label="Introduce yourself"
               description="Share what you are working on and how you want to grow"
-              name="introduction"
+              name="content"
               type="text"
               id="introduction"
               required

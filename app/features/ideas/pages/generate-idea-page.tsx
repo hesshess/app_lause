@@ -37,7 +37,14 @@ function getErrorMessage(error: unknown) {
   return JSON.stringify(error);
 }
 
-export const loader = async (_args: Route.LoaderArgs) => {
+export const action = async ({ request }: Route.ActionArgs) => {
+  if (request.method !== "POST") {
+    return new Response(null, { status: 404 });
+  }
+  const header = request.headers.get(process.env.HEADER_SECRET_KEY!);
+  if (!header || header !== process.env.HEADER_SECRET_VAL) {
+    return new Response(null, { status: 404 });
+  }
   try {
     const completion = await openai.chat.completions.parse({
       model: "gpt-4o",

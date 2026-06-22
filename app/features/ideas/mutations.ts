@@ -13,3 +13,17 @@ export const claimIdea = async (
     throw error;
   }
 };
+
+export const insertIdeas = async (
+  client: SupabaseClient<Database>,
+  ideas: string[]
+) => {
+  const { error } = await client.from("ideas").insert(
+    ideas.map((title) => ({
+      title,
+    }))
+  );
+  if (error) {
+    throw error;
+  }
+};

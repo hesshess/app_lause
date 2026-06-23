@@ -84,7 +84,7 @@ export default [
   ...prefix("community", [
     index("features/community/pages/community-page.tsx"),
     route(":postId", "features/community/pages/post-page.tsx"),
-    route("/:postId/upvote", "features/community/pages/upvote-post-page.tsx"),
+    route(":postId/upvote", "features/community/pages/upvote-post-page.tsx"),
     route("submit", "features/community/pages/submit-post-page.tsx"),
   ]),
   ...prefix("teams", [
@@ -120,6 +120,7 @@ export default [
       route("applauses", "features/users/pages/profile-applauses-page.tsx"),
       route("posts", "features/users/pages/profile-posts-page.tsx"),
     ]),
-    route("/messages", "features/users/pages/send-message-page.tsx"),
+    route("messages", "features/users/pages/send-message-page.tsx"),
+    route("welcome", "features/users/pages/welcome-page.tsx"),
   ]),
 ] satisfies RouteConfig;

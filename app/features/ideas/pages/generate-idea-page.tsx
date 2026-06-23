@@ -2,8 +2,8 @@ import OpenAI from "openai";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { z } from "zod";
 import { insertIdeas } from "../mutations";
-import { adminClient } from "~/supa-client";
 import type { Route } from "./+types/generate-idea-page";
+import { adminClient } from "~/supa-admin.server";
 
 const openai = new OpenAI();
 

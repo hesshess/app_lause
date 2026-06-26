@@ -8,6 +8,11 @@ import { useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { DateTime } from "luxon";
 import { Button } from "~/common/components/ui/button";
+import { makeSSRClient } from "~/supa-client";
+import {
+  getApplausesByUserId,
+  getLoggedInUserId,
+} from "~/features/users/queries";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -16,7 +21,20 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export default function PrmotePage() {
+export async function loader({ request }: Route.LoaderArgs) {
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const applauses = await getApplausesByUserId(client, { userId });
+
+  return {
+    applauseOptions: applauses.map((applause) => ({
+      label: applause.name,
+      value: String(applause.applause_id),
+    })),
+  };
+}
+
+export default function PrmotePage({ loaderData }: Route.ComponentProps) {
   const [promotionPeriod, setPromotionPeriod] = useState<
     DateRange | undefined
   >();
@@ -40,41 +58,9 @@ export default function PrmotePage() {
             description="Select the applause you want to promote"
             name="applause"
             placeholder="Select an applause"
-            options={[
-              {
-                label: "7-Day Morning Reflection Streak",
-                value: "morning-reflection-streak",
-              },
-              {
-                label: "Evening Digital Detox Routine",
-                value: "evening-digital-detox",
-              },
-              {
-                label: "30-Minute Deep Work Sprint",
-                value: "deep-work-sprint",
-              },
-              {
-                label: "Weekly Self-Review Habit",
-                value: "weekly-self-review",
-              },
-              {
-                label: "Daily Reading Reset",
-                value: "daily-reading-reset",
-              },
-              {
-                label: "Mindful Walking Break",
-                value: "mindful-walking-break",
-              },
-              {
-                label: "Focus Block Planning Routine",
-                value: "focus-block-planning",
-              },
-              {
-                label: "Sunday Reset Checklist",
-                value: "sunday-reset-checklist",
-              },
-            ]}
+            options={loaderData.applauseOptions}
           />
+
           <div className="flex flex-col gap-2 items-center w-full">
             <Label className="flex flex-col gap-1">
               Select a range of dates for promotion{" "}

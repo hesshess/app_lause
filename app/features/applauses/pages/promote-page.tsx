@@ -1,21 +1,13 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/promote-page";
+import { Form } from "react-router";
 import SelectPair from "~/common/components/select-pair";
 import { Calendar } from "~/common/components/ui/calendar";
 import { Label } from "~/common/components/ui/label";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { DateTime } from "luxon";
 import { Button } from "~/common/components/ui/button";
-import { makeSSRClient } from "~/supa-client";
-import {
-  getApplausesByUserId,
-  getLoggedInUserId,
-} from "~/features/users/queries";
-
-import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
-
-import type { TossPaymentsWidgets } from "@tosspayments/tosspayments-sdk";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -24,20 +16,7 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const { client } = makeSSRClient(request);
-  const userId = await getLoggedInUserId(client);
-  const applauses = await getApplausesByUserId(client, { userId });
-
-  return {
-    applauseOptions: applauses.map((applause) => ({
-      label: applause.name,
-      value: String(applause.applause_id),
-    })),
-  };
-}
-
-export default function PrmotePage({ loaderData }: Route.ComponentProps) {
+export default function PrmotePage() {
   const [promotionPeriod, setPromotionPeriod] = useState<
     DateRange | undefined
   >();
@@ -48,109 +27,76 @@ export default function PrmotePage({ loaderData }: Route.ComponentProps) {
           "days",
         ).days
       : 0;
-  const widgets = useRef<TossPaymentsWidgets | null>(null);
-  const initedToss = useRef<boolean>(false);
-  useEffect(() => {
-    const initToss = async () => {
-      if (initedToss.current) return;
-      initedToss.current = true;
-      const toss = await loadTossPayments(
-        import.meta.env.VITE_TOSS_CLIENT_KEY!,
-      );
-      widgets.current = await toss.widgets({
-        customerKey: "1111111",
-      });
-      await widgets.current.setAmount({
-        value: 0,
-        currency: "KRW",
-      });
-      await widgets.current.renderPaymentMethods({
-        selector: "#toss-payment-methods",
-      });
-      await widgets.current.renderAgreement({
-        selector: "#toss-payment-agreement",
-      });
-    };
-    initToss();
-  }, []);
-  useEffect(() => {
-    const updateAmount = async () => {
-      if (widgets.current) {
-        await widgets.current.setAmount({
-          value: totalDays * 1000,
-          currency: "KRW",
-        });
-      }
-    };
-    updateAmount();
-  }, [promotionPeriod]);
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const product = formData.get("product") as string;
-    if (!product || !promotionPeriod?.to || !promotionPeriod?.from) return;
-    await widgets.current?.requestPayment({
-      orderId: crypto.randomUUID(),
-      orderName: `Applause Promotion`,
-      customerEmail: "heisuewang@gmail.com",
-      customerName: "Hess",
-      customerMobilePhone: "01012345678",
-      metadata: {
-        product,
-        promotionFrom: DateTime.fromJSDate(promotionPeriod.from).toISO(),
-        promotionTo: DateTime.fromJSDate(promotionPeriod.to).toISO(),
-      },
-      successUrl: `${window.location.href}/success`,
-      failUrl: `${window.location.href}/fail`,
-    });
-  };
   return (
     <div>
       <Hero
         title="Promote Your Applause"
         description="Highlight your progress so more people can discover and try it."
       />
-      <form onSubmit={handleSubmit} className="grid grid-cols-6 gap-10">
-        <div className="col-span-3 mx-auto w-1/2 flex flex-col gap-10 items-start">
-          <SelectPair
-            required
-            label="Select an applause"
-            description="Select the applause you want to promote"
-            name="applause"
-            placeholder="Select an applause"
-            options={loaderData.applauseOptions}
+      <Form className="max-w-lg mx-auto flex flex-col gap-10 items-center">
+        <SelectPair
+          label="Select an applause"
+          description="Select the applause you want to promote"
+          name="applause"
+          placeholder="Select an applause"
+          options={[
+            {
+              label: "7-Day Morning Reflection Streak",
+              value: "morning-reflection-streak",
+            },
+            {
+              label: "Evening Digital Detox Routine",
+              value: "evening-digital-detox",
+            },
+            {
+              label: "30-Minute Deep Work Sprint",
+              value: "deep-work-sprint",
+            },
+            {
+              label: "Weekly Self-Review Habit",
+              value: "weekly-self-review",
+            },
+            {
+              label: "Daily Reading Reset",
+              value: "daily-reading-reset",
+            },
+            {
+              label: "Mindful Walking Break",
+              value: "mindful-walking-break",
+            },
+            {
+              label: "Focus Block Planning Routine",
+              value: "focus-block-planning",
+            },
+            {
+              label: "Sunday Reset Checklist",
+              value: "sunday-reset-checklist",
+            },
+          ]}
+        />
+        <div className="flex flex-col gap-2 items-center w-full">
+          <Label className="flex flex-col">
+            Select a range of dates for promotion
+            <small className="text-muted-foreground text-center">
+              Minimum duration is 3 days.
+            </small>
+          </Label>
+
+          <Calendar
+            captionLayout="dropdown-months"
+            defaultMonth={new Date()}
+            startMonth={new Date()}
+            mode="range"
+            selected={promotionPeriod}
+            onSelect={setPromotionPeriod}
+            min={3}
+            disabled={{ before: new Date() }}
           />
-
-          <div className="flex flex-col gap-2 items-center w-full">
-            <Label className="flex flex-col gap-1">
-              Select a range of dates for promotion{" "}
-              <small className="text-muted-foreground text-center ">
-                Minimum duration is 3 days.
-              </small>
-            </Label>
-
-            <Calendar
-              mode="range"
-              selected={promotionPeriod}
-              onSelect={setPromotionPeriod}
-              min={3}
-              disabled={{ before: new Date() }}
-            />
-          </div>
         </div>
-        <aside className="col-span-3 px-20 flex flex-col items-center">
-          <div id="toss-payment-methods" className="w-full" />
-          <div id="toss-payment-agreement" />
-          <Button className="w-full" disabled={totalDays === 0}>
-            Checkout (
-            {(totalDays * 1000).toLocaleString("ko-KR", {
-              style: "currency",
-              currency: "KRW",
-            })}
-            )
-          </Button>
-        </aside>
-      </form>
+        <Button disabled={totalDays === 0}>
+          Go to checkout (${totalDays})
+        </Button>
+      </Form>
     </div>
   );
 }

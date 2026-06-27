@@ -42,10 +42,6 @@ export default [
     route("search", "features/applauses/pages/search-page.tsx"),
     route("submit", "features/applauses/pages/submit-applause-page.tsx"),
     route("promote", "features/applauses/pages/promote-page.tsx"),
-    route(
-      "/promote/success",
-      "features/applauses/pages/promote-success-page.tsx",
-    ),
     ...prefix(":applauseId", [
       index("features/applauses/pages/applause-redirect-page.tsx"),
       layout("features/applauses/layouts/applause-overview-layout.tsx", [
@@ -116,10 +112,7 @@ export default [
     route("profile", "features/users/pages/my-profile-page.tsx"),
     route("settings", "features/users/pages/settings-page.tsx"),
     route("notifications", "features/users/pages/notifications-page.tsx"),
-    route(
-      "notifications/:notificationId/see",
-      "features/users/pages/see-notification-page.tsx",
-    ),
+    route("notifications/:notificationId/see", "features/users/pages/see-notification-page.tsx"),
   ]),
   ...prefix("users/:username", [
     layout("features/users/layouts/profile-layout.tsx", [

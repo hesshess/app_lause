@@ -1,6 +1,5 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/promote-page";
-import { Form } from "react-router";
 import SelectPair from "~/common/components/select-pair";
 import { Calendar } from "~/common/components/ui/calendar";
 import { Label } from "~/common/components/ui/label";
@@ -16,7 +15,7 @@ import {
 
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 
-import type {TossPaymentsWidgets} from "@tosspayments/tosspayments-sdk";
+import type { TossPaymentsWidgets } from "@tosspayments/tosspayments-sdk";
 
 export const meta: Route.MetaFunction = () => {
   return [

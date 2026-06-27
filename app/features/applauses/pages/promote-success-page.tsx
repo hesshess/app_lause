@@ -8,6 +8,8 @@ const paramsSchema = z.object({
   amount: z.coerce.number(),
 });
 
+const TOSS_SECRET_KEY = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
+
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   const { success, data } = paramsSchema.safeParse(
@@ -17,7 +19,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     return new Response(null, { status: 400 });
   }
   const encryptedSecretKey = `Basic ${Buffer.from(
-    process.env.VITE_TOSS_SECRET_KEY + ":",
+    TOSS_SECRET_KEY + ":",
   ).toString("base64")}`;
   const response = await fetch(
     "https://api.tosspayments.com/v1/payments/confirm",

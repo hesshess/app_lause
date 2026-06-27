@@ -43,12 +43,8 @@ export default [
     route("submit", "features/applauses/pages/submit-applause-page.tsx"),
     route("promote", "features/applauses/pages/promote-page.tsx"),
     route(
-      "promote/success",
+      "/promote/success",
       "features/applauses/pages/promote-success-page.tsx",
-    ),
-    route(
-      "promote/fail",
-      "features/applauses/pages/promote-fail-page.tsx",
     ),
     ...prefix(":applauseId", [
       index("features/applauses/pages/applause-redirect-page.tsx"),

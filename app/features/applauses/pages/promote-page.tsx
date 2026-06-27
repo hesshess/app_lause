@@ -1,7 +1,11 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/promote-page";
-import { Form } from "react-router";
 import SelectPair from "~/common/components/select-pair";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "~/common/components/ui/alert";
 import { Calendar } from "~/common/components/ui/calendar";
 import { Label } from "~/common/components/ui/label";
 import { useEffect, useRef, useState } from "react";
@@ -16,7 +20,7 @@ import {
 
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 
-import type {TossPaymentsWidgets} from "@tosspayments/tosspayments-sdk";
+import type { TossPaymentsWidgets } from "@tosspayments/tosspayments-sdk";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -29,12 +33,18 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { client } = makeSSRClient(request);
   const userId = await getLoggedInUserId(client);
   const applauses = await getApplausesByUserId(client, { userId });
+  const url = new URL(request.url);
 
   return {
     applauseOptions: applauses.map((applause) => ({
       label: applause.name,
       value: String(applause.applause_id),
     })),
+    paymentError: {
+      code: url.searchParams.get("code"),
+      message: url.searchParams.get("message"),
+      orderId: url.searchParams.get("orderId"),
+    },
   };
 }
 
@@ -88,8 +98,16 @@ export default function PrmotePage({ loaderData }: Route.ComponentProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const product = formData.get("product") as string;
-    if (!product || !promotionPeriod?.to || !promotionPeriod?.from) return;
+    const applauseId = formData.get("applause") as string;
+    if (!applauseId || !promotionPeriod?.to || !promotionPeriod?.from) return;
+    const successUrl = new URL(
+      "/applauses/promote/success",
+      window.location.origin,
+    ).toString();
+    const failUrl = new URL(
+      "/applauses/promote/fail",
+      window.location.origin,
+    ).toString();
     await widgets.current?.requestPayment({
       orderId: crypto.randomUUID(),
       orderName: `Applause Promotion`,
@@ -97,12 +115,12 @@ export default function PrmotePage({ loaderData }: Route.ComponentProps) {
       customerName: "Hess",
       customerMobilePhone: "01012345678",
       metadata: {
-        product,
+        applauseId,
         promotionFrom: DateTime.fromJSDate(promotionPeriod.from).toISO(),
         promotionTo: DateTime.fromJSDate(promotionPeriod.to).toISO(),
       },
-      successUrl: `${window.location.href}/success`,
-      failUrl: `${window.location.href}/fail`,
+      successUrl,
+      failUrl,
     });
   };
   return (
@@ -111,6 +129,17 @@ export default function PrmotePage({ loaderData }: Route.ComponentProps) {
         title="Promote Your Applause"
         description="Highlight your progress so more people can discover and try it."
       />
+      {loaderData.paymentError.message ? (
+        <Alert className="mb-6">
+          <AlertTitle>Payment failed</AlertTitle>
+          <AlertDescription>
+            {loaderData.paymentError.message}
+            {loaderData.paymentError.code
+              ? ` (code: ${loaderData.paymentError.code})`
+              : ""}
+          </AlertDescription>
+        </Alert>
+      ) : null}
       <form onSubmit={handleSubmit} className="grid grid-cols-6 gap-10">
         <div className="col-span-3 mx-auto w-1/2 flex flex-col gap-10 items-start">
           <SelectPair

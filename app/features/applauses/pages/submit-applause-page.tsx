@@ -25,7 +25,6 @@ const formSchema = z.object({
   tagline: z.string().min(1),
   url: z.string().min(1),
   description: z.string().min(1),
-  howItWorks: z.string().min(1),
   category: z.coerce.number(),
   icon: z.instanceof(File).refine((file) => {
     return file.size <= 2097152 && file.type.startsWith("image/");

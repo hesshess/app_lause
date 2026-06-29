@@ -13,8 +13,6 @@ import {
   getLoggedInUserId,
 } from "~/features/users/queries";
 
-import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
-
 import type { TossPaymentsWidgets } from "@tosspayments/tosspayments-sdk";
 
 export const meta: Route.MetaFunction = () => {
@@ -54,6 +52,9 @@ export default function PrmotePage({ loaderData }: Route.ComponentProps) {
     const initToss = async () => {
       if (initedToss.current) return;
       initedToss.current = true;
+      const { loadTossPayments } = await import(
+        "@tosspayments/tosspayments-sdk"
+      );
       const toss = await loadTossPayments(
         import.meta.env.VITE_TOSS_CLIENT_KEY!,
       );

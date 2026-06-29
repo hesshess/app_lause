@@ -12,6 +12,12 @@ export const applauseListSelect = `
   praises:stats->>praises
 `;
 
+function mergeUniqueByApplauseId<T extends { applause_id: number }>(items: T[]) {
+  return Array.from(
+    new Map(items.map((item) => [item.applause_id, item])).values(),
+  );
+}
+
 export const getApplausesByDateRange = async (
   client: SupabaseClient<Database>,
   {
@@ -118,26 +124,49 @@ export const getApplausesBySearch = async (
     page: number;
   },
 ) => {
-  const { data, error } = await client
-    .from("applauses")
-    .select(applauseListSelect)
-    .or(`name.ilike.%${query}%, tagline.ilike.%${query}%`)
-    .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
-  if (error) throw error;
-  return data;
+  const searchPattern = `%${query}%`;
+  const [{ data: nameMatches, error: nameError }, { data: taglineMatches, error: taglineError }] = await Promise.all([
+    client
+      .from("applauses")
+      .select(applauseListSelect)
+      .ilike("name", searchPattern),
+    client
+      .from("applauses")
+      .select(applauseListSelect)
+      .ilike("tagline", searchPattern),
+  ]);
+  if (nameError) throw nameError;
+  if (taglineError) throw taglineError;
+  const merged = mergeUniqueByApplauseId([
+    ...(nameMatches ?? []),
+    ...(taglineMatches ?? []),
+  ]);
+  return merged.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 };
 
 export const getPagesBySearch = async (
   client: SupabaseClient<Database>,
   { query }: { query: string },
 ) => {
-  const { count, error } = await client
-    .from("applauses")
-    .select(`applause_id`, { count: "exact", head: true })
-    .or(`name.ilike.%${query}%, tagline.ilike.%${query}%`);
-  if (error) throw error;
-  if (!count) return 1;
-  return Math.ceil(count / PAGE_SIZE);
+  const searchPattern = `%${query}%`;
+  const [{ data: nameMatches, error: nameError }, { data: taglineMatches, error: taglineError }] = await Promise.all([
+    client
+      .from("applauses")
+      .select(`applause_id`)
+      .ilike("name", searchPattern),
+    client
+      .from("applauses")
+      .select(`applause_id`)
+      .ilike("tagline", searchPattern),
+  ]);
+  if (nameError) throw nameError;
+  if (taglineError) throw taglineError;
+  const merged = mergeUniqueByApplauseId([
+    ...(nameMatches ?? []),
+    ...(taglineMatches ?? []),
+  ]);
+  if (merged.length === 0) return 1;
+  return Math.ceil(merged.length / PAGE_SIZE);
 };
 
 export const getApplauseById = async (

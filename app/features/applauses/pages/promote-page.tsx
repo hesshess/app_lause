@@ -88,8 +88,8 @@ export default function PrmotePage({ loaderData }: Route.ComponentProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const product = formData.get("product") as string;
-    if (!product || !promotionPeriod?.to || !promotionPeriod?.from) return;
+    const applause = formData.get("applause") as string;
+    if (!applause || !promotionPeriod?.to || !promotionPeriod?.from) return;
     await widgets.current?.requestPayment({
       orderId: crypto.randomUUID(),
       orderName: `Applause Promotion`,
@@ -97,7 +97,7 @@ export default function PrmotePage({ loaderData }: Route.ComponentProps) {
       customerName: "Hess",
       customerMobilePhone: "01012345678",
       metadata: {
-        product,
+        applause,
         promotionFrom: DateTime.fromJSDate(promotionPeriod.from).toISO(),
         promotionTo: DateTime.fromJSDate(promotionPeriod.to).toISO(),
       },

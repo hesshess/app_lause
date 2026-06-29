@@ -23,20 +23,20 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-   const { client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const [applauses, posts, ideas, challenges, teams] = await Promise.all([
-    getApplausesByDateRange(client,{
+    getApplausesByDateRange(client, {
       startDate: DateTime.now().startOf("day"),
       endDate: DateTime.now().endOf("day"),
       // limit: 7,
     }),
-    getPosts(client,{
+    getPosts(client, {
       limit: 7,
       sorting: "newest",
     }),
-    getGptIdeas(client,{ limit: 7 }),
-    getChallenges(client,{ limit: 7 }),
-    getTeams(client,{ limit: 7 }),
+    getGptIdeas(client, { limit: 7 }),
+    getChallenges(client, { limit: 7 }),
+    getTeams(client, { limit: 7 }),
   ]);
   return { applauses, posts, ideas, challenges, teams };
 };

@@ -36,8 +36,8 @@ const formSchema = z.object({
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const formData = await request.formData();
- const { success, data, error } = formSchema.safeParse(
-    Object.fromEntries(formData)
+  const { success, data, error } = formSchema.safeParse(
+    Object.fromEntries(formData),
   );
   if (!success) {
     return {
@@ -95,7 +95,7 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
             type="password"
             placeholder="Enter your password"
           />
-              {actionData && "formErrors" in actionData && (
+          {actionData && "formErrors" in actionData && (
             <p className="text-sm text-red-500">
               {actionData?.formErrors?.password?.join(", ")}
             </p>

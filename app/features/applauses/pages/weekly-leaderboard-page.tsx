@@ -10,8 +10,8 @@ import {
   getApplausePagesByDateRange,
   getApplausesByDateRange,
 } from "../queries";
-import { PAGE_SIZE } from "../constant";
 import { makeSSRClient } from "~/supa-client";
+import { APP_TIME_ZONE } from "~/lib/datetime";
 
 const paramsSchema = z.object({
   year: z.coerce.number(),
@@ -21,9 +21,7 @@ export const meta: Route.MetaFunction = ({ params, data }) => {
   const date = DateTime.fromObject({
     weekYear: Number(params.year),
     weekNumber: Number(params.week),
-  })
-    .setZone("Asia/Seoul")
-    .setLocale("ko");
+  }, { zone: APP_TIME_ZONE }).setLocale("ko");
   return [
     {
       title: `Best of week ${date.startOf("week").toLocaleString(DateTime.DATE_SHORT)} - ${date.endOf("week").toLocaleString(DateTime.DATE_SHORT)} | app_lause`,
@@ -47,7 +45,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const date = DateTime.fromObject({
     weekYear: parsedData.year,
     weekNumber: parsedData.week,
-  }).setZone("Asia/Seoul");
+  }, { zone: APP_TIME_ZONE }).startOf("week");;
   if (!date.isValid) {
     throw data(
       {
@@ -59,7 +57,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       },
     );
   }
-  const today = DateTime.now().setZone("Asia/Seoul").startOf("week");
+  const today = DateTime.now().startOf("week");
   if (date > today) {
     throw data(
       {

@@ -7,8 +7,8 @@ import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import { Button } from "~/common/components/ui/button";
 import ApplausePagination from "~/common/components/applause-pagination";
 import { getApplausePagesByDateRange, getApplausesByDateRange } from "../queries";
-import { PAGE_SIZE } from "../constant";
 import { makeSSRClient } from "~/supa-client";
+import { APP_TIME_ZONE } from "~/lib/datetime";
 
 const paramsSchema = z.object({
   year: z.coerce.number(),
@@ -40,7 +40,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
   const date = DateTime.fromObject({
     year: parsedData.year,
-  }).setZone("Asia/Seoul");
+  }, { zone: APP_TIME_ZONE }).startOf("year");
   if (!date.isValid) {
     throw data(
       {
@@ -52,7 +52,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       },
     );
   }
-  const today = DateTime.now().setZone("Asia/Seoul").startOf("year");
+  const today = DateTime.now().startOf("year");
   if (date > today) {
     throw data(
       {

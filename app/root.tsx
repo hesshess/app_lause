@@ -11,11 +11,13 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import "./lib/datetime";
 import Navigation from "./common/components/navigation";
-import { Settings } from "luxon";
 import { makeSSRClient } from "./supa-client";
 import { cn } from "./lib/utils";
 import { countNotifications, getUserById } from "./features/users/queries";
+
+import * as Sentry from "@sentry/react-router";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -31,8 +33,6 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  Settings.defaultLocale = "ko";
-  Settings.defaultZone = "Asia/Seoul";
   return (
     <html lang="en">
       <head>
@@ -104,14 +104,28 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
-    details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message;
-    stack = error.stack;
+    if (error.status === 404) {
+      message = "Page not found";
+      details = "The requested page could not be found.";
+    } else if (error.status === 401 || error.status === 403) {
+      message = "Access denied";
+      details = "Please sign in again or check your permissions.";
+    } else if (error.status >= 500) {
+      message = "Something went wrong";
+      details = "A server error occurred. Please try again later.";
+    } else {
+      message = "Request error";
+      details = error.statusText || details;
+    }
+    if (error.status >= 500) {
+      Sentry.captureException(error);
+    }
+  } else if (error && error instanceof Error) {
+    Sentry.captureException(error);
+    if (import.meta.env.DEV) {
+      details = error.message;
+      stack = error.stack;
+    }
   }
 
   return (

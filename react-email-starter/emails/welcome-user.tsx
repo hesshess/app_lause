@@ -13,7 +13,7 @@ import {
   Section,
   Tailwind,
   Text,
-} from 'react-email';
+} from '@react-email/components';
 import tailwindConfig from '../tailwind.config';
 
 interface WelcomeUserProps {

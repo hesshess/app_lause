@@ -1,18 +1,33 @@
 import { ChevronUpIcon } from "lucide-react";
 import { Button } from "~/common/components/ui/button";
-import { Link, useOutletContext } from "react-router";
+import { data, Link, useOutletContext } from "react-router";
 import type { Route } from "./+types/applause-overview-page";
 import { makeSSRClient } from "~/supa-client";
 
+const VIEW_COOKIE_MAX_AGE = 60 * 30;
+
 export const loader = async ({ request, params }: Route.LoaderArgs) => {
-  const {client, headers} = makeSSRClient(request)
-  await client.rpc("track_event", {
-    event_type: "applause_view",
-    event_data: {
-      applause_id: params.applauseId,
-    },
-  });
-  return null;
+  const { client, headers } = makeSSRClient(request);
+  const cookieName = `applause_view_${params.applauseId}`;
+  const hasRecentView = request.headers
+    .get("Cookie")
+    ?.split(";")
+    .some((cookie) => cookie.trim().startsWith(`${cookieName}=`));
+
+  if (!hasRecentView) {
+    await client.rpc("track_event", {
+      event_type: "applause_view",
+      event_data: {
+        applause_id: params.applauseId,
+      },
+    });
+    headers.append(
+      "Set-Cookie",
+      `${cookieName}=1; Path=/; Max-Age=${VIEW_COOKIE_MAX_AGE}; SameSite=Lax`,
+    );
+  }
+
+  return data(null, { headers });
 };
 
 export default function ApplauseOverviewPage() {

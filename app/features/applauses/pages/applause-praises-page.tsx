@@ -59,8 +59,8 @@ export default function ApplausePraisesPage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
-  const { praise_count } = useOutletContext<{
-    praise_count: string;
+  const { praises_cnt } = useOutletContext<{
+    praises_cnt: string;
   }>();
     const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function ApplausePraisesPage({
       <div className="space-y-10 max-w-2xl">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold">
-            {praise_count} {praise_count === "1" ? "praise" : "praises"}
+            {praises_cnt} {praises_cnt === "1" ? "praise" : "praises"}
           </h2>
           <DialogTrigger>
             <Button variant="secondary">Write a Praise</Button>

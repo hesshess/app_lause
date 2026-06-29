@@ -1,11 +1,12 @@
 import { DateTime } from "luxon";
 import type { Route } from "./+types/leaderboards-redirection-page";
 import { redirect } from "react-router";
+import "~/lib/datetime";
 
 export function loader({params, request}: Route.LoaderArgs){
     const {period} = params;
     let url: string;
-    const today = DateTime.now().setZone("Asia/Seoul");
+    const today = DateTime.now();
     if(period === "daily"){
         url = `/applauses/leaderboards/daily/${today.year}/${today.month}/${today.day}`;
     } else if(period === "weekly"){ 

@@ -11,8 +11,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import "./lib/datetime";
 import Navigation from "./common/components/navigation";
-import { Settings } from "luxon";
 import { makeSSRClient } from "./supa-client";
 import { cn } from "./lib/utils";
 import { countNotifications, getUserById } from "./features/users/queries";
@@ -33,8 +33,6 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  Settings.defaultLocale = "ko";
-  Settings.defaultZone = "Asia/Seoul";
   return (
     <html lang="en">
       <head>

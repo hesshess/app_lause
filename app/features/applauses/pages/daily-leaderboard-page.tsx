@@ -9,6 +9,7 @@ import ApplausePagination from "~/common/components/applause-pagination";
 import { getApplausePagesByDateRange, getApplausesByDateRange } from "../queries";
 import { PAGE_SIZE } from "../constant";
 import { makeSSRClient } from "~/supa-client";
+import { APP_TIME_ZONE } from "~/lib/datetime";
 
 const paramsSchema = z.object({
   year: z.coerce.number(),
@@ -21,9 +22,7 @@ export const meta: Route.MetaFunction = ({ params, data }) => {
     year: Number(params.year),
     month: Number(params.month),
     day: Number(params.day),
-  })
-    .setZone("Asia/Seoul")
-    .setLocale("ko");
+  }, { zone: APP_TIME_ZONE }).startOf("day");
   return [
     {
       title: `The best applauses of ${date.toLocaleString(DateTime.DATE_MED)} | app_lause`,
@@ -44,7 +43,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     );
   }
 
-  const date = DateTime.fromObject(parsedData).setZone("Asia/Seoul");
+  const date = DateTime.fromObject(parsedData, { zone: APP_TIME_ZONE }).startOf("day");
   if (!date.isValid) {
     throw data(
       {
@@ -56,7 +55,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       },
     );
   }
-  const today = DateTime.now().setZone("Asia/Seoul").startOf("day");
+  const today = DateTime.now().startOf("day");
   if (date > today) {
     throw data(
       {

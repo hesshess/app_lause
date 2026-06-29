@@ -15,3 +15,6 @@
 /react-email-starter/build/
 /react-email-starter/*.log
 /react-email-starter/.DS_Store
+
+
+/.vercel/

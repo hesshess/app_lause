@@ -1,8 +1,9 @@
-import { Link } from "react-router";
+import { Link, useFetcher } from "react-router";
 import { ChevronUpIcon, EyeIcon, MessageCircleIcon } from "lucide-react";
 
 import { Button } from "~/common/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "~/common/components/ui/card";
+import { cn } from "~/lib/utils";
 
 interface ApplauseCardProps {
     id: number | string;
@@ -11,6 +12,7 @@ interface ApplauseCardProps {
     praisesCount: string;
     viewsCount: string;
     votesCount: string;
+    isUpvoted?: boolean;
 }
 
 export function ApplauseCard({
@@ -20,7 +22,24 @@ export function ApplauseCard({
     praisesCount,
     viewsCount,
     votesCount,
+    isUpvoted = false,
 }: ApplauseCardProps) {
+    const fetcher = useFetcher();
+    const numericVotesCount = Number(votesCount ?? 0);
+    const isSubmitting = fetcher.state === "submitting";
+    const optimisticIsUpvoted =
+      isSubmitting ? !isUpvoted : isUpvoted;
+    const optimisticVotesCount =
+      isSubmitting
+        ? (isUpvoted ? numericVotesCount - 1 : numericVotesCount + 1)
+        : numericVotesCount;
+    const absorbClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      fetcher.submit(null, {
+        method: "POST",
+        action: `/applauses/${id}/upvote`,
+      });
+    };
     return (
         <Link to={`/applauses/${id}`} className="block">
             <Card className="w-full flex flex-row items-center justify-between bg-transparent hover:bg-card/50">
@@ -43,9 +62,16 @@ export function ApplauseCard({
                     </div>
                 </CardHeader>
                 <CardFooter className="py-0">
-                    <Button variant="outline" className="flex flex-col h-14">
+                    <Button
+                      onClick={absorbClick}
+                      variant="outline"
+                      className={cn(
+                        "flex flex-col h-14",
+                        optimisticIsUpvoted ? "border-primary text-primary" : "",
+                      )}
+                    >
                         <ChevronUpIcon className="size-4 shrink-0" />
-                        <span>{votesCount}</span>
+                        <span>{optimisticVotesCount}</span>
                     </Button>
                 </CardFooter>
             </Card>

@@ -62,6 +62,7 @@ export default function LeaderboardPage({ loaderData }: Route.ComponentProps) {
             praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
+            isUpvoted={applause.is_upvoted}
           />
         ))}
         <Button variant="link" asChild className="self-center p-0 text-lg">
@@ -88,6 +89,7 @@ export default function LeaderboardPage({ loaderData }: Route.ComponentProps) {
             praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
+            isUpvoted={applause.is_upvoted}
           />
         ))}
         <Button variant="link" asChild className="self-center p-0 text-lg">
@@ -114,6 +116,7 @@ export default function LeaderboardPage({ loaderData }: Route.ComponentProps) {
             praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
+            isUpvoted={applause.is_upvoted}
           />
         ))}
         <Button variant="link" asChild className="self-center p-0 text-lg">
@@ -140,6 +143,7 @@ export default function LeaderboardPage({ loaderData }: Route.ComponentProps) {
             praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
+            isUpvoted={applause.is_upvoted}
           />
         ))}
         <Button variant="link" asChild className="self-center p-0 text-lg">

@@ -126,6 +126,7 @@ export default function DailyLeaderboardPage({
             praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
+            isUpvoted={applause.is_upvoted}
           />
         ))}
       </div>

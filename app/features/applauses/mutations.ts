@@ -57,3 +57,31 @@ export const createApplause = async (
   if (error) throw error;
   return data.applause_id;
 };
+
+export const toggleApplauseUpvote = async (
+  client: SupabaseClient<Database>,
+  { applauseId, userId }: { applauseId: string; userId: string },
+) => {
+  const { count, error: countError } = await client
+    .from("applause_upvotes")
+    .select("*", { count: "exact", head: true })
+    .eq("applause_id", Number(applauseId))
+    .eq("profile_id", userId);
+  if (countError) throw countError;
+
+  if (count === 0) {
+    const { error } = await client.from("applause_upvotes").insert({
+      applause_id: Number(applauseId),
+      profile_id: userId,
+    });
+    if (error) throw error;
+    return;
+  }
+
+  const { error } = await client
+    .from("applause_upvotes")
+    .delete()
+    .eq("applause_id", Number(applauseId))
+    .eq("profile_id", userId);
+  if (error) throw error;
+};

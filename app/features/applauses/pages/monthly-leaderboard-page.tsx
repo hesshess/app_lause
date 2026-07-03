@@ -128,6 +128,7 @@ export default function MonthlyLeaderboardPage({
             praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
+            isUpvoted={applause.is_upvoted}
           />
         ))}
       </div>

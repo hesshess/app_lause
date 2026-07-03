@@ -115,6 +115,7 @@ export default function YearlyLeaderboardPage({
             praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
+            isUpvoted={applause.is_upvoted}
           />
         ))}
       </div>

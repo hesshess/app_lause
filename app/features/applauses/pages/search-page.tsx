@@ -67,6 +67,7 @@ export default function SearchPage({ loaderData }: Route.ComponentProps) {
             praisesCount={applause.praises}
             viewsCount={applause.views}
             votesCount={applause.upvotes}
+            isUpvoted={applause.is_upvoted}
           />
         ))}
       </div>

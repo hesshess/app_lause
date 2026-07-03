@@ -18,6 +18,40 @@ function mergeUniqueByApplauseId<T extends { applause_id: number }>(items: T[]) 
   );
 }
 
+async function attachIsUpvoted<T extends { applause_id: number }>(
+  client: SupabaseClient<Database>,
+  applauses: T[],
+) {
+  if (applauses.length === 0) return applauses.map((applause) => ({
+    ...applause,
+    is_upvoted: false,
+  }));
+
+  const {
+    data: { user },
+  } = await client.auth.getUser();
+  if (!user) {
+    return applauses.map((applause) => ({
+      ...applause,
+      is_upvoted: false,
+    }));
+  }
+
+  const applauseIds = applauses.map((applause) => applause.applause_id);
+  const { data, error } = await client
+    .from("applause_upvotes")
+    .select("applause_id")
+    .eq("profile_id", user.id)
+    .in("applause_id", applauseIds);
+  if (error) throw error;
+
+  const upvotedIds = new Set((data ?? []).map((row) => row.applause_id));
+  return applauses.map((applause) => ({
+    ...applause,
+    is_upvoted: upvotedIds.has(applause.applause_id),
+  }));
+}
+
 export const getApplausesByDateRange = async (
   client: SupabaseClient<Database>,
   {
@@ -38,7 +72,7 @@ export const getApplausesByDateRange = async (
     .lte("created_at", endDate.toISO())
     .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
   if (error) throw error;
-  return data;
+  return attachIsUpvoted(client, data ?? []);
 };
 
 export const getApplausePagesByDateRange = async (
@@ -98,7 +132,7 @@ export const getApplausesByCategory = async (
     .eq("category_id", categoryId)
     .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
   if (error) throw error;
-  return data;
+  return attachIsUpvoted(client, data ?? []);
 };
 
 export const getCategoryPages = async (
@@ -141,7 +175,10 @@ export const getApplausesBySearch = async (
     ...(nameMatches ?? []),
     ...(taglineMatches ?? []),
   ]);
-  return merged.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  return attachIsUpvoted(
+    client,
+    merged.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+  );
 };
 
 export const getPagesBySearch = async (
@@ -179,7 +216,27 @@ export const getApplauseById = async (
     .eq("applause_id", applauseId)
     .single();
   if (error) throw error;
-  return data;
+  const {
+    data: { user },
+  } = await client.auth.getUser();
+  if (!user) {
+    return {
+      ...data,
+      is_upvoted: false,
+    };
+  }
+
+  const { count, error: upvoteError } = await client
+    .from("applause_upvotes")
+    .select("*", { count: "exact", head: true })
+    .eq("applause_id", applauseId)
+    .eq("profile_id", user.id);
+  if (upvoteError) throw upvoteError;
+
+  return {
+    ...data,
+    is_upvoted: (count ?? 0) > 0,
+  };
 };
 
 export const getPraises = async (

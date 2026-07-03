@@ -1,5 +1,5 @@
 import { ChevronUpIcon, StarIcon } from "lucide-react";
-import { Link, NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet, useFetcher } from "react-router";
 import { Button, buttonVariants } from "~/common/components/ui/button";
 import { cn } from "~/lib/utils";
 import type { Route } from "./+types/applause-overview-layout";
@@ -24,6 +24,16 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
 export default function ApplauseOverviewLayout({
   loaderData,
 }: Route.ComponentProps) {
+  const fetcher = useFetcher();
+  const isUpvoted = loaderData.applause.is_upvoted;
+  const upvotes = Number(loaderData.applause.upvotes ?? 0);
+  const isSubmitting = fetcher.state === "submitting";
+  const optimisticIsUpvoted =
+    isSubmitting ? !isUpvoted : isUpvoted;
+  const optimisticUpvotes =
+    isSubmitting
+      ? (isUpvoted ? upvotes - 1 : upvotes + 1)
+      : upvotes;
   return (
     <div className="space-y-10">
       <div className="flex justify-between">
@@ -69,10 +79,22 @@ export default function ApplauseOverviewLayout({
               Visit Website
             </Link>
           </Button>
-          <Button size="lg" className="text-lg h-14 px-10">
-            <ChevronUpIcon className="size-4" />
-            Upvote ({loaderData.applause.upvotes})
-          </Button>
+          <fetcher.Form
+            method="post"
+            action={`/applauses/${loaderData.applause.applause_id}/upvote`}
+          >
+            <Button
+              size="lg"
+              className={cn(
+                "text-lg h-14 px-10",
+                optimisticIsUpvoted ? "border-primary text-primary" : "",
+              )}
+              variant="outline"
+            >
+              <ChevronUpIcon className="size-4" />
+              Upvote ({optimisticUpvotes})
+            </Button>
+          </fetcher.Form>
         </div>
       </div>
       <div className="flex gap-2.5">

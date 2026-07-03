@@ -10,12 +10,15 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     .eq("applause_id", Number(params.applauseId))
     .single();
   if (data) {
-    await client.rpc("track_event", {
+    const { error: trackEventError } = await client.rpc("track_event", {
       event_type: "applause_visit",
       event_data: {
         applause_id: params.applauseId,
       },
     });
+    if (trackEventError) {
+      throw trackEventError;
+    }
     return redirect(data.url);
   }
 };

@@ -5,12 +5,15 @@ import { makeSSRClient } from "~/supa-client";
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
-  await client.rpc("track_event", {
+  const { error } = await client.rpc("track_event", {
     event_type: "profile_view",
     event_data: {
       username: params.username,
     },
   });
+  if (error) {
+    throw error;
+  }
   return null;
 };
 

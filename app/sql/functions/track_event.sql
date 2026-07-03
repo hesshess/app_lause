@@ -3,7 +3,6 @@ create or replace function public.track_event(
     event_data jsonb
 ) returns void
 language plpgsql
-security definer
 set search_path = ''
 as $$
 declare

@@ -15,15 +15,12 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
     .some((cookie) => cookie.trim().startsWith(`${cookieName}=`));
 
   if (!hasRecentView) {
-    const { error } = await client.rpc("track_event", {
+    await client.rpc("track_event", {
       event_type: "applause_view",
       event_data: {
         applause_id: params.applauseId,
       },
     });
-    if (error) {
-      throw error;
-    }
     headers.append(
       "Set-Cookie",
       `${cookieName}=1; Path=/; Max-Age=${VIEW_COOKIE_MAX_AGE}; SameSite=Lax`,

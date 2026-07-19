@@ -1,4 +1,5 @@
 import { Link, type MetaFunction } from "react-router";
+import { ArrowRightIcon, GithubIcon } from "lucide-react";
 
 import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import { PostCard } from "~/features/community/components/post-card";
@@ -17,8 +18,12 @@ import { makeSSRClient } from "~/supa-client";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Home | app_lause" },
-    { name: "description", content: "Welcome to app_lause" },
+    { title: "app_lause | A social platform for shared growth" },
+    {
+      name: "description",
+      content:
+        "Share personal-growth actions, celebrate progress, and build better habits with the app_lause community.",
+    },
   ];
 };
 
@@ -44,6 +49,74 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-40">
+      <section className="relative overflow-hidden rounded-3xl border bg-muted/30 px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+        <div
+          aria-hidden="true"
+          className="absolute -right-24 -top-24 size-72 rounded-full bg-primary/30 blur-3xl"
+        />
+        <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.6fr)] lg:items-end">
+          <div className="max-w-3xl space-y-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              A production-oriented full-stack project
+            </p>
+            <div className="space-y-4">
+              <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                Turn small steps into shared progress.
+              </h1>
+              <p className="max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
+                app_lause is a social growth platform where people share
+                meaningful actions, celebrate progress, join challenges, and
+                build better habits together.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button asChild size="lg">
+                <Link to="/applauses">
+                  Explore the app
+                  <ArrowRightIcon aria-hidden="true" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <a
+                  href="https://github.com/hesshess/app_lause"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <GithubIcon aria-hidden="true" />
+                  View source on GitHub
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-4 border-t pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
+            <p className="font-semibold">Built across the full stack</p>
+            <p className="text-sm leading-6 text-muted-foreground">
+              Server-rendered routes, authenticated data flows, relational
+              database features, deployment, and production monitoring.
+            </p>
+            <ul className="flex flex-wrap gap-2" aria-label="Core technologies">
+              {[
+                "React",
+                "TypeScript",
+                "React Router",
+                "Supabase",
+                "PostgreSQL",
+                "Sentry",
+              ].map((technology) => (
+                <li
+                  key={technology}
+                  className="rounded-full border bg-background px-3 py-1.5 text-xs font-medium"
+                >
+                  {technology}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div>
           <h2 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">

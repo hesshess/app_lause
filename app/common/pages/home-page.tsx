@@ -1,4 +1,5 @@
 import { Link, type MetaFunction } from "react-router";
+import { ArrowRightIcon, GithubIcon } from "lucide-react";
 
 import { ApplauseCard } from "~/features/applauses/components/applause-card";
 import { PostCard } from "~/features/community/components/post-card";
@@ -14,11 +15,54 @@ import { getGptIdeas } from "~/features/ideas/queries";
 import { getChallenges } from "~/features/challenges/queries";
 import { getTeams } from "~/features/teams/queries";
 import { makeSSRClient } from "~/supa-client";
+import { cn } from "~/lib/utils";
+
+interface HomeEmptyStateProps {
+  title: string;
+  description: string;
+  actionLabel?: string;
+  actionTo?: string;
+  className?: string;
+}
+
+function HomeEmptyState({
+  title,
+  description,
+  actionLabel,
+  actionTo,
+  className,
+}: HomeEmptyStateProps) {
+  return (
+    <div
+      className={cn(
+        "flex min-h-52 flex-col items-start justify-center rounded-2xl border border-dashed bg-muted/20 p-8 md:col-span-1 xl:col-span-2",
+        className,
+      )}
+    >
+      <h3 className="text-xl font-semibold">{title}</h3>
+      <p className="mt-2 max-w-lg leading-7 text-muted-foreground">
+        {description}
+      </p>
+      {actionLabel && actionTo ? (
+        <Button asChild variant="outline" className="mt-5">
+          <Link to={actionTo}>
+            {actionLabel}
+            <ArrowRightIcon aria-hidden="true" />
+          </Link>
+        </Button>
+      ) : null}
+    </div>
+  );
+}
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Home | app_lause" },
-    { name: "description", content: "Welcome to app_lause" },
+    { title: "app_lause | A social platform for shared growth" },
+    {
+      name: "description",
+      content:
+        "Share personal-growth actions, celebrate progress, and build better habits with the app_lause community.",
+    },
   ];
 };
 
@@ -44,6 +88,74 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-40">
+      <section className="relative overflow-hidden rounded-3xl border bg-muted/30 px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+        <div
+          aria-hidden="true"
+          className="absolute -right-24 -top-24 size-72 rounded-full bg-primary/30 blur-3xl"
+        />
+        <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.6fr)] lg:items-end">
+          <div className="max-w-3xl space-y-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              A production-oriented full-stack project
+            </p>
+            <div className="space-y-4">
+              <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                Turn small steps into shared progress.
+              </h1>
+              <p className="max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
+                app_lause is a social growth platform where people share
+                meaningful actions, celebrate progress, join challenges, and
+                build better habits together.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button asChild size="lg">
+                <Link to="/applauses">
+                  Explore the app
+                  <ArrowRightIcon aria-hidden="true" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <a
+                  href="https://github.com/hesshess/app_lause"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <GithubIcon aria-hidden="true" />
+                  View source on GitHub
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-4 border-t pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
+            <p className="font-semibold">Built across the full stack</p>
+            <p className="text-sm leading-6 text-muted-foreground">
+              Server-rendered routes, authenticated data flows, relational
+              database features, deployment, and production monitoring.
+            </p>
+            <ul className="flex flex-wrap gap-2" aria-label="Core technologies">
+              {[
+                "React",
+                "TypeScript",
+                "React Router",
+                "Supabase",
+                "PostgreSQL",
+                "Sentry",
+              ].map((technology) => (
+                <li
+                  key={technology}
+                  className="rounded-full border bg-background px-3 py-1.5 text-xs font-medium"
+                >
+                  {technology}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div>
           <h2 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
@@ -54,21 +166,30 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/applauses/leaderboards">
-              Explore all allpauses &rarr;
+              Explore all applauses &rarr;
             </Link>
           </Button>
         </div>
-        {loaderData.applauses.map((applause, index) => (
-          <ApplauseCard
-            key={applause.applause_id}
-            id={applause.applause_id}
-            name={applause.name}
-            description={applause.tagline}
-            praisesCount={applause.praises}
-            viewsCount={applause.views}
-            votesCount={applause.upvotes}
+        {loaderData.applauses.length === 0 ? (
+          <HomeEmptyState
+            title="No applauses yet today"
+            description="Be the first to share a meaningful step and give the community something worth celebrating."
+            actionLabel="Share an applause"
+            actionTo="/applauses/submit"
           />
-        ))}
+        ) : (
+          loaderData.applauses.map((applause) => (
+            <ApplauseCard
+              key={applause.applause_id}
+              id={applause.applause_id}
+              name={applause.name}
+              description={applause.tagline}
+              praisesCount={applause.praises}
+              viewsCount={applause.views}
+              votesCount={applause.upvotes}
+            />
+          ))
+        )}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div>
@@ -79,21 +200,30 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             Reflections, lessons, and progress from the community.{" "}
           </p>
           <Button variant="link" asChild className="text-lg p-0">
-            <Link to="/community">Explore all allpauses &rarr;</Link>
+            <Link to="/community">Explore all discussions &rarr;</Link>
           </Button>
         </div>
-        {loaderData.posts.map((post) => (
-          <PostCard
-            key={post.post_id}
-            id={post.post_id}
-            title={post.title}
-            author={post.author}
-            avatarSrc={post.author_avatar}
-            category={post.topic}
-            postedAt={post.created_at}
-            votesCount={post.upvotes}
+        {loaderData.posts.length === 0 ? (
+          <HomeEmptyState
+            title="No discussions yet"
+            description="Start a conversation about a lesson, a setback, or a small win from your growth journey."
+            actionLabel="Start a discussion"
+            actionTo="/community/submit"
           />
-        ))}
+        ) : (
+          loaderData.posts.map((post) => (
+            <PostCard
+              key={post.post_id}
+              id={post.post_id}
+              title={post.title}
+              author={post.author}
+              avatarSrc={post.author_avatar}
+              category={post.topic}
+              postedAt={post.created_at}
+              votesCount={post.upvotes}
+            />
+          ))
+        )}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div>
@@ -107,17 +237,24 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/ideas">Explore all ideas &rarr;</Link>
           </Button>
         </div>
-        {loaderData.ideas.map((idea) => (
-          <IdeaCard
-            key={idea.idea_id}
-            id={idea.idea_id}
-            title={idea.title}
-            viewsCount={idea.views_count}
-            postedAt={idea.created_at}
-            likesCount={idea.likes}
-            claimed={idea.is_claimed}
+        {loaderData.ideas.length === 0 ? (
+          <HomeEmptyState
+            title="New ideas are on the way"
+            description="Fresh personal-growth ideas are generated regularly. Check back soon for a new challenge to claim."
           />
-        ))}
+        ) : (
+          loaderData.ideas.map((idea) => (
+            <IdeaCard
+              key={idea.idea_id}
+              id={idea.idea_id}
+              title={idea.title}
+              viewsCount={idea.views_count}
+              postedAt={idea.created_at}
+              likesCount={idea.likes}
+              claimed={idea.is_claimed}
+            />
+          ))
+        )}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <div>
@@ -131,21 +268,31 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/challenges">Explore all challenges &rarr;</Link>
           </Button>
         </div>
-        {loaderData.challenges.map((challenge) => (
-          <ChallengeCard
-            key={challenge.challenge_id}
-            id={challenge.challenge_id}
-            thumbnailSrc={challenge.thumbnail_url}
-            hostName={challenge.host_name}
-            postedAt={challenge.created_at}
-            title={challenge.title}
-            challengeTypeLabel={challenge.challenge_type}
-            participationLabel={challenge.participation_type}
-            tags={challenge.tags.split(",").map((tag) => tag.trim())}
-            durationLabel={challenge.duration}
-            locationLabel={challenge.location}
+        {loaderData.challenges.length === 0 ? (
+          <HomeEmptyState
+            title="No challenges available yet"
+            description="Create a focused challenge and invite others to build momentum with you."
+            actionLabel="Create a challenge"
+            actionTo="/challenges/submit"
+            className="xl:col-span-3"
           />
-        ))}
+        ) : (
+          loaderData.challenges.map((challenge) => (
+            <ChallengeCard
+              key={challenge.challenge_id}
+              id={challenge.challenge_id}
+              thumbnailSrc={challenge.thumbnail_url}
+              hostName={challenge.host_name}
+              postedAt={challenge.created_at}
+              title={challenge.title}
+              challengeTypeLabel={challenge.challenge_type}
+              participationLabel={challenge.participation_type}
+              tags={challenge.tags.split(",").map((tag) => tag.trim())}
+              durationLabel={challenge.duration}
+              locationLabel={challenge.location}
+            />
+          ))
+        )}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <div>
@@ -159,16 +306,26 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/teams">Explore all teams &rarr;</Link>
           </Button>
         </div>
-        {loaderData.teams.map((team) => (
-          <TeamCard
-            key={team.team_id}
-            id={team.team_id}
-            leaderUsername={team.leader_profile_id.username}
-            leaderAvatarSrc={team.leader_profile_id.avatar}
-            categories={team.roles.split(",")}
-            outro={team.description}
+        {loaderData.teams.length === 0 ? (
+          <HomeEmptyState
+            title="No teams are recruiting yet"
+            description="Create a team for people who want to grow through shared goals and accountability."
+            actionLabel="Create a team"
+            actionTo="/teams/submit"
+            className="xl:col-span-3"
           />
-        ))}
+        ) : (
+          loaderData.teams.map((team) => (
+            <TeamCard
+              key={team.team_id}
+              id={team.team_id}
+              leaderUsername={team.leader_profile_id.username}
+              leaderAvatarSrc={team.leader_profile_id.avatar}
+              categories={team.roles.split(",")}
+              outro={team.description}
+            />
+          ))
+        )}
       </div>
     </div>
   );

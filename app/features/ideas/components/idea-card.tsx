@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "~/common/components/ui/card";
-import { cn } from "~/lib/utils";
 
 interface IdeaCardProps {
   id: number;
@@ -29,26 +28,24 @@ export function IdeaCard({
   postedAt,
   likesCount,
   claimed,
-    owner,
+  owner,
 }: IdeaCardProps) {
   return (
     <Card className="bg-transparent hover:bg-card/50 transition-colors">
       <CardHeader>
-            <Link to={claimed || owner ? "" : `/ideas/${id}`}>
-          <CardTitle className="text-xl">
-            <span
-              className={cn(
-                claimed
-                  ? "bg-muted-foreground break-all  selection:bg-muted-foreground text-muted-foreground"
-                  : "",
-              )}
-            >
-              {title}
+        <CardTitle className="text-xl">
+          {owner ? (
+            <span>{title}</span>
+          ) : claimed ? (
+            <span className="text-muted-foreground">
+              This idea has been claimed.
             </span>
-          </CardTitle>
-        </Link>
+          ) : (
+            <Link to={`/ideas/${id}`}>{title}</Link>
+          )}
+        </CardTitle>
       </CardHeader>
-   {owner ? null : (
+      {owner ? null : (
         <CardContent className="flex items-center text-sm">
           <div className="flex items-center gap-1">
             <EyeIcon className="w-4 h-4" />
@@ -61,7 +58,7 @@ export function IdeaCard({
         </CardContent>
       )}
       <CardFooter className="flex justify-end gap-2">
-               {!claimed && !owner ? (
+        {!claimed && !owner ? (
           <>
             <Button variant="outline">
               <HeartIcon className="w-4 h-4" />

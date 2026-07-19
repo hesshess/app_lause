@@ -15,6 +15,45 @@ import { getGptIdeas } from "~/features/ideas/queries";
 import { getChallenges } from "~/features/challenges/queries";
 import { getTeams } from "~/features/teams/queries";
 import { makeSSRClient } from "~/supa-client";
+import { cn } from "~/lib/utils";
+
+interface HomeEmptyStateProps {
+  title: string;
+  description: string;
+  actionLabel?: string;
+  actionTo?: string;
+  className?: string;
+}
+
+function HomeEmptyState({
+  title,
+  description,
+  actionLabel,
+  actionTo,
+  className,
+}: HomeEmptyStateProps) {
+  return (
+    <div
+      className={cn(
+        "flex min-h-52 flex-col items-start justify-center rounded-2xl border border-dashed bg-muted/20 p-8 md:col-span-1 xl:col-span-2",
+        className,
+      )}
+    >
+      <h3 className="text-xl font-semibold">{title}</h3>
+      <p className="mt-2 max-w-lg leading-7 text-muted-foreground">
+        {description}
+      </p>
+      {actionLabel && actionTo ? (
+        <Button asChild variant="outline" className="mt-5">
+          <Link to={actionTo}>
+            {actionLabel}
+            <ArrowRightIcon aria-hidden="true" />
+          </Link>
+        </Button>
+      ) : null}
+    </div>
+  );
+}
 
 export const meta: MetaFunction = () => {
   return [
@@ -131,17 +170,26 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             </Link>
           </Button>
         </div>
-        {loaderData.applauses.map((applause, index) => (
-          <ApplauseCard
-            key={applause.applause_id}
-            id={applause.applause_id}
-            name={applause.name}
-            description={applause.tagline}
-            praisesCount={applause.praises}
-            viewsCount={applause.views}
-            votesCount={applause.upvotes}
+        {loaderData.applauses.length === 0 ? (
+          <HomeEmptyState
+            title="No applauses yet today"
+            description="Be the first to share a meaningful step and give the community something worth celebrating."
+            actionLabel="Share an applause"
+            actionTo="/applauses/submit"
           />
-        ))}
+        ) : (
+          loaderData.applauses.map((applause) => (
+            <ApplauseCard
+              key={applause.applause_id}
+              id={applause.applause_id}
+              name={applause.name}
+              description={applause.tagline}
+              praisesCount={applause.praises}
+              viewsCount={applause.views}
+              votesCount={applause.upvotes}
+            />
+          ))
+        )}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div>
@@ -155,18 +203,27 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/community">Explore all discussions &rarr;</Link>
           </Button>
         </div>
-        {loaderData.posts.map((post) => (
-          <PostCard
-            key={post.post_id}
-            id={post.post_id}
-            title={post.title}
-            author={post.author}
-            avatarSrc={post.author_avatar}
-            category={post.topic}
-            postedAt={post.created_at}
-            votesCount={post.upvotes}
+        {loaderData.posts.length === 0 ? (
+          <HomeEmptyState
+            title="No discussions yet"
+            description="Start a conversation about a lesson, a setback, or a small win from your growth journey."
+            actionLabel="Start a discussion"
+            actionTo="/community/submit"
           />
-        ))}
+        ) : (
+          loaderData.posts.map((post) => (
+            <PostCard
+              key={post.post_id}
+              id={post.post_id}
+              title={post.title}
+              author={post.author}
+              avatarSrc={post.author_avatar}
+              category={post.topic}
+              postedAt={post.created_at}
+              votesCount={post.upvotes}
+            />
+          ))
+        )}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div>
@@ -180,17 +237,24 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/ideas">Explore all ideas &rarr;</Link>
           </Button>
         </div>
-        {loaderData.ideas.map((idea) => (
-          <IdeaCard
-            key={idea.idea_id}
-            id={idea.idea_id}
-            title={idea.title}
-            viewsCount={idea.views_count}
-            postedAt={idea.created_at}
-            likesCount={idea.likes}
-            claimed={idea.is_claimed}
+        {loaderData.ideas.length === 0 ? (
+          <HomeEmptyState
+            title="New ideas are on the way"
+            description="Fresh personal-growth ideas are generated regularly. Check back soon for a new challenge to claim."
           />
-        ))}
+        ) : (
+          loaderData.ideas.map((idea) => (
+            <IdeaCard
+              key={idea.idea_id}
+              id={idea.idea_id}
+              title={idea.title}
+              viewsCount={idea.views_count}
+              postedAt={idea.created_at}
+              likesCount={idea.likes}
+              claimed={idea.is_claimed}
+            />
+          ))
+        )}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <div>
@@ -204,21 +268,31 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/challenges">Explore all challenges &rarr;</Link>
           </Button>
         </div>
-        {loaderData.challenges.map((challenge) => (
-          <ChallengeCard
-            key={challenge.challenge_id}
-            id={challenge.challenge_id}
-            thumbnailSrc={challenge.thumbnail_url}
-            hostName={challenge.host_name}
-            postedAt={challenge.created_at}
-            title={challenge.title}
-            challengeTypeLabel={challenge.challenge_type}
-            participationLabel={challenge.participation_type}
-            tags={challenge.tags.split(",").map((tag) => tag.trim())}
-            durationLabel={challenge.duration}
-            locationLabel={challenge.location}
+        {loaderData.challenges.length === 0 ? (
+          <HomeEmptyState
+            title="No challenges available yet"
+            description="Create a focused challenge and invite others to build momentum with you."
+            actionLabel="Create a challenge"
+            actionTo="/challenges/submit"
+            className="xl:col-span-3"
           />
-        ))}
+        ) : (
+          loaderData.challenges.map((challenge) => (
+            <ChallengeCard
+              key={challenge.challenge_id}
+              id={challenge.challenge_id}
+              thumbnailSrc={challenge.thumbnail_url}
+              hostName={challenge.host_name}
+              postedAt={challenge.created_at}
+              title={challenge.title}
+              challengeTypeLabel={challenge.challenge_type}
+              participationLabel={challenge.participation_type}
+              tags={challenge.tags.split(",").map((tag) => tag.trim())}
+              durationLabel={challenge.duration}
+              locationLabel={challenge.location}
+            />
+          ))
+        )}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <div>
@@ -232,16 +306,26 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/teams">Explore all teams &rarr;</Link>
           </Button>
         </div>
-        {loaderData.teams.map((team) => (
-          <TeamCard
-            key={team.team_id}
-            id={team.team_id}
-            leaderUsername={team.leader_profile_id.username}
-            leaderAvatarSrc={team.leader_profile_id.avatar}
-            categories={team.roles.split(",")}
-            outro={team.description}
+        {loaderData.teams.length === 0 ? (
+          <HomeEmptyState
+            title="No teams are recruiting yet"
+            description="Create a team for people who want to grow through shared goals and accountability."
+            actionLabel="Create a team"
+            actionTo="/teams/submit"
+            className="xl:col-span-3"
           />
-        ))}
+        ) : (
+          loaderData.teams.map((team) => (
+            <TeamCard
+              key={team.team_id}
+              id={team.team_id}
+              leaderUsername={team.leader_profile_id.username}
+              leaderAvatarSrc={team.leader_profile_id.avatar}
+              categories={team.roles.split(",")}
+              outro={team.description}
+            />
+          ))
+        )}
       </div>
     </div>
   );

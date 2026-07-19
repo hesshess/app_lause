@@ -6,7 +6,7 @@ import {
   AvatarImage,
 } from "~/common/components/ui/avatar";
 import { Badge } from "~/common/components/ui/badge";
-import { Button } from "~/common/components/ui/button";
+import { buttonVariants } from "~/common/components/ui/button";
 import {
   Card,
   CardFooter,
@@ -55,7 +55,9 @@ export function TeamCard({
           </CardTitle>
         </CardHeader>
         <CardFooter className="justify-end">
-          <Button variant="link">Join team &rarr; &rarr;</Button>
+          <span className={buttonVariants({ variant: "link" })}>
+            Join team &rarr;
+          </span>
         </CardFooter>
       </Card>
     </Link>

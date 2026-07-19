@@ -174,7 +174,11 @@ export default function SubmitPage({
         <div className="flex flex-col space-y-3">
           <div className="mb-10 size-32 overflow-hidden rounded-4xl shadow-2xl sm:size-40">
             {icon ? (
-              <img src={icon} className="object-cover w-full h-full" />
+              <img
+                src={icon}
+                alt="Selected applause icon preview"
+                className="h-full w-full object-cover"
+              />
             ) : null}
           </div>
           <Label className="flex flex-col gap-1">

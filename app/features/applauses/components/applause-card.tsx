@@ -41,40 +41,44 @@ export function ApplauseCard({
       });
     };
     return (
-        <Link to={`/applauses/${id}`} className="block">
-            <Card className="w-full flex flex-row items-center justify-between bg-transparent hover:bg-card/50">
-                <CardHeader className="w-full">
-                    <CardTitle className="text-2xl font-semibold leading-none tracking-tight">
-                        {name}
-                    </CardTitle>
-                    <CardDescription className="text-muted-foreground">
-                        {description}
-                    </CardDescription>
-                    <div className="flex items-center gap-4 mt-2">
-                        <div className="flex items-center gap-px text-xs text-muted-foreground">
-                            <MessageCircleIcon className="w-4 h-4" />
-                            <span>{praisesCount}</span>
-                        </div>
-                        <div className="flex items-center gap-px text-xs text-muted-foreground">
-                            <EyeIcon className="w-4 h-4" />
-                            <span>{viewsCount}</span>
-                        </div>
-                    </div>
-                </CardHeader>
-                <CardFooter className="py-0">
-                    <Button
-                      onClick={absorbClick}
-                      variant="outline"
-                      className={cn(
-                        "flex flex-col h-14",
-                        optimisticIsUpvoted ? "border-primary text-primary" : "",
-                      )}
-                    >
-                        <ChevronUpIcon className="size-4 shrink-0" />
-                        <span>{optimisticVotesCount}</span>
-                    </Button>
-                </CardFooter>
-            </Card>
-        </Link>
+      <Card className="relative flex w-full flex-row items-center justify-between bg-transparent hover:bg-card/50">
+        <Link
+          to={`/applauses/${id}`}
+          aria-label={`View applause: ${name}`}
+          className="absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        />
+        <CardHeader className="w-full">
+          <CardTitle className="text-2xl font-semibold leading-none tracking-tight">
+            {name}
+          </CardTitle>
+          <CardDescription className="text-muted-foreground">
+            {description}
+          </CardDescription>
+          <div className="mt-2 flex items-center gap-4">
+            <div className="flex items-center gap-px text-xs text-muted-foreground">
+              <MessageCircleIcon className="h-4 w-4" />
+              <span>{praisesCount}</span>
+            </div>
+            <div className="flex items-center gap-px text-xs text-muted-foreground">
+              <EyeIcon className="h-4 w-4" />
+              <span>{viewsCount}</span>
+            </div>
+          </div>
+        </CardHeader>
+        <CardFooter className="relative z-10 py-0">
+          <Button
+            onClick={absorbClick}
+            variant="outline"
+            className={cn(
+              "flex h-14 flex-col",
+              optimisticIsUpvoted ? "border-primary text-primary" : "",
+            )}
+          >
+            <ChevronUpIcon className="size-4 shrink-0" />
+            <span className="sr-only">Upvote applause. Current votes:</span>
+            <span>{optimisticVotesCount}</span>
+          </Button>
+        </CardFooter>
+      </Card>
     );
 }

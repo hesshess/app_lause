@@ -297,11 +297,7 @@ export default function Navigation({
                 <NavigationMenuItem key={menu.name}>
                   {menu.items ? (
                     <>
-                      <Link to={menu.to}>
-                        <NavigationMenuTrigger>
-                          {menu.name}
-                        </NavigationMenuTrigger>
-                      </Link>
+                      <NavigationMenuTrigger>{menu.name}</NavigationMenuTrigger>
                       <NavigationMenuContent>
                         <ul className="grid w-150 grid-cols-2 gap-3 p-4 font-light">
                           {menu.items.map((item) => (
@@ -351,28 +347,39 @@ export default function Navigation({
           <Button size="icon" variant="ghost" asChild className="relative">
             <Link to="/my/notifications">
               <BellIcon className="size-4" />
+              <span className="sr-only">Notifications</span>
               {hasNotifications && (
-                <div className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full" />
+                <div
+                  aria-hidden="true"
+                  className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full"
+                />
               )}
             </Link>
           </Button>
           <Button size="icon" variant="ghost" asChild className="relative">
             <Link to="/my/messages">
               <MessageCircleIcon className="size-4" />
+              <span className="sr-only">Messages</span>
               {hasMessages && (
-                <div className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full" />
+                <div
+                  aria-hidden="true"
+                  className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full"
+                />
               )}
             </Link>
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar>
-                {avatar ? (
-                  <AvatarImage src={avatar} />
-                ) : (
-                  <AvatarFallback>{name?.[0]}</AvatarFallback>
-                )}
-              </Avatar>
+              <Button size="icon" variant="ghost" className="rounded-full">
+                <Avatar>
+                  {avatar ? (
+                    <AvatarImage src={avatar} alt="" />
+                  ) : (
+                    <AvatarFallback>{name?.[0]}</AvatarFallback>
+                  )}
+                </Avatar>
+                <span className="sr-only">Open account menu</span>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuLabel className="flex flex-col">

@@ -7,7 +7,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "~/common/components/ui/avatar";
-import { Button } from "~/common/components/ui/button";
+import { Button, buttonVariants } from "~/common/components/ui/button";
 import {
   Card,
   CardFooter,
@@ -55,50 +55,56 @@ export function PostCard({
     });
   };
   return (
-    <Link to={`/community/${id}`} className="block">
-      <Card
-        className={cn(
-          "bg-transparent hover:bg-card/50 transition-colors",
-          expanded ? "flex flex-row items-center justify-between w-" : "",
-        )}
-      >
-        <CardHeader className="flex flex-row items-center gap-2 w-full">
-          <Avatar className="size-14">
-            <AvatarFallback>{author}</AvatarFallback>
-            <AvatarImage src={avatarSrc ?? undefined} />
-          </Avatar>
-          <div className="space-y-2">
-            <CardTitle>{title}</CardTitle>
-            <div className="flex gap-2 text-sm leading-tight text-muted-foreground">
-              <span>
-                {author} on {category}
-              </span>
-              <DotIcon className="w-4 h-4" />
-              <span>{DateTime.fromISO(postedAt).toRelative()}</span>
-            </div>
+    <Card
+      className={cn(
+        "relative bg-transparent transition-colors hover:bg-card/50",
+        expanded ? "flex flex-row items-center justify-between" : "",
+      )}
+    >
+      <Link
+        to={`/community/${id}`}
+        aria-label={`View discussion: ${title}`}
+        className="absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      />
+      <CardHeader className="pointer-events-none flex w-full min-w-0 flex-row items-center gap-2">
+        <Avatar className="size-14">
+          <AvatarFallback>{author}</AvatarFallback>
+          <AvatarImage src={avatarSrc ?? undefined} alt="" />
+        </Avatar>
+        <div className="min-w-0 space-y-2">
+          <CardTitle className="break-words">{title}</CardTitle>
+          <div className="flex flex-wrap gap-2 text-sm leading-tight text-muted-foreground">
+            <span>
+              {author} on {category}
+            </span>
+            <DotIcon className="w-4 h-4" />
+            <span>{DateTime.fromISO(postedAt).toRelative()}</span>
           </div>
-        </CardHeader>
-        {!expanded && (
-          <CardFooter className="flex justify-end">
-            <Button variant="link">Reply &rarr;</Button>
-          </CardFooter>
-        )}
-        {expanded && (
-          <CardFooter className="flex justify-end  pb-0">
-            <Button
-              onClick={absorbClick}
-              variant="outline"
-              className={cn(
-                "flex flex-col h-14",
-                optimisitcIsUpvoted ? "border-primary text-primary" : "",
-              )}
-            >
-              <ChevronUpIcon className="size-4 shrink-0" />
-              <span>{optimisitcVotesCount}</span>
-            </Button>
-          </CardFooter>
-        )}
-      </Card>
-    </Link>
+        </div>
+      </CardHeader>
+      {!expanded && (
+        <CardFooter className="pointer-events-none flex justify-end">
+          <span className={buttonVariants({ variant: "link" })}>
+            Reply &rarr;
+          </span>
+        </CardFooter>
+      )}
+      {expanded && (
+        <CardFooter className="relative z-10 flex justify-end pb-0">
+          <Button
+            onClick={absorbClick}
+            variant="outline"
+            className={cn(
+              "flex h-14 flex-col",
+              optimisitcIsUpvoted ? "border-primary text-primary" : "",
+            )}
+          >
+            <ChevronUpIcon className="size-4 shrink-0" />
+            <span className="sr-only">Upvote discussion. Current votes:</span>
+            <span>{optimisitcVotesCount}</span>
+          </Button>
+        </CardFooter>
+      )}
+    </Card>
   );
 }

@@ -62,6 +62,7 @@ export function IdeaCard({
           <>
             <Button variant="outline">
               <HeartIcon className="w-4 h-4" />
+              <span className="sr-only">Like idea. Current likes:</span>
               <span>{likesCount}</span>
             </Button>
             <Button asChild>

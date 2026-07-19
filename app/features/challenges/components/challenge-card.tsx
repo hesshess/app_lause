@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import { Link } from "react-router";
 
 import { Badge } from "~/common/components/ui/badge";
-import { Button } from "~/common/components/ui/button";
+import { buttonVariants } from "~/common/components/ui/button";
 import {
   Card,
   CardContent,
@@ -85,9 +85,9 @@ export function ChallengeCard({
               {locationLabel}
             </span>
           </div>
-          <Button variant="secondary" size="sm">
+          <span className={buttonVariants({ variant: "secondary", size: "sm" })}>
             Join Challenge
-          </Button>
+          </span>
         </CardFooter>
       </Card>
     </Link>

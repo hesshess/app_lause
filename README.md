@@ -1,8 +1,20 @@
 # app-lause
 
-A full-stack social growth platform where people share small personal-growth actions, receive applause from the community, join challenges, and discover AI-generated ideas for building better habits.
+**A full-stack social growth platform for turning personal progress into shared momentum.**
 
-This project is built as a production-oriented portfolio application for Canadian software engineering roles, with emphasis on full-stack TypeScript, authentication, server-side rendering, database-backed features, deployment, and monitoring.
+[Live Demo](https://app-lause.xyz) · [GitHub Repository](https://github.com/hesshess/app_lause)
+
+app-lause lets people share personal-growth actions, receive encouragement from the community, join challenges, and discover AI-generated ideas for building better habits.
+
+I built this production-oriented portfolio project to demonstrate end-to-end product development: responsive interfaces, server-rendered React, authenticated data flows, relational database design, third-party integrations, deployment, and monitoring.
+
+## Highlights
+
+- Full-stack TypeScript application with React Router server rendering, loaders, and actions
+- Email OTP and social OAuth authentication backed by Supabase
+- Community features supported by PostgreSQL views, policies, triggers, and typed queries
+- Responsive, accessible UI built with Tailwind CSS and Shadcn-style components
+- Production deployment on Vercel with Sentry monitoring and Cloudflare configuration
 
 ## Product Overview
 

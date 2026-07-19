@@ -16,6 +16,10 @@ I built this production-oriented portfolio project to demonstrate end-to-end pro
 - Responsive, accessible UI built with Tailwind CSS and Shadcn-style components
 - Production deployment on Vercel with Sentry monitoring and Cloudflare configuration
 
+## Engineering Case Study
+
+[Read how I diagnosed and stabilized the React Router SSR deployment on Vercel.](docs/PRODUCTION_CASE_STUDY.md)
+
 ## Product Overview
 
 app-lause helps users turn personal progress into visible, community-supported actions.

@@ -71,7 +71,8 @@ export default function App({ loaderData }: Route.ComponentProps) {
   return (
     <div
       className={cn({
-        "py-28 px-5 md:px-20": !pathname.includes("/auth/"),
+        "px-5 py-24 sm:px-8 md:px-10 md:py-28 lg:px-20":
+          !pathname.includes("/auth/"),
         "transition-opacity animate-pulse": isLoading,
       })}
     >

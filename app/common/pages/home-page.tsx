@@ -87,7 +87,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="space-y-40">
+    <div className="space-y-24 md:space-y-32 xl:space-y-40">
       <section className="relative overflow-hidden rounded-3xl border bg-muted/30 px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
         <div
           aria-hidden="true"

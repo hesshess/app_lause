@@ -127,7 +127,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/applauses/leaderboards">
-              Explore all allpauses &rarr;
+              Explore all applauses &rarr;
             </Link>
           </Button>
         </div>
@@ -152,7 +152,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             Reflections, lessons, and progress from the community.{" "}
           </p>
           <Button variant="link" asChild className="text-lg p-0">
-            <Link to="/community">Explore all allpauses &rarr;</Link>
+            <Link to="/community">Explore all discussions &rarr;</Link>
           </Button>
         </div>
         {loaderData.posts.map((post) => (

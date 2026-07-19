@@ -1,8 +1,24 @@
 # app-lause
 
-A full-stack social growth platform where people share small personal-growth actions, receive applause from the community, join challenges, and discover AI-generated ideas for building better habits.
+**A full-stack social growth platform for turning personal progress into shared momentum.**
 
-This project is built as a production-oriented portfolio application for Canadian software engineering roles, with emphasis on full-stack TypeScript, authentication, server-side rendering, database-backed features, deployment, and monitoring.
+[Live Demo](https://app-lause.xyz) · [GitHub Repository](https://github.com/hesshess/app_lause)
+
+app-lause lets people share personal-growth actions, receive encouragement from the community, join challenges, and discover AI-generated ideas for building better habits.
+
+I built this production-oriented portfolio project to demonstrate end-to-end product development: responsive interfaces, server-rendered React, authenticated data flows, relational database design, third-party integrations, deployment, and monitoring.
+
+## Highlights
+
+- Full-stack TypeScript application with React Router server rendering, loaders, and actions
+- Email OTP and social OAuth authentication backed by Supabase
+- Community features supported by PostgreSQL views, policies, triggers, and typed queries
+- Responsive, accessible UI built with Tailwind CSS and Shadcn-style components
+- Production deployment on Vercel with Sentry monitoring and Cloudflare configuration
+
+## Engineering Case Study
+
+[Read how I diagnosed and stabilized the React Router SSR deployment on Vercel.](docs/PRODUCTION_CASE_STUDY.md)
 
 ## Product Overview
 
@@ -16,7 +32,7 @@ Core user flows include:
 - Discover AI-generated personal-growth ideas
 - Create and browse challenges and accountability teams
 - Sign in with email OTP or social OAuth providers
-- Promote applauses through a payment-oriented flow
+- Preview an applause promotion flow with a Toss Payments checkout prototype
 - Manage user profile, notifications, messages, and dashboard pages
 
 ## Tech Stack
@@ -27,11 +43,17 @@ Core user flows include:
 - PostgreSQL and Drizzle tooling for database workflow
 - Tailwind CSS and Shadcn-style UI components for styling
 - OpenAI for structured personal-growth idea generation
-- Toss Payments SDK for client-side payment integration
+- Toss Payments SDK for a client-side checkout integration prototype
 - Resend and React Email for email-related flows
 - Sentry for client/server error monitoring
 - Vercel for production deployment
 - Cloudflare for DNS, proxying, SSL, and firewall configuration
+
+## Payment Prototype Scope
+
+The applause promotion flow is a technical prototype, not a production commerce feature. It demonstrates client-side payment widget rendering, promotion-period pricing, a provider checkout request, and an experimental server confirmation path.
+
+It is not presented as accepting live customer payments. A production release would require server-authoritative order and price validation, persistent payment state, idempotent confirmation, webhook reconciliation, failure and refund handling, security review, and automated integration tests.
 
 ## Architecture Highlights
 
@@ -89,7 +111,7 @@ const redirectTo = `${baseUrl.origin}/auth/social/${provider}/complete`;
 
 ### SSR-Safe Third-Party SDK Loading
 
-Browser-only payment SDK code is loaded from client-side effects instead of being imported into the server bundle at module startup.
+The browser-only SDK used by the payment prototype is loaded from a client-side effect instead of being imported into the server bundle at module startup.
 
 ### Centralized Datetime Configuration
 
@@ -163,6 +185,6 @@ After changing environment variables in Vercel, a new production deployment is r
 - OAuth and OTP authentication patterns
 - Production debugging with Vercel runtime logs and Sentry
 - Monitoring design that avoids noisy expected errors
-- Payment SDK integration in an SSR-safe way
+- SSR-safe loading of a browser-only third-party SDK
 - Practical deployment and DNS/security operations
 - Feature-based application organization suitable for scaling

@@ -6,7 +6,7 @@
 /.react-router/
 /build/
 
-
+/react-email-starter/
 /react-email-starter/node_modules/
 /react-email-starter/.env
 /react-email-starter/.env.local
@@ -19,4 +19,5 @@
 
 /.vercel/
 
-INTERVIEW_PREP.md
+# Local-only document translations
+/local-docs-ko/

@@ -102,16 +102,19 @@ Recommended handling:
 - Avoid sending expected probe traffic to Sentry as high-severity application errors.
 - Use Cloudflare firewall rules for obvious malicious or abusive patterns.
 
-## Payment Integration
+## Payment Prototype Review
 
-Payment SDKs should be loaded only where needed and should avoid server startup paths when they are browser-oriented.
+The current applause promotion checkout is an integration prototype and is not considered production-ready payment infrastructure. The browser-oriented SDK should be loaded only where needed and kept out of server startup paths.
 
 Review points:
 
 - Client keys may be public if designed by the provider for browser usage.
 - Secret payment keys must stay server-side.
-- Payment confirmation should be validated server-side.
+- Order ownership, amount, currency, and promotion details must be validated from server-authoritative data.
+- Payment confirmation must be idempotent and persisted before access or promotion is granted.
+- Provider webhooks, failure recovery, cancellation, and refunds require explicit handling.
 - Payment metadata should not include sensitive personal data.
+- Live payment processing requires integration tests and a dedicated security review.
 
 ## Production Checklist
 

@@ -32,7 +32,7 @@ Core user flows include:
 - Discover AI-generated personal-growth ideas
 - Create and browse challenges and accountability teams
 - Sign in with email OTP or social OAuth providers
-- Promote applauses through a payment-oriented flow
+- Preview an applause promotion flow with a Toss Payments checkout prototype
 - Manage user profile, notifications, messages, and dashboard pages
 
 ## Tech Stack
@@ -43,11 +43,17 @@ Core user flows include:
 - PostgreSQL and Drizzle tooling for database workflow
 - Tailwind CSS and Shadcn-style UI components for styling
 - OpenAI for structured personal-growth idea generation
-- Toss Payments SDK for client-side payment integration
+- Toss Payments SDK for a client-side checkout integration prototype
 - Resend and React Email for email-related flows
 - Sentry for client/server error monitoring
 - Vercel for production deployment
 - Cloudflare for DNS, proxying, SSL, and firewall configuration
+
+## Payment Prototype Scope
+
+The applause promotion flow is a technical prototype, not a production commerce feature. It demonstrates client-side payment widget rendering, promotion-period pricing, a provider checkout request, and an experimental server confirmation path.
+
+It is not presented as accepting live customer payments. A production release would require server-authoritative order and price validation, persistent payment state, idempotent confirmation, webhook reconciliation, failure and refund handling, security review, and automated integration tests.
 
 ## Architecture Highlights
 
@@ -105,7 +111,7 @@ const redirectTo = `${baseUrl.origin}/auth/social/${provider}/complete`;
 
 ### SSR-Safe Third-Party SDK Loading
 
-Browser-only payment SDK code is loaded from client-side effects instead of being imported into the server bundle at module startup.
+The browser-only SDK used by the payment prototype is loaded from a client-side effect instead of being imported into the server bundle at module startup.
 
 ### Centralized Datetime Configuration
 
@@ -179,6 +185,6 @@ After changing environment variables in Vercel, a new production deployment is r
 - OAuth and OTP authentication patterns
 - Production debugging with Vercel runtime logs and Sentry
 - Monitoring design that avoids noisy expected errors
-- Payment SDK integration in an SSR-safe way
+- SSR-safe loading of a browser-only third-party SDK
 - Practical deployment and DNS/security operations
 - Feature-based application organization suitable for scaling

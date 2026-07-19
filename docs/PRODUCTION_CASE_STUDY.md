@@ -2,7 +2,7 @@
 
 ## Summary
 
-Moving app-lause from local development to Vercel exposed failures at three different boundaries: build output, serverless startup, and environment-specific authentication. The most important incident was a production function failure caused by a browser-only payment SDK entering the server bundle.
+Moving app-lause from local development to Vercel exposed failures at three different boundaries: build output, serverless startup, and environment-specific authentication. The most important incident was a production function failure caused by the browser-only SDK used in a payment prototype entering the server bundle.
 
 I traced the failures through build output and Vercel runtime logs, separated browser code from the server startup path, made OAuth redirects environment-aware, and added monitoring that reports actionable failures without treating expected `404` traffic as an application incident.
 
@@ -30,7 +30,9 @@ This made the key debugging question: **did the failure happen while building, w
 
 I used the production build output to resolve compilation and packaging problems first. Once the build completed, I used Vercel runtime logs to investigate `FUNCTION_INVOCATION_FAILED` separately instead of treating it as another build error.
 
-Tracing the route import graph led to the applause promotion page. It imported the Toss Payments browser SDK at module scope. Because React Router also includes route modules in the SSR build, Node.js could evaluate that dependency before the page reached a browser.
+Tracing the route import graph led to the applause promotion prototype. It imported the Toss Payments browser SDK at module scope. Because React Router also includes route modules in the SSR build, Node.js could evaluate that dependency before the page reached a browser.
+
+This case study covers the SSR runtime boundary exposed by that prototype. It does not present the checkout flow as a production-ready payment system.
 
 The production review also uncovered a separate environment bug in social authentication: the OAuth callback URL was fixed to `http://localhost:5173`, so the same code could not complete login on the deployed domain.
 

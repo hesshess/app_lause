@@ -57,6 +57,8 @@ It is not presented as accepting live customer payments. A production release wo
 
 ## Architecture Highlights
 
+[View the system diagram and detailed runtime boundaries.](docs/ARCHITECTURE.md)
+
 ### React Router SSR
 
 The app uses React Router route modules with server loaders and actions for data loading, mutations, authentication callbacks, and redirects. Routes are organized by feature area under `app/features`.

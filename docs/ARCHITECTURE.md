@@ -10,6 +10,57 @@ app-lause is a full-stack React Router application organized around feature doma
 - Separate browser-only integrations from server-rendered code paths.
 - Make production failures observable without exposing sensitive details to users.
 
+## System Architecture
+
+```mermaid
+flowchart LR
+  browser["Browser<br/>React UI and hydration"]
+  cloudflare["Cloudflare<br/>DNS, SSL, and proxy"]
+
+  subgraph vercel["Vercel serverless runtime"]
+    router["React Router SSR<br/>routes.ts and root.tsx"]
+    routes["Route modules<br/>loaders, actions, and pages"]
+    features["Feature modules<br/>queries, mutations, and components"]
+    shared["Shared application code<br/>common, hooks, and lib"]
+    ssrClient["Supabase SSR client<br/>request cookies and anon key"]
+    adminClient["Supabase admin client<br/>server only"]
+  end
+
+  subgraph services["Managed services"]
+    supabase["Supabase<br/>Auth and PostgreSQL"]
+    openai["OpenAI<br/>structured idea generation"]
+    resend["Resend<br/>email delivery"]
+    sentry["Sentry<br/>client and server monitoring"]
+  end
+
+  toss["Toss Payments SDK<br/>client-side prototype"]
+  realtime["Supabase browser client<br/>message updates"]
+
+  browser -->|HTTPS request| cloudflare
+  cloudflare -->|Proxied request| router
+  router --> routes
+  routes --> features
+  routes --> shared
+  router -->|SSR HTML and route data| browser
+
+  features --> ssrClient
+  features -->|Privileged server task| adminClient
+  ssrClient --> supabase
+  adminClient --> supabase
+  browser --> realtime
+  realtime --> supabase
+
+  routes --> openai
+  routes --> resend
+  browser --> toss
+  browser --> sentry
+  router --> sentry
+```
+
+Most application data flows through typed route loaders and actions running on Vercel. These server paths use the cookie-aware Supabase SSR client so authentication and database access remain connected to the incoming request.
+
+The browser talks directly to external services only where the interaction requires a browser runtime: real-time message updates, the payment prototype, and client-side error reporting. The Supabase service-role client stays inside the server runtime and is reserved for privileged tasks such as storing generated ideas.
+
 ## Application Structure
 
 ```text

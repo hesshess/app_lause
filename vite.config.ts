@@ -19,6 +19,7 @@ const sentryConfig: SentryReactRouterBuildOptions = {
 
 const shouldUploadSentrySourceMaps =
   Boolean(process.env.SENTRY_AUTH_TOKEN) &&
+  process.env.VERCEL === "1" &&
   process.env.GITHUB_ACTIONS !== "true";
 
 export default defineConfig((config) => {

@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import type { FC, HTMLAttributes } from "react"
 
 import { cn } from "~/lib/utils"
 
-interface FlickeringGridProps extends React.HTMLAttributes<HTMLDivElement> {
+interface FlickeringGridProps extends HTMLAttributes<HTMLDivElement> {
   squareSize?: number
   gridGap?: number
   flickerChance?: number
@@ -13,7 +14,7 @@ interface FlickeringGridProps extends React.HTMLAttributes<HTMLDivElement> {
   maxOpacity?: number
 }
 
-export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
+export const FlickeringGrid: FC<FlickeringGridProps> = ({
   squareSize = 4,
   gridGap = 6,
   flickerChance = 0.3,

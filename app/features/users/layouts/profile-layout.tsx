@@ -1,4 +1,4 @@
-import { Form, Link, NavLink, Outlet, useOutletContext, useParams } from "react-router";
+import { Form, Link, NavLink, Outlet, useOutletContext } from "react-router";
 import {
   Avatar,
   AvatarFallback,

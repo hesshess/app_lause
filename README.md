@@ -1,5 +1,7 @@
 # app-lause
 
+[![Quality Checks](https://github.com/hesshess/app_lause/actions/workflows/quality.yml/badge.svg)](https://github.com/hesshess/app_lause/actions/workflows/quality.yml)
+
 **A full-stack social growth platform for turning personal progress into shared momentum.**
 
 [Live Demo](https://app-lause.xyz) · [GitHub Repository](https://github.com/hesshess/app_lause)
@@ -7,6 +9,19 @@
 app-lause lets people share personal-growth actions, receive encouragement from the community, join challenges, and discover AI-generated ideas for building better habits.
 
 I built this production-oriented portfolio project to demonstrate end-to-end product development: responsive interfaces, server-rendered React, authenticated data flows, relational database design, third-party integrations, deployment, and monitoring.
+
+## Product Preview
+
+<table>
+  <tr>
+    <th>Desktop</th>
+    <th>Mobile</th>
+  </tr>
+  <tr>
+    <td width="72%"><img src="docs/media/homepage-desktop.jpg" alt="app-lause homepage on desktop" /></td>
+    <td width="28%"><img src="docs/media/homepage-mobile.jpg" alt="app-lause homepage on mobile" /></td>
+  </tr>
+</table>
 
 ## Highlights
 

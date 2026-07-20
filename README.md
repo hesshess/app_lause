@@ -44,14 +44,13 @@ Core user flows include:
 - Tailwind CSS and Shadcn-style UI components for styling
 - OpenAI for structured personal-growth idea generation
 - Toss Payments SDK for a client-side checkout integration prototype
-- Resend and React Email for email-related flows
 - Sentry for client/server error monitoring
 - Vercel for production deployment
 - Cloudflare for DNS, proxying, SSL, and firewall configuration
 
 ## Payment Prototype Scope
 
-The applause promotion flow is a technical prototype, not a production commerce feature. It demonstrates client-side payment widget rendering, promotion-period pricing, a provider checkout request, and an experimental server confirmation path.
+The applause promotion flow is a technical prototype, not a production commerce feature. The public demo renders the client-side payment widget and calculates promotion-period pricing, but it does not initiate or confirm a payment.
 
 It is not presented as accepting live customer payments. A production release would require server-authoritative order and price validation, persistent payment state, idempotent confirmation, webhook reconciliation, failure and refund handling, security review, and automated integration tests.
 
@@ -163,7 +162,7 @@ npm run build
 
 ## Environment Variables
 
-The app expects environment variables for Supabase, OpenAI, Sentry, Resend, Toss Payments, and database access.
+The app expects environment variables for Supabase, OpenAI, Sentry, the Toss Payments client widget, and database access.
 
 Common variables include:
 
@@ -175,10 +174,8 @@ SUPABASE_SERVICE_ROLE_KEY
 VITE_SUPABASE_URL
 VITE_SUPABASE_ANON_KEY
 OPENAI_API_KEY
-RESEND_API_KEY
 SENTRY_AUTH_TOKEN
 VITE_TOSS_CLIENT_KEY
-TOSS_SECURITY_KEY
 HEADER_SECRET_KEY
 HEADER_SECRET_VAL
 ```

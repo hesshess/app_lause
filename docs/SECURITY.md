@@ -21,9 +21,7 @@ Sensitive variables include:
 DATABASE_URL
 SUPABASE_SERVICE_ROLE_KEY
 OPENAI_API_KEY
-RESEND_API_KEY
 SENTRY_AUTH_TOKEN
-TOSS_SECURITY_KEY
 HEADER_SECRET_KEY
 HEADER_SECRET_VAL
 ```
@@ -72,14 +70,19 @@ Current approach:
 
 ## Sentry Data Collection
 
-Sentry helps identify production failures, but captured data must be reviewed carefully.
+Sentry helps identify production failures, but captured data must be reviewed carefully. The public demo keeps error reporting enabled while disabling default PII, user information, HTTP bodies, and Session Replay.
 
-Review points:
+Current controls:
 
 - Do not intentionally log access tokens, session cookies, passwords, or service keys.
-- Review whether user information or request bodies should be disabled in Sentry data collection.
+- Keep default PII and user information disabled.
+- Keep HTTP request and response body collection disabled.
+- Keep Session Replay disabled unless its masking behavior is tested for this application.
 - Keep `SENTRY_AUTH_TOKEN` as a server/build environment variable only.
-- Review Session Replay sampling before relying on it in production.
+
+## Public Demo Side Effects
+
+Public routes should be safe to visit repeatedly and should not trigger external writes through a `GET` loader. The previous unauthenticated welcome-email route was removed from the public runtime. Any future email flow must use an authenticated, validated action with appropriate abuse controls.
 
 ## OAuth Security
 
@@ -104,11 +107,13 @@ Recommended handling:
 
 ## Payment Prototype Review
 
-The current applause promotion checkout is an integration prototype and is not considered production-ready payment infrastructure. The browser-oriented SDK should be loaded only where needed and kept out of server startup paths.
+The current applause promotion checkout is an integration prototype and is not considered production-ready payment infrastructure. The public demo uses the provider's anonymous customer value to render the browser widget and calculate a preview amount, but it does not request or confirm a payment.
 
 Review points:
 
 - Client keys may be public if designed by the provider for browser usage.
+- Public demo code must not contain or transmit personal customer details.
+- Payment request and confirmation remain disabled until the server can validate authoritative order data.
 - Secret payment keys must stay server-side.
 - Order ownership, amount, currency, and promotion details must be validated from server-authoritative data.
 - Payment confirmation must be idempotent and persisted before access or promotion is granted.

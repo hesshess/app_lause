@@ -29,7 +29,6 @@ flowchart LR
   subgraph services["Managed services"]
     supabase["Supabase<br/>Auth and PostgreSQL"]
     openai["OpenAI<br/>structured idea generation"]
-    resend["Resend<br/>email delivery"]
     sentry["Sentry<br/>client and server monitoring"]
   end
 
@@ -51,7 +50,6 @@ flowchart LR
   realtime --> supabase
 
   routes --> openai
-  routes --> resend
   browser --> toss
   browser --> sentry
   router --> sentry

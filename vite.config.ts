@@ -17,6 +17,10 @@ const sentryConfig: SentryReactRouterBuildOptions = {
   // ...
 };
 
+const shouldUploadSentrySourceMaps =
+  Boolean(process.env.SENTRY_AUTH_TOKEN) &&
+  process.env.GITHUB_ACTIONS !== "true";
+
 export default defineConfig((config) => {
   return {
     build: {
@@ -29,7 +33,9 @@ export default defineConfig((config) => {
       reactRouter(),
       tailwindcss(),
       tsconfigPaths(),
-      sentryReactRouter(sentryConfig, config),
+      ...(shouldUploadSentrySourceMaps
+        ? [sentryReactRouter(sentryConfig, config)]
+        : []),
     ],
   };
 });

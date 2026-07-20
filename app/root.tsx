@@ -15,6 +15,7 @@ import "./lib/datetime";
 import Navigation from "./common/components/navigation";
 import { makeSSRClient } from "./supa-client";
 import { cn } from "./lib/utils";
+import { shouldReportRouteErrorToSentry } from "./lib/error-reporting";
 import { countNotifications, getUserById } from "./features/users/queries";
 
 import * as Sentry from "@sentry/react-router";
@@ -118,7 +119,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       message = "Request error";
       details = error.statusText || details;
     }
-    if (error.status >= 500) {
+    if (shouldReportRouteErrorToSentry(error.status)) {
       Sentry.captureException(error);
     }
   } else if (error && error instanceof Error) {

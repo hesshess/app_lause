@@ -141,6 +141,18 @@ Run type checks:
 npm run typecheck
 ```
 
+Run automated tests once:
+
+```bash
+npm run test:run
+```
+
+Run tests in watch mode while developing:
+
+```bash
+npm test
+```
+
 Create a production build:
 
 ```bash

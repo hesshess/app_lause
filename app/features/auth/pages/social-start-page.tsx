@@ -1,10 +1,14 @@
 import { redirect } from "react-router";
 import z from "zod";
 import { makeSSRClient } from "~/supa-client";
+import {
+  getSocialAuthCallbackUrl,
+  oauthProviderSchema,
+} from "~/features/auth/utils";
 import type { Route } from "./+types/social-start-page";
 
 const paramsSchema = z.object({
-  provider: z.enum(["github", "kakao", "google"]),
+  provider: oauthProviderSchema,
 });
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
@@ -13,8 +17,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     return redirect("/auth/login");
   }
   const { provider } = data;
-  const base_url = new URL(request.url);
-  const redirectTo = `${base_url.origin}/auth/social/${provider}/complete`;
+  const redirectTo = getSocialAuthCallbackUrl(request.url, provider);
   const { client, headers } = makeSSRClient(request);
   const {
     data: { url },

@@ -52,14 +52,14 @@ export default function PrmotePage({ loaderData }: Route.ComponentProps) {
     const initToss = async () => {
       if (initedToss.current) return;
       initedToss.current = true;
-      const { loadTossPayments } = await import(
+      const { ANONYMOUS, loadTossPayments } = await import(
         "@tosspayments/tosspayments-sdk"
       );
       const toss = await loadTossPayments(
         import.meta.env.VITE_TOSS_CLIENT_KEY!,
       );
       widgets.current = await toss.widgets({
-        customerKey: "1111111",
+        customerKey: ANONYMOUS,
       });
       await widgets.current.setAmount({
         value: 0,
@@ -85,33 +85,13 @@ export default function PrmotePage({ loaderData }: Route.ComponentProps) {
     };
     updateAmount();
   }, [promotionPeriod]);
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const applause = formData.get("applause") as string;
-    if (!applause || !promotionPeriod?.to || !promotionPeriod?.from) return;
-    await widgets.current?.requestPayment({
-      orderId: crypto.randomUUID(),
-      orderName: `Applause Promotion`,
-      customerEmail: "heisuewang@gmail.com",
-      customerName: "Hess",
-      customerMobilePhone: "01012345678",
-      metadata: {
-        applause,
-        promotionFrom: DateTime.fromJSDate(promotionPeriod.from).toISO(),
-        promotionTo: DateTime.fromJSDate(promotionPeriod.to).toISO(),
-      },
-      successUrl: `${window.location.href}/success`,
-      failUrl: `${window.location.href}/fail`,
-    });
-  };
   return (
     <div>
       <Hero
         title="Promote Your Applause"
         description="Highlight your progress so more people can discover and try it."
       />
-      <form onSubmit={handleSubmit} className="grid grid-cols-6 gap-10">
+      <div className="grid grid-cols-6 gap-10">
         <div className="col-span-3 mx-auto w-1/2 flex flex-col gap-10 items-start">
           <SelectPair
             required
@@ -142,16 +122,20 @@ export default function PrmotePage({ loaderData }: Route.ComponentProps) {
         <aside className="col-span-3 px-20 flex flex-col items-center">
           <div id="toss-payment-methods" className="w-full" />
           <div id="toss-payment-agreement" />
-          <Button className="w-full" disabled={totalDays === 0}>
-            Checkout (
+          <Button className="w-full" type="button" disabled>
+            Checkout disabled in public demo (
             {(totalDays * 1000).toLocaleString("ko-KR", {
               style: "currency",
               currency: "KRW",
             })}
             )
           </Button>
+          <p className="mt-3 text-center text-sm text-muted-foreground">
+            The widget is shown for integration preview only. No payment
+            request or confirmation is sent.
+          </p>
         </aside>
-      </form>
+      </div>
     </div>
   );
 }

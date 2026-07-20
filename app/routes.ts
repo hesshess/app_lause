@@ -42,10 +42,6 @@ export default [
     route("search", "features/applauses/pages/search-page.tsx"),
     route("submit", "features/applauses/pages/submit-applause-page.tsx"),
     route("promote", "features/applauses/pages/promote-page.tsx"),
-    route(
-      "promote/success",
-      "features/applauses/pages/promote-success-page.tsx",
-    ),
     ...prefix(":applauseId", [
       index("features/applauses/pages/applause-redirect-page.tsx"),
       layout("features/applauses/layouts/applause-overview-layout.tsx", [
@@ -129,6 +125,5 @@ export default [
       route("posts", "features/users/pages/profile-posts-page.tsx"),
     ]),
     route("messages", "features/users/pages/send-message-page.tsx"),
-    route("welcome", "features/users/pages/welcome-page.tsx"),
   ]),
 ] satisfies RouteConfig;

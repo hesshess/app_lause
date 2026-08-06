@@ -26,11 +26,11 @@ export function ApplauseCard({
 }: ApplauseCardProps) {
     const fetcher = useFetcher();
     const numericVotesCount = Number(votesCount ?? 0);
-    const isSubmitting = fetcher.state === "submitting";
+    const isPending = fetcher.state !== "idle";
     const optimisticIsUpvoted =
-      isSubmitting ? !isUpvoted : isUpvoted;
+      isPending ? !isUpvoted : isUpvoted;
     const optimisticVotesCount =
-      isSubmitting
+      isPending
         ? (isUpvoted ? numericVotesCount - 1 : numericVotesCount + 1)
         : numericVotesCount;
     const absorbClick = (event: React.MouseEvent<HTMLButtonElement>) => {

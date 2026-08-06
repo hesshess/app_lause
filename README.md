@@ -121,8 +121,8 @@ The project includes fixes and patterns for production deployment issues encount
 Social login callbacks use the current request origin so the same code works locally and in production.
 
 ```ts
-const baseUrl = new URL(request.url);
-const redirectTo = `${baseUrl.origin}/auth/social/${provider}/complete`;
+const requestOrigin = new URL(requestUrl).origin;
+return `${requestOrigin}/auth/social/${provider}/complete`;
 ```
 
 ### SSR-Safe Third-Party SDK Loading

@@ -1,10 +1,7 @@
-import { Button } from "~/common/components/ui/button";
-import { Input } from "~/common/components/ui/input";
-import { Form, redirect, useNavigate, useNavigation } from "react-router";
+import { Form, redirect, useNavigation } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import { z } from "zod";
 import { makeSSRClient } from "~/supa-client";
-import { LoaderCircle } from "lucide-react";
 import AuthSubmitFeedback from "../components/auth-submit-feedback";
 import type { Route } from "./+types/otp-start-page";
 

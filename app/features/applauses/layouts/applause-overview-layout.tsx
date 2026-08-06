@@ -27,11 +27,11 @@ export default function ApplauseOverviewLayout({
   const fetcher = useFetcher();
   const isUpvoted = loaderData.applause.is_upvoted;
   const upvotes = Number(loaderData.applause.upvotes ?? 0);
-  const isSubmitting = fetcher.state === "submitting";
+  const isPending = fetcher.state !== "idle";
   const optimisticIsUpvoted =
-    isSubmitting ? !isUpvoted : isUpvoted;
+    isPending ? !isUpvoted : isUpvoted;
   const optimisticUpvotes =
-    isSubmitting
+    isPending
       ? (isUpvoted ? upvotes - 1 : upvotes + 1)
       : upvotes;
   return (

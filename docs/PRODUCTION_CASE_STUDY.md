@@ -69,8 +69,8 @@ This preserves TypeScript support while ensuring the executable SDK is loaded on
 The callback now uses the incoming request origin rather than a localhost constant.
 
 ```ts
-const baseUrl = new URL(request.url);
-const redirectTo = `${baseUrl.origin}/auth/social/${provider}/complete`;
+const requestOrigin = new URL(requestUrl).origin;
+return `${requestOrigin}/auth/social/${provider}/complete`;
 ```
 
 The same route can now initiate authentication in local and deployed environments. See the current [social authentication route](../app/features/auth/pages/social-start-page.tsx).
@@ -114,5 +114,5 @@ No performance percentage or incident-rate claim is included because production 
 
 - Add a post-deployment smoke test for the homepage, authentication start, and promotion page.
 - Add automated checks that start the built server bundle, not only `npm run build`.
-- Track Sentry releases and source maps in CI with a deployment-scoped auth token.
-- Add integration coverage for OAuth callback generation across approved environments.
+- Add database-backed integration tests for important mutations.
+- Add an end-to-end flow for public and authenticated user journeys.

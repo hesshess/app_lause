@@ -154,8 +154,8 @@ The app supports:
 Social OAuth redirects are generated from the current request origin so local and production environments can share the same route code.
 
 ```ts
-const baseUrl = new URL(request.url);
-const redirectTo = `${baseUrl.origin}/auth/social/${provider}/complete`;
+const requestOrigin = new URL(requestUrl).origin;
+return `${requestOrigin}/auth/social/${provider}/complete`;
 ```
 
 ## Error Handling And Monitoring

@@ -67,13 +67,13 @@ Current root error reporting behavior:
 
 ## Source Maps
 
-The Vite Sentry plugin is configured to support source map upload through `SENTRY_AUTH_TOKEN`.
+The Vite Sentry plugin uploads source maps only during Vercel deployments that provide `SENTRY_AUTH_TOKEN`. Local and GitHub Actions builds skip the upload path.
 
 Operational considerations:
 
-- `SENTRY_AUTH_TOKEN` must be stored as an environment variable.
+- `SENTRY_AUTH_TOKEN` must be stored as a Vercel environment variable.
 - Source map upload requires network access to Sentry during build.
-- Production source maps should be reviewed carefully because they can expose source details if served publicly.
+- Sentry removes generated source maps after the deployment upload so they are not served as public build assets.
 
 ## OAuth Redirects
 

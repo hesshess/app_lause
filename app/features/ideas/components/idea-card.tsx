@@ -1,6 +1,7 @@
 import { DotIcon, EyeIcon, HeartIcon, LockIcon } from "lucide-react";
 import { DateTime } from "luxon";
-import { Link } from "react-router";
+import { Link, useFetcher } from "react-router";
+import type { action } from "../pages/ideas-page";
 
 import { Button } from "~/common/components/ui/button";
 import {
@@ -30,6 +31,8 @@ export function IdeaCard({
   claimed,
   owner,
 }: IdeaCardProps) {
+  const fetcher = useFetcher<typeof action>();
+  const isPending = fetcher.state !== "idle";
   return (
     <Card className="bg-transparent hover:bg-card/50 transition-colors">
       <CardHeader>
@@ -60,11 +63,17 @@ export function IdeaCard({
       <CardFooter className="flex justify-end gap-2">
         {!claimed && !owner ? (
           <>
-            <Button variant="outline">
-              <HeartIcon className="w-4 h-4" />
-              <span className="sr-only">Like idea. Current likes:</span>
-              <span>{likesCount}</span>
-            </Button>
+            <fetcher.Form method="post" action="/ideas?index">
+              <input type="hidden" name="ideaId" value={id} />
+              <Button variant="outline" type="submit" disabled={isPending} aria-busy={isPending}>
+                <HeartIcon className="w-4 h-4" />
+                <span className="sr-only">Like idea. Current likes:</span>
+                <span>{likesCount ?? 0}</span>
+              </Button>
+              {!isPending && fetcher.data?.error ? (
+                <p role="alert" className="text-sm text-red-500">{fetcher.data.error}</p>
+              ) : null}
+            </fetcher.Form>
             <Button asChild>
               <Link to={`/ideas/${id}`}>Claim idea now &rarr;</Link>
             </Button>
